@@ -1,0 +1,30 @@
+{
+  "name": "arn-gestion-puesto",
+  "version": "1.0.0",
+  "description": "aplicacion para gestionar puestos y maquinas de produccion",
+  "main": "app.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=development nodemon ./src/app.js",
+    "prod": "cross-env NODE_ENV=production node ./src/app.js",
+    "test": "test"
+  },
+  "author": "oscar martinez",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "morgan": "^1.10.0",
+    "nodemon": "^2.0.4"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "express-handlebars": "^4.0.4",
+    "express-session": "^1.17.1",
+    "express-validator": "^6.5.0",
+    "mssql": "^6.2.0",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0",
+    "timeago.js": "^4.0.2",
+    "uuid": "^8.0.0"
+  }
+}
