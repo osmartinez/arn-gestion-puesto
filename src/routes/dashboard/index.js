@@ -10,5 +10,8 @@ router.get('/settings', isLoggedIn,(req,res)=>{
     res.render('dashboard/settings', {layout: 'main-dashboard'})
 })
 
+router.get('/task',isLoggedIn,(req,res)=>{
+    res.render('dashboard/task',{layout: 'main-dashboard'})
+})
 
 module.exports = router

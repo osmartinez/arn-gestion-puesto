@@ -8,7 +8,6 @@ router.get('/',isNotLoggedIn,(req,res)=>{
 })
 
 router.post('/sign-in',isNotLoggedIn,(req,res,next)=>{
-    console.log('hola')
     passport.authenticate('local.login',{
         failureRedirect: '/',
         successRedirect: '/dashboard',

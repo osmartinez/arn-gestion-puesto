@@ -34,14 +34,15 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#menu-toggle" id="menu-toggle"> <span
-                            class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span> <span
-                            class="logo">CORTADORA 2</span>
+                    <a class="navbar-brand" href="#" id="menu-toggle"> <span class="glyphicon glyphicon-menu-hamburger"
+                            aria-hidden="true"></span> <span class="logo">CORTADORA 2</span>
                     </a>
                 </div>
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#"><span class="glyphicon glyphicon-time" aria-hidden="true"></span> <span id="time">00:00:00</span></a>
+                        </li>
                         <li><a href="#"><span class="glyphicon glyphicon-print" aria-hidden="true"></span> Imprimir
                                 hoja</a>
                         </li>
@@ -86,7 +87,8 @@
                 <li> <a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> <span
                             class="menu-text">Users</span></a>
                 </li>
-                <li> <a href="/dashboard/averia"><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span>
+                <li> <a href="/dashboard/averia"><span class="glyphicon glyphicon-warning-sign"
+                            aria-hidden="true"></span>
                         <span class="menu-text">Avería</span></a>
                 </li>
                 <li> <a href="/dashboard/settings"><span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
@@ -116,5 +118,27 @@
     <!-- Menu Toggle Script -->
     <script src="/js/sidebar.js?ver=2"></script>
 </body>
+
+<script>
+    // Interactiveness now
+
+(function() {
+	var clock = document.querySelector('#time');
+	var pad = function(x) {
+		return x < 10 ? '0'+x : x;
+	};
+	var ticktock = function() {
+		var d = new Date();
+		var h = pad( d.getHours() );
+		var m = pad( d.getMinutes() );
+		var s = pad( d.getSeconds() );
+		var current_time = [h,m,s].join(':');
+		clock.innerHTML = current_time;
+	};
+	ticktock();
+	// Calling ticktock() every 1 second
+	setInterval(ticktock, 1000);
+}());
+</script>
 
 </html>
