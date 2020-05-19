@@ -1,6 +1,4 @@
-body {
-    font-family: 'Roboto';
-}
+
 a {
     text-decoration: none;
 }
@@ -73,6 +71,13 @@ a#easy-numpad-close {
     color: #fff;
     text-align: center;
 }
+
+.tecla{
+    border-style: solid;
+    border-width: 1px;
+    border-color: white;
+}
+
 .easy-numpad-number-container > table a:hover {
     background-color: #616161;
 }

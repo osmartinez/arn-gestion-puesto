@@ -14,27 +14,27 @@ function show_easy_numpad() {
                 <div class="easy-numpad-number-container">
                     <table>
                         <tr>
-                            <td><a href="7" onclick="easynum()">7</a></td>
-                            <td><a href="8" onclick="easynum()">8</a></td>
-                            <td><a href="9" onclick="easynum()">9</a></td>
-                            <td><a href="Del" class="del" id="del" onclick="easy_numpad_del()">&lt;</a></td>
+                            <td class="tecla"><a href="7" onclick="easynum()">7</a></td>
+                            <td class="tecla"><a href="8" onclick="easynum()">8</a></td>
+                            <td class="tecla"><a href="9" onclick="easynum()">9</a></td>
+                            <td class="tecla"><a href="Del" class="del" id="del" onclick="easy_numpad_del()">&lt;</a></td>
                         </tr>
                         <tr>
-                            <td><a href="4" onclick="easynum()">4</a></td>
-                            <td><a href="5" onclick="easynum()">5</a></td>
-                            <td><a href="6" onclick="easynum()">6</a></td>
-                            <td><a href="Clear" class="clear" id="clear" onclick="easy_numpad_clear()">Borrar</a></td>
+                            <td class="tecla"><a href="4" onclick="easynum()">4</a></td>
+                            <td class="tecla"><a href="5" onclick="easynum()">5</a></td>
+                            <td class="tecla"><a href="6" onclick="easynum()">6</a></td>
+                            <td class="tecla"><a href="Clear" class="clear" id="clear" onclick="easy_numpad_clear()">Borrar</a></td>
                         </tr>
                         <tr>
-                            <td><a href="1" onclick="easynum()">1</a></td>
-                            <td><a href="2" onclick="easynum()">2</a></td>
-                            <td><a href="3" onclick="easynum()">3</a></td>
-                            <td><a href="Cancel" class="cancel" id="cancel" onclick="easy_numpad_cancel()">Cancelar</a></td>
+                            <td class="tecla"><a href="1" onclick="easynum()">1</a></td>
+                            <td class="tecla"><a href="2" onclick="easynum()">2</a></td>
+                            <td class="tecla"><a href="3" onclick="easynum()">3</a></td>
+                            <td class="tecla"><a href="Cancel" class="cancel" id="cancel" onclick="easy_numpad_cancel()">Cancelar</a></td>
                         </tr>
                         <tr>
-                            <td colspan="2" onclick="easynum()"><a href="0">0</a></td>
-                            <td onclick="easynum()"><a href=".">.</a></td>
-                            <td><a href="Done" class="done" id="done" onclick="easy_numpad_done()">OK</a></td>
+                            <td class="tecla" colspan="2" onclick="easynum()"><a href="0">0</a></td>
+                            <td class="tecla" onclick="easynum()"><a href=".">.</a></td>
+                            <td class="tecla"><a href="Done" class="done" id="done" onclick="easy_numpad_done()">OK</a></td>
                         </tr>
                     </table>
                 </div>
