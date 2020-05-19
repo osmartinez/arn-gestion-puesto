@@ -3,7 +3,7 @@
         <div class="row">
             <div class="input-group">
                 <span class="input-group-addon"><i class="glyphicon glyphicon-barcode"></i></span>
-                <input id="orden" type="text" class="form-control" name="orden" placeholder="Escanear orden">
+                <input id="orden-input" type="text" class="form-control" name="orden" placeholder="Escanear orden">
             </div>
         </div>
         <div class="row">
@@ -53,3 +53,43 @@
         font-size: large;
     }
 </style>
+
+<script>
+    const ordenInput = document.getElementById('orden-input')
+    console.log(ordenInput)
+    ordenInput.addEventListener('keyup', () => {
+        const texto = ordenInput.value
+        if (texto.length == 13) {
+            buscarOrdenFabricacion(texto)
+        }
+    })
+
+    setInterval(() => {
+        ordenInput.focus();
+    }, 1000)
+
+
+
+    function buscarOrdenFabricacion(id) {
+        ordenInput.value = ''
+        for(const letra of id){
+            console.log(letra)
+            if(letra === '0'){
+                console.log('quitar')
+                id = id.substring(1,id.length)
+                console.log(id)
+            }
+            else{break}
+        }
+
+        id = id.substring(0,id.length-1)
+
+        console.log('asi ha quedado')
+        console.log(id)
+
+        /*fetch(`/dashboard/buscarOrden/${id}`)
+        .then(resp => {return resp.json()})
+        .then(res =>console.log(res))
+        .catch(err=>console.log(err))*/
+    }
+</script>

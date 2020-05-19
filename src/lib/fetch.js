@@ -15,6 +15,16 @@ module.exports = {
             console.error(err)
             return null
         }
+    },
 
+    async buscarOrden(id){
+        try{
+            var response = await(fetch(`${url}/ordenesFabricacion/${id}`))
+            var orden = await response.json()
+            return orden
+        }catch(err){
+            console.error(err)
+            return null
+        }
     }
 }
