@@ -15,9 +15,10 @@ router.get('/task',isLoggedIn,(req,res)=>{
     res.render('dashboard/task',{layout: 'main-dashboard'})
 })
 
-router.post('/buscarOrden/:idOrden',(req,res)=>{
+router.get('/buscarOrden/:idOrden',async (req,res)=>{
     const {idOrden} = req.params
-
+    var orden = await buscarOrden(idOrden)
+    res.json(orden)
 })
 
 module.exports = router

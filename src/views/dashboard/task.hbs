@@ -8,15 +8,15 @@
         </div>
         <div class="row">
             <span>Orden Fabricación</span>
-            <input type="text" disabled />
+            <input id="codigo-input" type="text" disabled />
         </div>
         <div class="row">
             <span>Cliente</span>
-            <input type="text" disabled />
+            <input id="cliente-input" type="text" disabled />
         </div>
         <div class="row">
             <span>Modelo</span>
-            <input type="text" disabled />
+            <input id="modelo-input" type="text" disabled />
         </div>
     </div>
 
@@ -28,15 +28,11 @@
 <style>
     .col1 {
         height: 300px;
-
     }
 
     .col2 {
         height: 300px;
-
-
     }
-
 
     .barcode-scanner {
         height: 30px;
@@ -73,23 +69,25 @@
     function buscarOrdenFabricacion(id) {
         ordenInput.value = ''
         for(const letra of id){
-            console.log(letra)
             if(letra === '0'){
-                console.log('quitar')
                 id = id.substring(1,id.length)
-                console.log(id)
             }
             else{break}
         }
 
         id = id.substring(0,id.length-1)
 
-        console.log('asi ha quedado')
-        console.log(id)
-
-        /*fetch(`/dashboard/buscarOrden/${id}`)
+        fetch(`/dashboard/buscarOrden/${id}`)
         .then(resp => {return resp.json()})
-        .then(res =>console.log(res))
-        .catch(err=>console.log(err))*/
+        .then(res => cargarInformacion(res))
+        .catch(err=>console.log(err))
+    }
+
+    function cargarInformacion(datos){
+        console.log(datos)
+
+        document.querySelector('#codigo-input').value = datos.Codigo
+        document.querySelector('#cliente-input').value = datos.NOMBRECLI
+        document.querySelector('#modelo-input').value = datos.DESCRIPCIONARTICULO
     }
 </script>
