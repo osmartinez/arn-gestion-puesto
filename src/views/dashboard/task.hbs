@@ -36,6 +36,22 @@
     </div>
 
     <div class="col2 col-md-8 col-lg-8 col-sm-8">
+        <div class="row">
+
+        </div>
+        <div class="row">
+            
+        </div>
+        <div class="row">
+            <div class="card card-outline-info h-100">
+                <div class="card-block">
+                    <div>Pares completados...</div>
+                    <div class="progress my-3">
+                        <div class="progress-bar" style="width: 30%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>
@@ -104,8 +120,8 @@
 
     function cargarInformacion(datos) {
         let operacion = {}
-        if(datos){
-            if(datos.length >0){
+        if (datos) {
+            if (datos.length > 0) {
                 operacion = datos[0]
             }
         }
@@ -114,7 +130,7 @@
         document.querySelector('#codigo-input').innerHTML = operacion.Codigo
         document.querySelector('#cliente-input').innerHTML = operacion.NOMBRECLI
         document.querySelector('#modelo-input').innerHTML = operacion.DESCRIPCIONARTICULO
-                document.querySelector('#utillaje-input').innerHTML = operacion.CodUtillaje
+        document.querySelector('#utillaje-input').innerHTML = operacion.CodUtillaje
         document.querySelector('#descripcion-input').innerHTML = operacion.Descripcion
 
     }
