@@ -26,5 +26,16 @@ module.exports = {
             console.error(err)
             return null
         }
+    },
+
+    async buscarOperacion(id, codSeccion){
+        try{
+            var response = await(fetch(`${url}/ordenesFabricacion/buscarOperacion/${id}/${codSeccion}`))
+            var operaciones = await response.json()
+            return operaciones
+        }catch(err){
+            console.error(err)
+            return null
+        }
     }
 }

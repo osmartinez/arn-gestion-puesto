@@ -7,17 +7,32 @@
             </div>
         </div>
         <div class="row">
-            <span>Orden Fabricación</span>
-            <input id="codigo-input" type="text" disabled />
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th scope="row">Orden</th>
+                        <td id="codigo-input"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Cliente</th>
+                        <td id="cliente-input"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Modelo</th>
+                        <td id="modelo-input"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Utillaje</th>
+                        <td id="utillaje-input"></td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Descripcion</th>
+                        <td id="descripcion-input"></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-        <div class="row">
-            <span>Cliente</span>
-            <input id="cliente-input" type="text" disabled />
-        </div>
-        <div class="row">
-            <span>Modelo</span>
-            <input id="modelo-input" type="text" disabled />
-        </div>
+
     </div>
 
     <div class="col2 col-md-8 col-lg-8 col-sm-8">
@@ -48,6 +63,10 @@
         height: 100%;
         font-size: large;
     }
+
+    td {
+        font-size: 12px;
+    }
 </style>
 
 <script>
@@ -68,26 +87,35 @@
 
     function buscarOrdenFabricacion(id) {
         ordenInput.value = ''
-        for(const letra of id){
-            if(letra === '0'){
-                id = id.substring(1,id.length)
+        for (const letra of id) {
+            if (letra === '0') {
+                id = id.substring(1, id.length)
             }
-            else{break}
+            else { break }
         }
 
-        id = id.substring(0,id.length-1)
+        id = id.substring(0, id.length - 1)
 
-        fetch(`/dashboard/buscarOrden/${id}`)
-        .then(resp => {return resp.json()})
-        .then(res => cargarInformacion(res))
-        .catch(err=>console.log(err))
+        fetch(`/dashboard/buscarOperacion/${id}/080`)
+            .then(resp => { return resp.json() })
+            .then(res => cargarInformacion(res))
+            .catch(err => console.log(err))
     }
 
-    function cargarInformacion(datos){
+    function cargarInformacion(datos) {
+        let operacion = {}
+        if(datos){
+            if(datos.length >0){
+                operacion = datos[0]
+            }
+        }
         console.log(datos)
 
-        document.querySelector('#codigo-input').value = datos.Codigo
-        document.querySelector('#cliente-input').value = datos.NOMBRECLI
-        document.querySelector('#modelo-input').value = datos.DESCRIPCIONARTICULO
+        document.querySelector('#codigo-input').innerHTML = operacion.Codigo
+        document.querySelector('#cliente-input').innerHTML = operacion.NOMBRECLI
+        document.querySelector('#modelo-input').innerHTML = operacion.DESCRIPCIONARTICULO
+                document.querySelector('#utillaje-input').innerHTML = operacion.CodUtillaje
+        document.querySelector('#descripcion-input').innerHTML = operacion.Descripcion
+
     }
 </script>
