@@ -24,7 +24,7 @@
 }
 
 .keyboard__key {
-    height: 38px;
+    height: 45px;
     width: 7%;
     max-width: 90px;
     margin: 3px;
@@ -157,7 +157,8 @@
 
     properties: {
       value: "",
-      capsLock: false
+      capsLock: false,
+      input: null,
     },
 
     init() {
@@ -169,6 +170,11 @@
       this.elements.main.classList.add("keyboard", "keyboard--hidden");
       this.elements.keysContainer.classList.add("keyboard__keys");
       this.elements.keysContainer.appendChild(this._createKeys());
+
+      const input = document.createElement('INPUT')
+      input.className = 'form-control'
+      this.elements.main.appendChild(input)
+      this.properties.input = input
 
       this.elements.keys = this.elements.keysContainer.querySelectorAll(".keyboard__key");
 
@@ -216,6 +222,7 @@
 
             keyElement.addEventListener("click", () => {
               this.properties.value = this.properties.value.substring(0, this.properties.value.length - 1);
+              this.properties.input.value = this.properties.value;
               this._triggerEvent("oninput");
             });
 
@@ -270,6 +277,7 @@
 
             keyElement.addEventListener("click", () => {
               this.properties.value += this.properties.capsLock ? key.toUpperCase() : key.toLowerCase();
+              this.properties.input.value =this.properties.value;
               this._triggerEvent("oninput");
             });
 
@@ -304,6 +312,7 @@
 
     open(initialValue, oninput, onclose) {
       this.properties.value = initialValue || "";
+      this.properties.input.value = this.properties.value;
       this.eventHandlers.oninput = oninput;
       this.eventHandlers.onclose = onclose;
       this.elements.main.classList.remove("keyboard--hidden");
@@ -317,14 +326,13 @@
     }
   };
 
-  window.addEventListener("DOMContentLoaded", function () {
-    Keyboard.init();
-  });
 
 
   $(document).ready(function () {
     $('.stepper').mdbStepper();
     $('.mdb-select').materialSelect();
+        Keyboard.init();
+
   })
 
 </script>
