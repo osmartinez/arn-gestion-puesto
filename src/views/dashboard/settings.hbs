@@ -5,7 +5,6 @@
 <script src="/js/material-select.min.js"></script>
 
 
-
 <ul class="stepper linear">
   <li class="step active">
     <div data-step-label="Sección y máquina" class="step-title waves-effect waves-dark">Paso 1 - General</div>
@@ -25,12 +24,8 @@
       <div class="row">
         <div class="md-form col-12 ml-auto">
           <!--Maquinas select-->
-          <select class="mdb-select md-form colorful-select dropdown-primary">
-            <option value="1">Option 1</option>
-            <option value="2">Option 2</option>
-            <option value="3">Option 3</option>
-            <option value="4">Option 4</option>
-            <option value="5">Option 5</option>
+          <select id="select-maquinas" class="mdb-select md-form colorful-select dropdown-primary">
+            <!--> Fetch maquinas despues de seleccionar seccion <-->
           </select>
           <label class="mdb-main-label">Máquina</label>
           <!--/Blue select-->
@@ -67,24 +62,4 @@
   </li>
 </ul>
 
-<script>
-  $(document).ready(function () {
-    $('.stepper').mdbStepper();
-    $('.mdb-select').materialSelect();
-    Keyboard.init();
-  })
-
-  $('#select-secciones').change(function(){
-    const codSeccion = $(this).find(":selected").val() 
-    $.ajax({
-      url: `/dashboard/settings/maquinasEnSeccion/${codSeccion}` ,
-      succes: (result)=>{
-        console.log(result)
-      },
-      error: (err)=>{
-        console.log(err)
-      }
-    })
-  })
-
-</script>
+<script src="/js/settings/main.js"></script>

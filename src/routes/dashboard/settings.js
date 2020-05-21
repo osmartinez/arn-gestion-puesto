@@ -8,7 +8,9 @@ module.exports = function(router){
 
     router.get('/settings/maquinasEnSeccion/:codSeccion',async (req,res)=>{
         const {codSeccion} = req.params
+        
         var maquinas = await buscarMaquinasEnSeccion(codSeccion)
+        console.log(maquinas)
         res.json(maquinas)
     })
 }
