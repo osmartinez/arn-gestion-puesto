@@ -49,5 +49,16 @@ module.exports = {
             console.error(err)
             return null
         }
+    },
+
+    async buscarMaquinasEnSeccion(codSeccion){
+        try{
+            var response = await fetch(`${url}/maquinas/enSeccion/${codSeccion}`)
+            var maquinas = await response.json()
+            return maquinas
+        }catch(err){
+            console.error(err)
+            return null
+        }
     }
 }

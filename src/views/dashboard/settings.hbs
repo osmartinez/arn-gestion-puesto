@@ -12,19 +12,19 @@
     <div class="step-new-content">
       <div class="row">
         <div class="md-form col-12 ml-auto">
-          <!--Blue select-->
-          <select class="mdb-select md-form colorful-select dropdown-primary">
+          <!--Secciones select-->
+          <select id="select-secciones" class="mdb-select md-form colorful-select dropdown-primary">
             {{#each secciones}}
             <option value="{{this.CodSeccion}}">{{this.Nombre}}</option>
             {{/each}}
           </select>
           <label class="mdb-main-label">Sección</label>
-          <!--/Blue select-->
+          <!--/Secciones select-->
         </div>
       </div>
       <div class="row">
         <div class="md-form col-12 ml-auto">
-          <!--Blue select-->
+          <!--Maquinas select-->
           <select class="mdb-select md-form colorful-select dropdown-primary">
             <option value="1">Option 1</option>
             <option value="2">Option 2</option>
@@ -68,12 +68,23 @@
 </ul>
 
 <script>
-
-
   $(document).ready(function () {
     $('.stepper').mdbStepper();
     $('.mdb-select').materialSelect();
     Keyboard.init();
+  })
+
+  $('#select-secciones').change(function(){
+    const codSeccion = $(this).find(":selected").val() 
+    $.ajax({
+      url: `/dashboard/settings/maquinasEnSeccion/${codSeccion}` ,
+      succes: (result)=>{
+        console.log(result)
+      },
+      error: (err)=>{
+        console.log(err)
+      }
+    })
   })
 
 </script>

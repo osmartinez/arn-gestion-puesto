@@ -1,15 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const {isLoggedIn} = require('../../lib/authenticationHelpers')
-const {buscarOrden,buscarOperacion, buscarTodasSecciones} = require('../../lib/fetch')
+const {buscarOrden,buscarOperacion } = require('../../lib/fetch')
 
 router.get('/',isLoggedIn,(req,res)=>{
     res.render('dashboard/index', {layout: 'main-dashboard'})
-})
-
-router.get('/settings', isLoggedIn,async (req,res)=>{
-    const secciones = await buscarTodasSecciones()
-    res.render('dashboard/settings', {layout: 'main-dashboard', secciones: secciones})
 })
 
 router.get('/task',isLoggedIn,(req,res)=>{
@@ -27,5 +22,8 @@ router.get('/buscarOperacion/:idOrden/:codSeccion',async (req,res)=>{
     var operaciones = await buscarOperacion(idOrden,codSeccion)
     res.json(operaciones)
 })
+
+// settings
+require('./settings')(router)
 
 module.exports = router
