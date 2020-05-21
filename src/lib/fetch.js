@@ -30,10 +30,22 @@ module.exports = {
 
     async buscarOperacion(id, codSeccion){
         try{
-            var response = await(fetch(`${url}/ordenesFabricacion/buscarOperacion/${id}/${codSeccion}`))
+            var response = await fetch(`${url}/ordenesFabricacion/buscarOperacion/${id}/${codSeccion}`)
             var operaciones = await response.json()
             return operaciones
         }catch(err){
+            console.error(err)
+            return null
+        }
+    },
+
+    async buscarTodasSecciones(){
+        try{
+            var response = await fetch(`${url}/secciones`)
+            var secciones = await response.json()
+            return secciones
+        }
+        catch(err){
             console.error(err)
             return null
         }
