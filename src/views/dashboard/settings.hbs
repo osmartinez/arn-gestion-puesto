@@ -10,7 +10,7 @@
     <div data-step-label="Sección y máquina" class="step-title waves-effect waves-dark">Paso 1 - General</div>
     <div class="step-new-content">
       <div class="row">
-        <div class="md-form col-12 ml-auto">
+        <div class="md-form col-6 ml-auto">
           <!--Secciones select-->
           <select id="select-secciones" class="mdb-select md-form colorful-select dropdown-primary">
             {{#each secciones}}
@@ -20,9 +20,8 @@
           <label class="mdb-main-label">Sección</label>
           <!--/Secciones select-->
         </div>
-      </div>
-      <div class="row">
-        <div class="md-form col-12 ml-auto">
+
+        <div class="md-form col-6 ml-auto">
           <!--Maquinas select-->
           <select id="select-maquinas" class="mdb-select md-form colorful-select dropdown-primary">
             <!--> Fetch maquinas despues de seleccionar seccion <-->
@@ -31,6 +30,7 @@
           <!--/Blue select-->
         </div>
       </div>
+
       <div class="step-actions">
         <button class="waves-effect waves-dark btn btn-sm btn-primary next-step">SIGUIENTE</button>
       </div>
@@ -40,9 +40,22 @@
     <div class="step-title waves-effect waves-dark">Paso 2 - Máquina</div>
     <div class="step-new-content">
       <div class="row">
-        <div class="md-form col-12 ml-auto">
-          <input id="test" type="text" class="form-control validate use-keyboard-input" required>
-          <label for="password-linear"> </label>
+        <div class="md-form col-6 ml-auto">
+          <div class="d-flex justify-content-center my-4">
+            <div class="range-field w-75">
+              <input id="input-ritmo-ideal" class="border-0" type="range" min="0" max="9999" />
+            </div>
+            <label class="mdb-main-label">Ritmo ideal</label>
+            <span id="label-ritmo-ideal" class="font-weight-bold text-primary ml-2 mt-1"></span>
+          </div>
+        </div>
+        <div class="md-form col-6 ml-auto">
+          <div class="d-flex justify-content-center my-4">
+            <form class="range-field w-75">
+              <input class="border-0" type="range" min="0" max="100" />
+            </form>
+            <span class="font-weight-bold text-primary ml-2 mt-1"></span>
+          </div>
         </div>
       </div>
       <div class="step-actions">
