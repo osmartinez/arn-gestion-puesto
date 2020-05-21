@@ -1,14 +1,23 @@
 <link href="/css/steppers.min.css" rel="stylesheet">
 <script src="/js/steppers.min.js"></script>
+<script src="/js/material-select.min.js"></script>
 
 <ul class="stepper linear">
   <li class="step active">
-    <div data-step-label="Type something" class="step-title waves-effect waves-dark">Step 1</div>
+    <div data-step-label="Type something" class="step-title waves-effect waves-dark">Paso 1 - General</div>
     <div class="step-new-content">
       <div class="row">
         <div class="md-form col-12 ml-auto">
-          <input id="email-linear" type="email" class="form-control validate" required>
-          <label for="email-linear">Your e-mail</label>
+          <!--Blue select-->
+          <select class="mdb-select md-form colorful-select dropdown-primary">
+            <option value="1">Option 1</option>
+            <option value="2">Option 2</option>
+            <option value="3">Option 3</option>
+            <option value="4">Option 4</option>
+            <option value="5">Option 5</option>
+          </select>
+          <label class="mdb-main-label">Blue select</label>
+          <!--/Blue select-->
         </div>
       </div>
       <div class="step-actions">
@@ -45,5 +54,8 @@
 <script>
   $(document).ready(function () {
     $('.stepper').mdbStepper();
+    $('.mdb-select').materialSelect();
+
   })
+
 </script>
