@@ -4,7 +4,6 @@ const {buscarOrden,buscarOperacion } = require('../../lib/fetch')
 const configParams = require('../../lib/config.params')
 
 router.get('/',(req,res)=>{
-    console.log(req.puesto)
     res.render('dashboard/index', {layout: 'main-dashboard'})
 })
 

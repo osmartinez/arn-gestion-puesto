@@ -24,7 +24,7 @@ app.engine('.hbs',exphbs({
 app.set('view engine', '.hbs')
 
 // middleware
-app.use(morgan('dev'))
+//app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
 
