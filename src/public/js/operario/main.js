@@ -19,7 +19,7 @@ function addOperario(e) {
     let lista = document.getElementById('lista');
 
     lista.innerHTML +=
-        `<div class="card mb-1">
+        `<div class="card mb-1 fila-operario">
         <div class="card-body">
         <div class="row">
           <div class="col-sm-2">
@@ -31,8 +31,8 @@ function addOperario(e) {
           <div class="col-sm-4">
           <p>MARTINEZ</p>
         </div>
-          <div class="col-sm-2">
-            <a href="#"  class="btn btn-danger">X</a>
+          <div class="col-sm-1">
+            <a href="#"  class="btn btn-danger btn-borrar"><i class="fa fa-sign-out-alt"></i></a>
           </div>
         </div>  
        </div>
