@@ -1,5 +1,8 @@
 const input = document.getElementById('input-operario')
 const teclas = document.querySelectorAll('.letter')
+
+let operarios = []
+
 for (const tecla of teclas) {
     tecla.addEventListener('click', () => {
         if (tecla.className.includes('delete')) {
@@ -11,25 +14,46 @@ for (const tecla of teclas) {
     })
 }
 
-
 document.getElementById('btn-entrar').addEventListener('click', addOperario);
-
-function addOperario(e) {
-    let codigo = document.getElementById('input-operario').value;
+function pintarTabla(){
     let lista = document.getElementById('tbody');
-
-    lista.innerHTML +=
+    lista.innerHTML= ''
+    for(const operario of operarios){
+        lista.innerHTML +=
         `<tr>
-            <th scope="row">${codigo}</th>
-            <td>OSCAR</td>
-            <td>MARTINEZ MARTINEZ</td>
+            <th scope="row">${operario.Id}</th>
+            <td>${operario.Nombre}</td>
+            <td>${operario.Apellidos}</td>
             <td>
                     <li class="list-inline-item">
                         <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                            data-placement="top" title="Delete"><i class="fa fa-sign-out-alt"></i></button>
+                            data-placement="top" title onclick="salir('${operario.Id}')" ><i class="fa fa-sign-out-alt"></i></button>
                     </li>
             </td>
         </tr>`;
+    }
+}
 
+function addOperario(e) {
+    let codigo = document.getElementById('input-operario').value;
+    $.ajax({
+        url: '/dashboard/operarios/buscarPorCodigo',
+        method: 'POST',
+        dataType: 'json',
+        data: {codigo: codigo},
+        success: (data)=>{
+            operarios.push(data)
+            pintarTabla()
+        },
+        error: (err)=>{
+            console.log(err)
+        }
+    })
+    
     input.value = ''
+}
+
+function salir(codigo){
+    operarios = operarios.filter(x=>x.Id != codigo)
+    pintarTabla()
 }

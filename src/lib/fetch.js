@@ -18,6 +18,9 @@ module.exports = {
     },
     async buscarOperario(id){
         try{
+            if(!isNaN(id)){
+                id = 'B00'+id
+            }
             var response = await fetch(`${url}/operarios/${id}`)
             var user = await response.json()
             return user
