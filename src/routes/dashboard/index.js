@@ -25,5 +25,6 @@ router.get('/buscarOperacion/:idOrden/:codSeccion',async (req,res)=>{
 
 // settings
 require('./settings')(router)
+require('./operarios')(router)
 
 module.exports = router
