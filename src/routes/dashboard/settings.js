@@ -1,16 +1,26 @@
-const {isLoggedIn} = require('../../lib/authenticationHelpers')
 const {buscarTodasSecciones,buscarMaquinasEnSeccion} =  require('../../lib/fetch')
+const configParams = require('../../lib/config.params')
+
 module.exports = function(router){
-    router.get('/settings', isLoggedIn,async (req,res)=>{
+    router.get('/settings',async (req,res)=>{
         const secciones = await buscarTodasSecciones()
-        res.render('dashboard/settings', {layout: 'main-dashboard', secciones: secciones})
+        let maquinas = []
+        const data = configParams.read()
+        if(data.puesto.seccion){
+            maquinas = await buscarMaquinasEnSeccion(data.puesto.seccion)
+        }
+        res.render('dashboard/settings', {layout: 'main-dashboard', secciones: secciones, maquinas: maquinas, puesto: data.puesto})
     })
 
-    router.get('/settings/maquinasEnSeccion/:codSeccion',async (req,res)=>{
-        const {codSeccion} = req.params
-        
+    router.post('/settings/maquinasEnSeccion',async (req,res)=>{
+        const {codSeccion} = req.body
         var maquinas = await buscarMaquinasEnSeccion(codSeccion)
-        console.log(maquinas)
         res.json(maquinas)
+    })
+
+    router.post('/settings',async (req,res)=>{
+        const {seccion, maquina, ritmo} = req.body
+        await configParams.write(seccion,maquina,ritmo)
+        res.redirect('/dashboard')
     })
 }

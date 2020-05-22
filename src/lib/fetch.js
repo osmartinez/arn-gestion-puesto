@@ -6,6 +6,16 @@ const host = config[env].server.host
 const url = `http://${host}:${port}/api`
 
 module.exports = {
+    async buscarMaquina(codigoMaquina){
+        try{
+            var response = await fetch (`${url}/maquinas/${codigoMaquina}`)
+            var maquina = await response.json()
+            return maquina
+        }catch(err){
+            console.error(err)
+            return null
+        }
+    },
     async buscarOperario(id){
         try{
             var response = await fetch(`${url}/operarios/${id}`)

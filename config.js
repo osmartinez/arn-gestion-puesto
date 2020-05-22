@@ -11,10 +11,5 @@ var config = {
             port: '3000'
         }
     },
-    puesto:{
-        codSeccion: '080',
-        idMaquina: 570,
-        rendimientoIdeal: 100,
-    }
 };
 module.exports = config;

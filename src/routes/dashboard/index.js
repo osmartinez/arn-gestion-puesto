@@ -1,13 +1,14 @@
 const express = require('express')
 const router = express.Router()
-const {isLoggedIn} = require('../../lib/authenticationHelpers')
 const {buscarOrden,buscarOperacion } = require('../../lib/fetch')
+const configParams = require('../../lib/config.params')
 
-router.get('/',isLoggedIn,(req,res)=>{
+router.get('/',(req,res)=>{
+    console.log(req.puesto)
     res.render('dashboard/index', {layout: 'main-dashboard'})
 })
 
-router.get('/task',isLoggedIn,(req,res)=>{
+router.get('/task',(req,res)=>{
     res.render('dashboard/task',{layout: 'main-dashboard'})
 })
 

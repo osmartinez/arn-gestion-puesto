@@ -52,10 +52,10 @@ app.use((req, res, next) => {
     next();
   });
 
+
 // routes
 app.use(require('./src/routes/index'))
 app.use('/dashboard',require('./src/routes/dashboard/index'))
-
 
 // public
 app.use(express.static(path.join(__dirname,'src/public')))
@@ -64,6 +64,5 @@ app.use(express.static(path.join(__dirname,'src/public')))
 const server = app.listen(app.get('port'),()=>{
     console.log('Listening on port ',app.get('port'))  
 })
-
 
 module.exports = server

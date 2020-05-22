@@ -4,7 +4,7 @@
   "description": "aplicacion para gestionar puestos y maquinas de produccion",
   "main": "app.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon ./src/app.js",
+    "dev": "cross-env NODE_ENV=development nodemon --ignore '*.json' --ignore 'src/public' ./src/app.js",
     "prod": "cross-env NODE_ENV=production node ./src/app.js",
     "test": "test"
   },

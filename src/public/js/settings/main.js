@@ -11,18 +11,26 @@ $(document).ready(function () {
 })
 
 $('#select-secciones').change(function () {
+    console.log('triggered')
     const codSeccion = $(this).find(":selected").val()
-    $('#select-maquinas').html('')
+    const selectMaquinas = document.getElementById('select-maquinas')
+    selectMaquinas.innerHTML = ''
     $.ajax({
-        url: `/dashboard/settings/maquinasEnSeccion/${codSeccion}`,
-        dataType: 'json'
-    }).done((maquinas) => {
-        if (maquinas) {
-            for (const maquina of maquinas) {
-                $('#select-maquinas').append(`<option value="${maquina.ID}">${maquina.Nombre}</option>`)
+        method: 'POST',
+        url: `/dashboard/settings/maquinasEnSeccion`,
+        data: {codSeccion : codSeccion},
+        dataType: 'json',
+        success:(maquinas)=>{
+            let innerHTML = ''
+            if (maquinas) {
+                for (const maquina of maquinas) {
+                    innerHTML+= `<option value="${maquina.ID}">${maquina.Nombre}</option>`
+                }
             }
+            selectMaquinas.innerHTML = innerHTML
+        },
+        error: (err)=>{
+            console.log(error)
         }
-    }).fail((err) => {
-        console.log(err)
     })
 })
