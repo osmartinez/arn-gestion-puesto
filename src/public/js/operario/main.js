@@ -42,8 +42,10 @@ function addOperario(e) {
         dataType: 'json',
         data: {codigo: codigo},
         success: (data)=>{
-            operarios.push(data)
-            pintarTabla()
+            if(data.Id){
+                operarios.push(data)
+                pintarTabla()
+            }
         },
         error: (err)=>{
             console.log(err)
