@@ -16,27 +16,20 @@ document.getElementById('btn-entrar').addEventListener('click', addOperario);
 
 function addOperario(e) {
     let codigo = document.getElementById('input-operario').value;
-    let lista = document.getElementById('lista');
+    let lista = document.getElementById('tbody');
 
     lista.innerHTML +=
-        `<div class="card mb-1 fila-operario">
-        <div class="card-body">
-        <div class="row">
-          <div class="col-sm-2">
-            <p>${codigo}</p>
-          </div>
-          <div class="col-sm-4">
-            <p>OSCAR</p>
-          </div>
-          <div class="col-sm-4">
-          <p>MARTINEZ</p>
-        </div>
-          <div class="col-sm-1">
-            <a href="#"  class="btn btn-danger btn-borrar"><i class="fa fa-sign-out-alt"></i></a>
-          </div>
-        </div>  
-       </div>
-      </div>`;
+        `<tr>
+            <th scope="row">${codigo}</th>
+            <td>OSCAR</td>
+            <td>MARTINEZ MARTINEZ</td>
+            <td>
+                    <li class="list-inline-item">
+                        <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
+                            data-placement="top" title="Delete"><i class="fa fa-sign-out-alt"></i></button>
+                    </li>
+            </td>
+        </tr>`;
 
-      input.value = ''
+    input.value = ''
 }
