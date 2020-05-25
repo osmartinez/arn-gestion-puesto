@@ -73,5 +73,16 @@ module.exports = {
             console.error(err)
             return null
         }
+    },
+
+    async buscarPrepaquete(codigoPrepaquete, codigoSeccion){
+        try{
+            var response = await fetch(`${url}/prepaquetes/${codigoPrepaquete}/${codigoSeccion}`)
+            var prepaquetes = await response.json()
+            return prepaquetes
+        }catch(err){
+            console.error(err)
+            return null
+        }
     }
 }
