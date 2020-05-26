@@ -24,7 +24,6 @@
                     </div>
                 </div>
                 <div class="row">
-
                     <div class="col-md-6">
                         <div class="stati bg-emerald left">
                             <i class="fas fa-shoe-prints"></i>
@@ -40,6 +39,26 @@
                             <div>
                                 <b id="num-cajas">0</b>
                                 <h5>Cajas</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="stati bg-belize_hole left">
+                            <i class="fas fa-box-open"></i>
+                            <div>
+                                <b id="num-cajas">0</b>
+                                <h5>Cajas</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="stati bg-belize_hole left">
+                            <i class="fas fa-chart-bar"></i>
+                            <div>
+                                <b id="num-pares">0 p/h</b>
+                                <h5>Ritmo</h5>
                             </div>
                         </div>
                     </div>
@@ -156,6 +175,15 @@
         color: white;
     }
 
+    .stati.bg-belize_hole {
+        background: rgb(41, 128, 185);
+        color: white;
+    }
+
+    .stati.belize_hole {
+        color: rgb(41, 128, 185);
+    }
+
     .stati.emerald {
         color: rgb(46, 204, 113);
     }
@@ -205,17 +233,17 @@
         bodyTabla1.innerHTML = ''
         let elementos = []
         for (const prepaquete of store.prepaquetes) {
-           let ofExistente = elementos.find(e => e.Codigo === prepaquete.Codigo)
-           if(!ofExistente){
-               elementos.push({Codigo: prepaquete.Codigo, NOMBRECLI: prepaquete.NOMBRECLI, Cantidad: prepaquete.Cantidad})
-           }
-           else{
-               ofExistente.Cantidad += prepaquete.Cantidad
-           }
+            let ofExistente = elementos.find(e => e.Codigo === prepaquete.Codigo)
+            if (!ofExistente) {
+                elementos.push({ Codigo: prepaquete.Codigo, NOMBRECLI: prepaquete.NOMBRECLI, Cantidad: prepaquete.Cantidad })
+            }
+            else {
+                ofExistente.Cantidad += prepaquete.Cantidad
+            }
         }
 
-        for (const elemento of elementos){
-             bodyTabla1.innerHTML += `
+        for (const elemento of elementos) {
+            bodyTabla1.innerHTML += `
                 <tr>
                     <td scope="row"><span class="celda">${elemento.Codigo}</span></td>
                     <td id="codigo-input"><span class="celda">${elemento.NOMBRECLI}</span></td>
