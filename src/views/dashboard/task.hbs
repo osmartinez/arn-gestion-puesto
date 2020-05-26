@@ -51,7 +51,7 @@
 </div>
 
 <style>
-    .progreso-porcentaje{
+    .progreso-porcentaje {
         font-size: 25px;
         color: white;
         margin-left: 2px;
@@ -149,19 +149,24 @@
         text-align: left;
     }
 
-  
+
 
     .stati.bg-emerald {
         background: rgb(46, 204, 113);
         color: white;
     }
+
     .stati.emerald {
         color: rgb(46, 204, 113);
     }
-    td{
-        font-weight: bold;
+
+    td {
+        background-color: white;
     }
 
+    .celda {
+        font-weight: bold;
+    }
 </style>
 
 <script>
@@ -198,23 +203,51 @@
 
     function cargarPrepaquetesEnTabla() {
         bodyTabla1.innerHTML = ''
-        cantidadTotal = 0
-        cantidadFabricada = 140
+        let elementos = []
         for (const prepaquete of store.prepaquetes) {
-            cantidadTotal += prepaquete.Cantidad
-            bodyTabla1.innerHTML += `
+           let ofExistente = elementos.find(e => e.Codigo === prepaquete.Codigo)
+           if(!ofExistente){
+               elementos.push({Codigo: prepaquete.Codigo, NOMBRECLI: prepaquete.NOMBRECLI, Cantidad: prepaquete.Cantidad})
+           }
+           else{
+               ofExistente.Cantidad += prepaquete.Cantidad
+           }
+        }
+
+        for (const elemento of elementos){
+             bodyTabla1.innerHTML += `
                 <tr>
-                    <th scope="row">${prepaquete.Codigo}</th>
-                    <td id="codigo-input">${prepaquete.NOMBRECLI}</td>
-                    <td id="codigo-input">${prepaquete.Cantidad}</td>
+                    <td scope="row"><span class="celda">${elemento.Codigo}</span></td>
+                    <td id="codigo-input"><span class="celda">${elemento.NOMBRECLI}</span></td>
+                    <td id="codigo-input"><span class="celda">${elemento.Cantidad}</span></td>
                 </tr>
                 `
+        }
+
+        cargarEstadisticas()
+    }
+
+    function cargarEstadisticas() {
+        let cantidadFabricada = 30
+        let cantidadTotal = 0
+        let codigos = []
+        for (const prepaquete of store.prepaquetes) {
+            console.log(codigos)
+            cantidadTotal += prepaquete.Cantidad
+            if (prepaquete.CodigoAgrupacion === null) {
+                codigos.push(prepaquete.CodigoEtiqueta)
+            }
+            else {
+                if (!codigos.includes(prepaquete.CodigoAgrupacion)) {
+                    codigos.push(prepaquete.CodigoAgrupacion)
+                }
+            }
         }
 
         porcentaje = (cantidadFabricada / cantidadTotal * 100).toFixed(0);
         progress.style.width = `${porcentaje}%`
         progressPercent.innerHTML = `${porcentaje}%`
-        numCajas.innerHTML = store.prepaquetes.length
+        numCajas.innerHTML = codigos.length
         numPares.innerHTML = cantidadTotal
     }
 
@@ -229,14 +262,8 @@
                 if (talla === '' || dato.Talla === talla) {
                     const existente = store.prepaquetes.find(p => p.CodigoEtiqueta === dato.CodigoEtiqueta)
                     if (!existente) {
-                        const ofExistente = store.prepaquetes.find(p => p.Codigo == dato.Codigo)
-                        if (!ofExistente) {
-                            store.prepaquetes.push(dato)
-                            talla = dato.Talla
-                        }
-                        else {
-                            ofExistente.Cantidad += dato.Cantidad
-                        }
+                        store.prepaquetes.push(dato)
+                        talla = dato.Talla
                     }
                     else {
                         alert('Prepaquete repetido')
