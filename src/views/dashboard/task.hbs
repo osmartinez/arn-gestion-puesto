@@ -46,10 +46,10 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="stati bg-belize_hole left">
-                            <i class="fas fa-box-open"></i>
+                            <i class="fas fa-list"></i>
                             <div>
-                                <b id="num-cajas">0</b>
-                                <h5>Cajas</h5>
+                                <b id="num-ordenes">0</b>
+                                <h5>Ordenes</h5>
                             </div>
                         </div>
                     </div>
@@ -57,8 +57,8 @@
                         <div class="stati bg-belize_hole left">
                             <i class="fas fa-chart-bar"></i>
                             <div>
-                                <b id="num-pares">0</b>
-                                <h5>Ritmo p/h</h5>
+                                <b id="ritmo">0</b>
+                                <h5>p/h</h5>
                             </div>
                         </div>
                     </div>
@@ -208,6 +208,7 @@
     const progressPercent = document.querySelector('.progreso-porcentaje')
     const numCajas = document.getElementById('num-cajas')
     const numPares = document.getElementById('num-pares')
+    const numOrdenes = document.getElementById('num-ordenes')
 
 
     ordenInput.addEventListener('keyup', () => {
@@ -259,9 +260,14 @@
         let cantidadFabricada = 30
         let cantidadTotal = 0
         let codigos = []
+        let ordenes= []
+
         for (const prepaquete of store.prepaquetes) {
-            console.log(codigos)
             cantidadTotal += prepaquete.Cantidad
+            if(!ordenes.includes(prepaquete.Codigo)){
+                ordenes.push(prepaquete.Codigo)
+            }
+
             if (prepaquete.CodigoAgrupacion === null) {
                 codigos.push(prepaquete.CodigoEtiqueta)
             }
@@ -277,6 +283,7 @@
         progressPercent.innerHTML = `${porcentaje}%`
         numCajas.innerHTML = codigos.length
         numPares.innerHTML = cantidadTotal
+        numOrdenes.innerHTML = ordenes.length
     }
 
     function cargarInformacion(datos) {
