@@ -9,5 +9,6 @@ router.get('/',(req,res)=>{
 require('./settings')(router)
 require('./operarios')(router)
 require('./task')(router)
+require('./averia')(router)
 
 module.exports = router
