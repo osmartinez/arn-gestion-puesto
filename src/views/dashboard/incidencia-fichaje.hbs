@@ -1,0 +1,25 @@
+<input id="input-a" value="" data-default="20:48">
+<button type="button" id="button-a">Check the minutes</button>
+<button type="button" id="button-b">Check the hours</button>
+
+
+<script>
+    var input = $('#input-a');
+    input.clockpicker({
+        autoclose: true
+    });
+
+    // Manual operations
+    $('#button-a').click(function (e) {
+        // Have to stop propagation here
+        e.stopPropagation();
+        input.clockpicker('show')
+            .clockpicker('toggleView', 'minutes');
+    });
+    $('#button-b').click(function (e) {
+        // Have to stop propagation here
+        e.stopPropagation();
+        input.clockpicker('show')
+            .clockpicker('toggleView', 'hours');
+    });
+</script>

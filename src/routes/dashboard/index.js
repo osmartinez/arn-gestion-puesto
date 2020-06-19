@@ -10,5 +10,6 @@ require('./settings')(router)
 require('./operarios')(router)
 require('./task')(router)
 require('./averia')(router)
+require('./incidencia-fichaje')(router)
 
 module.exports = router
