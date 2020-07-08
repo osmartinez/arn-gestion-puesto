@@ -37,7 +37,7 @@ function pintarTabla(){
 function addOperario(e) {
     let codigo = document.getElementById('input-operario').value;
     $.ajax({
-        url: '/dashboard/operarios/buscarPorCodigo',
+        url: '/dashboard/operarios/entrada',
         method: 'POST',
         dataType: 'json',
         data: {codigo: codigo},
@@ -56,6 +56,22 @@ function addOperario(e) {
 }
 
 function salir(codigo){
-    operarios = operarios.filter(x=>x.Id != codigo)
-    pintarTabla()
+    $.ajax({
+        url: '/dashboard/operarios/salida',
+        method: 'POST',
+        dataType: 'json',
+        data: {codigo: codigo},
+        success: (data)=>{
+            if(data.Id){
+                operarios = operarios.filter(x=>x.Id != codigo)
+                pintarTabla()
+            }
+        },
+        error: (err)=>{
+            console.log(err)
+        }
+    })
+
+
+
 }

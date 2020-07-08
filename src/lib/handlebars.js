@@ -15,7 +15,6 @@ module.exports = {
 
     nombreMaquina(){
         var nombre =  configParams.read().puesto.maquina.Nombre
-        console.log(nombre)
         return nombre
     }
 }
