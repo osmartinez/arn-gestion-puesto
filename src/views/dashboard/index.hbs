@@ -1,3 +1,21 @@
+<style>
+    #matrix {
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    #matrix tr,
+    td {
+        padding: 5px;
+    }
+
+    #matrix button {
+        height: 80px;
+        width: 150px;
+        font-family: helvetica;
+        font-weight: bold;
+    }
+</style>
 <div class="row">
     <div class="col-md-6 col-sm-6 col-lg-6">
         <div class="card chart-card">
@@ -21,24 +39,58 @@
         </div>
     </div>
     <div class="col-md-6 col-sm-6 col-lg-6">
-        <div class="row">
-            <div class="col-md-6 col-sm-6 col-lg-6">
-                <a href="/dashboard/task" class="btn btn-success btn-lg">COMENZAR TAREA</a>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6">
-                <a href="/dashboard/operarios" class="btn btn-primary btn-lg">OPERARIOS
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 col-sm-6 col-lg-6">
-                <a href="/dashboard/incidencia-fichaje" class="btn btn-warning btn-lg">INCIDENCIA FICHAJE</a>
-            </div>
-            <div class="col-md-6 col-sm-6 col-lg-6">
-                <a href="/dashboard/averia" class="btn btn-warning btn-lg">AVERÍA MAQUINA</a>
-            </div>
-        </div>
-       
+        <table id="matrix">
+            <tr>
+                <td>
+                    <button class="btn btn-success">
+                        <span>COMENZAR TAREA</span>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-warning" id="b2">
+                        <span>OPERARIOS</span>
+                    </button>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <button class="btn btn-primary" id="b3">
+                        <span></span>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" id="b3">
+                        <span></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn btn-primary" id="b3">
+                        <span></span>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" id="b3">
+                        <span></span>
+                    </button>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn btn-primary" id="b3">
+                        <span></span>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn btn-primary" id="b3">
+                        <span></span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+
     </div>
 </div>
 

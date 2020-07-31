@@ -1,92 +1,132 @@
-#keyboard {
-    margin: 0;
-    padding: 0;
-    list-style: none;
 
-}
+  
+  .calculator {
+    padding: 10px;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 1px;
+  }
+  
+  .input {
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    height: 60px;
+    padding-right: 15px;
+    padding-top: 10px;
+    text-align: right;
+    font-size: 2rem;
+    overflow-x: auto;
+    transition: all .2s ease-in-out;
+  }
+  
+  .input:hover {
+    border: 1px solid #bbb;
+    -webkit-box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: inset 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+  }
+  
 
-#keyboard li {
-    float: left;
-    margin: 0 2px 2px 0;
-    width: 58px;
-    height: 58px;
-    font-size: 24px;
-    line-height: 60px;
-    text-align: center;
-    background: rgba(70, 101, 151, 0.829);
+  #btn-entrar{
+    background-color: #0275d8;
     color: white;
-    border: 1px solid #f9f9f978;
-    border-radius: 5px;
-}
+  }
 
-.capslock,
-.tab,
-.left-shift,
-.clearl,
-.switch {
-    clear: left;
-}
-
-#keyboard .tab,
-
-
-#keyboard .capslock {
+  .buttons {}
+  
+  .operators {}
+  
+  .operators div {
+    display: inline-block;
+    border: 1px solid #bbb;
+    border-radius: 1px;
     width: 80px;
-}
-
-#keyboard .return {
-    width: 90px;
-}
-
-#keyboard .left-shift {
-    width: 70px;
-}
-
-#keyboard .switch {
-    width: 90px;
-}
-
-#keyboard .rightright-shift {
-    width: 109px;
-}
-
-.lastitem {
-    margin-right: 0;
-}
-
-.uppercase {
-    text-transform: uppercase;
-}
-
-#keyboard .space {
-    float: left;
-    width: 500px;
-}
-
-#keyboard .switch,
-#keyboard .space,
-#keyboard .return {
-    font-size: 16px;
-}
-
-.on {
-    display: none;
-}
-
-#keyboard li:hover {
-    position: relative;
-    top: 1px;
-    left: 1px;
-    border-width: 2px;
-    border-color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    margin: 20px 4px 10px 0;
     cursor: pointer;
-}
+    background-color: #ddd;
+    transition: border-color .2s ease-in-out, background-color .2s, box-shadow .2s;
+  }
+  
+  .operators div:hover {
+    background-color: #ddd;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    border-color: #aaa;
+  }
+  
+  .operators div:active {
+    font-weight: bold;
+  }
+  
+  .leftPanel {
+    display: inline-block;
+  }
+  
+  .numbers button {
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    width: 80px;
+    text-align: center;
+    padding: 10px;
+    margin: 10px 4px 10px 0;
+    cursor: pointer;
+    background-color: #f9f9f9;
+    transition: border-color .2s ease-in-out, background-color .2s, box-shadow .2s;
+  }
+  
+  .numbers div:hover {
+    background-color: #f1f1f1;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    border-color: #bbb;
+  }
+  
+  .numbers div:active {
+    font-weight: bold;
+  }
+  
+  div.equal {
+    display: inline-block;
+    border: 1px solid #3079ED;
+    border-radius: 1px;
+    width: 17%;
+    text-align: center;
+    padding: 127px 10px;
+    margin: 10px 6px 10px 0;
+    vertical-align: top;
+    cursor: pointer;
+    color: #FFF;
+    background-color: #4d90fe;
+    transition: all .2s ease-in-out;
+  }
+  
+  div.equal:hover {
+    background-color: #307CF9;
+    -webkit-box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.2);
+    border-color: #1857BB;
+  }
+  
+  div.equal:active {
+    font-weight: bold;
+  }
 
-.lista{
-    height: 385px;
-    max-height: 385px;
-    overflow-y: auto;
-    border-style: solid;
-    border-width: 1px;
-    border-color: rgb(205, 205, 219);
-}
+    #matrix {
+        margin: 0 auto;
+        padding: 2px;
+    }
+
+    #matrix tr,
+    td {
+        padding: 2px;
+    }
+
+    #matrix button {
+        height: 65px;
+        width: 65px;
+        font-size: large;
+        font-family: helvetica;
+        font-weight: bold;
+    }

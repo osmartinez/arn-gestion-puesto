@@ -1,15 +1,15 @@
 const input = document.getElementById('input-operario')
-const teclas = document.querySelectorAll('.letter')
+const teclas = document.querySelectorAll('.tecla')
 
 let operarios = []
 
 for (const tecla of teclas) {
     tecla.addEventListener('click', () => {
-        if (tecla.className.includes('delete')) {
-            input.value = input.value.slice(0, -1)
+        if (tecla.className.includes('clear')) {
+            input.innerHTML = input.innerHTML.slice(0, -1)
         }
         else {
-            input.value += tecla.innerHTML
+            input.innerHTML += tecla.innerHTML.replace("\n","").trim()
         }
     })
 }
@@ -23,7 +23,7 @@ function pintarTabla(){
         `<tr>
             <th scope="row">${operario.Id}</th>
             <td>${operario.Nombre}</td>
-            <td>${operario.Apellidos}</td>
+            
             <td>
                     <li class="list-inline-item">
                         <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
@@ -35,7 +35,9 @@ function pintarTabla(){
 }
 
 function addOperario(e) {
-    let codigo = document.getElementById('input-operario').value;
+    let codigo = document.getElementById('input-operario').innerHTML;
+    document.getElementById('input-operario').innerHTML = '';
+
     $.ajax({
         url: '/dashboard/operarios/entrada',
         method: 'POST',

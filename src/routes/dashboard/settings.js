@@ -23,4 +23,10 @@ module.exports = function(router){
         await configParams.write(seccion,maquina,ritmo)
         res.redirect('/dashboard')
     })
+
+    router.post('/settings/secciones',async(req,res)=>{
+        const secciones = await buscarTodasSecciones()
+        console.log(secciones)
+        res.json(secciones)
+    })
 }
