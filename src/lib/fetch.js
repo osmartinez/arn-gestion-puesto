@@ -36,12 +36,13 @@ module.exports = {
             if (!isNaN(idOperario)) {
                 idOperario = 'B00' + idOperario
             }
-            var response = await fetch(`${url}/operarios/entrada`,
-                {
-                    method: 'post',
-                    body: JSON.stringify({ codigoOperario: idOperario, idMaquina: idPuesto }),
-                    headers: { 'Content-Type': 'application/json' }
-                })
+            let body = {
+                method: 'post',
+                body: JSON.stringify({ codigoOperario: idOperario, idMaquina: idPuesto }),
+                headers: { 'Content-Type': 'application/json' }
+            }
+            console.log(body)
+            var response = await fetch(`${url}/operarios/entrada`,body)
             var user = await response.json()
             return user
         } catch (err) {

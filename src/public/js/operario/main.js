@@ -9,7 +9,7 @@ for (const tecla of teclas) {
             input.innerHTML = input.innerHTML.slice(0, -1)
         }
         else {
-            input.innerHTML += tecla.innerHTML.replace("\n","").trim()
+            input.innerHTML += tecla.innerHTML.trim()[0]
         }
     })
 }
