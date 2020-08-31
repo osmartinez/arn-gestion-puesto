@@ -1,4 +1,4 @@
-function armarTabla() {
+function armarTablaIO() {
     let filaMaquinas = ''
     let filaPulsoManual = ''
     let filaParesPulso = ''
@@ -14,6 +14,7 @@ function armarTabla() {
 
     for (const maquina of puesto.maquinas) {
         $(`#fila-maquina`).append(`<td>${maquina.Nombre}</td>`)
+        
         $(`#fila-pulso-manual`).append(`<td>
                                 <div class="switch">
                                 <label class="font-weight-bold">
@@ -24,7 +25,7 @@ function armarTabla() {
                                 </label>
                                 </div>
                             </td>`)
-        //$(`#fila-pares-pulso`).append(`<td><input id="pares-pulso-${maquina.NumeroFila}" type="number" value="1"/></td>`)
+
         $(`#fila-pares-pulso`).append(`<td>
                                             <div class="def-number-input number-input safari_only">
                                             <div onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-danger btn-sm minus"><i class="fas fa-minus"></i></div>

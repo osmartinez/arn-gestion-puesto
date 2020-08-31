@@ -6,12 +6,16 @@
 
 <form method="POST" action="/dashboard/settings">
   <ul class="stepper linear">
+    {{> settings/paso-0}}
     {{> settings/paso-1}}
     {{> settings/paso-2}}
     {{> settings/paso-3}}
+        {{> settings/paso-4}}
+
   </ul>
 </form>
 
 <script src="/js/settings/main.js"></script>
 <script src="/js/settings/paso-1.js"></script>
 <script src="/js/settings/paso-2.js"></script>
+<script src="/js/settings/paso-3.js"></script>

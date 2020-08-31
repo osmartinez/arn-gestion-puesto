@@ -1,9 +1,44 @@
+<style>
+    .matrix {
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    .matrix tr,
+    td {
+        padding: 5px;
+    }
+
+    .matrix div {
+        height: 80px;
+        width: 150px;
+        font-family: helvetica;
+        font-weight: bold;
+    }
+</style>
 <li class="step">
-    <div class="step-title waves-effect waves-dark">Paso 4 - Guardar</div>
+    <div data-step-label="Configuración incidencias" class="step-title waves-effect waves-dark">Paso 3 - Incidencias
+    </div>
     <div class="step-new-content">
-        Configuración finalizada
+        <div class="row">
+            <div class="col-md-2"><span>Añadir nueva</span></div>
+            <div class="col-md-4"><input id="input-incidencia" type="text" /></div>
+            <div class="col-md-6"><a id="btn-add-incidencia" class="btn btn-md btn-success"><i
+                        class="fas fa-plus"></i></a></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 col-sm-6 col-lg-6">
+                <table id="tabla-incidencias" class="matrix">
+
+                </table>
+            </div>
+        </div>
+        <div id="body-pins">
+
+        </div>
         <div class="step-actions">
-            <button class="waves-effect waves-dark btn btn-sm btn-primary m-0 mt-4" type="submit">ENVIAR</button>
+            <button class="waves-effect waves-dark btn btn-sm btn-primary next-step">SIGUIENTE</button>
+            <button class="waves-effect waves-dark btn btn-sm btn-secondary previous-step">ATRÁS</button>
         </div>
     </div>
 </li>

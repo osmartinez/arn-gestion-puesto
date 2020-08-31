@@ -43,7 +43,7 @@ $('#btn-add-maquina').click(function () {
 
         },
         error: (err) => {
-            console.log(error)
+            error("Error al traer secciones")
         }
     })
 })
@@ -70,12 +70,12 @@ function refrescarDatasource() {
                         puesto.addMaquina(maquina)
                     }
                     else{
-                        alert(`Hay una máquina repetida:\n${maquina.Nombre}`)
+                        info(`Hay una máquina repetida:\n${maquina.Nombre}`)
                     }
                 }
             },
             error: (err) => {
-                console.log(error)
+                error("Error al buscar máquina")
             }
         })
     }
@@ -109,7 +109,7 @@ function buscarMaquinasSeccion() {
             refrescarDatasource()
         },
         error: (err) => {
-            console.log(error)
+            error("Error al traer las máquinas de sección")
         }
     })
 }
