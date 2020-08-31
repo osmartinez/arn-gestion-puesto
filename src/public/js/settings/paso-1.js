@@ -70,7 +70,7 @@ function refrescarDatasource() {
                         puesto.addMaquina(maquina)
                     }
                     else{
-                        info(`Hay una máquina repetida:\n${maquina.Nombre}`)
+                        error(`Hay una máquina repetida\n${maquina.Nombre}`)
                     }
                 }
             },
@@ -109,7 +109,7 @@ function buscarMaquinasSeccion() {
             refrescarDatasource()
         },
         error: (err) => {
-            error("Error al traer las máquinas de sección")
+            error(`Error al traer las máquinas de sección ${codSeccion}`)
         }
     })
 }
