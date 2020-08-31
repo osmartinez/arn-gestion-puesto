@@ -7,7 +7,7 @@ function armarTablaIncidencias() {
     for (const incidencia of puesto.incidencias) {
         columnaActual++
         celdas += `<td>
-                        <div class="btn btn-warning" id="incidencia-${incidencia.Numero}">
+                        <div class="btn ${incidencia.Habilitada? 'btn-success':'btn-warning'}" id="incidencia-${incidencia.Numero}">
                             <span>${incidencia.Nombre}</span>
                         </div>
                     </td>`
@@ -31,13 +31,16 @@ function armarTablaIncidencias() {
 
     for(const incidencia of puesto.incidencias){
         $(`#incidencia-${incidencia.Numero}`).click(function(){
+
             if( $(`#incidencia-${incidencia.Numero}`).hasClass('btn-warning')){
                 $(`#incidencia-${incidencia.Numero}`).removeClass('btn-warning')
                 $(`#incidencia-${incidencia.Numero}`).addClass('btn-success')
+                incidencia.Habilitada = true
             }
             else{
                 $(`#incidencia-${incidencia.Numero}`).addClass('btn-warning')
                 $(`#incidencia-${incidencia.Numero}`).removeClass('btn-success')
+                incidencia.Habilitada = false
             }
         })
     }
