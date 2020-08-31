@@ -1,0 +1,17 @@
+<link href="/css/steppers.min.css" rel="stylesheet">
+<link href="/css/keyboard.css" rel="stylesheet">
+<script src="/js/steppers.min.js"></script>
+<script src="/js/keyboard.js"></script>
+<script src="/js/material-select.min.js"></script>
+
+<form method="POST" action="/dashboard/settings">
+  <ul class="stepper linear">
+    {{> settings/paso-1}}
+    {{> settings/paso-2}}
+    {{> settings/paso-3}}
+  </ul>
+</form>
+
+<script src="/js/settings/main.js"></script>
+<script src="/js/settings/paso-1.js"></script>
+<script src="/js/settings/paso-2.js"></script>

@@ -1,4 +1,4 @@
-const {buscarTodasSecciones,buscarMaquinasEnSeccion} =  require('../../lib/fetch')
+const {buscarTodasSecciones,buscarMaquinasEnSeccion,buscarMaquina} =  require('../../lib/fetch')
 const configParams = require('../../lib/config.params')
 
 module.exports = function(router){
@@ -9,7 +9,13 @@ module.exports = function(router){
         if(data.puesto.seccion){
             maquinas = await buscarMaquinasEnSeccion(data.puesto.seccion)
         }
-        res.render('dashboard/settings', {layout: 'main-dashboard', secciones: secciones, maquinas: maquinas, puesto: data.puesto})
+        res.render('dashboard/settings/index', {layout: 'main-dashboard', secciones: secciones, maquinas: maquinas, puesto: data.puesto})
+    })
+
+    router.post('/settings/buscarMaquina',async (req,res)=>{
+        const {codigoMaquina} = req.body
+        var maquina = await buscarMaquina(codigoMaquina)
+        res.json(maquina)
     })
 
     router.post('/settings/maquinasEnSeccion',async (req,res)=>{

@@ -1,0 +1,88 @@
+<li class="step active">
+  <div data-step-label="Sección y máquina" class="step-title waves-effect waves-dark">Paso 1 - General</div>
+  <div id="step-1" class="step-new-content">
+
+    <div class="row">
+      <div class="table-responsive lista">
+        <table class="table m-0">
+          <thead class="black white-text">
+            <tr>
+              <th scope="col">Sección</th>
+              <th scope="col">Máquina</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody id="tbody-maquinas">
+            <tr id="fila-maquina-1">
+              <td>
+                <select id="select-secciones-1" name="seccion" class="">
+                  {{#each secciones}}
+                  <option value="{{this.CodSeccion}}" {{{isSelected ../puesto/seccion this.CodSeccion}}}>{{this.Nombre}}
+                  </option>
+                  {{/each}}
+                </select>
+              </td>
+              <td>
+                <select id="select-maquinas-1" name="maquina" class="select-maquinas">
+                  {{#each maquinas}}
+                  <option value="{{this.CodigoEtiqueta}}"
+                    {{{isSelected ../puesto/maquina/CodigoEtiqueta this.CodigoEtiqueta}}}>
+                    {{this.Nombre}}</option>
+                  {{/each}}
+                </select>
+              </td>
+              <td>
+                <div id="btn-borrar-maquina-1" class="waves-effect waves-dark btn btn-sm btn-danger"> Quitar</div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-5"></div>
+      <div class="col-md-5"></div>
+      <div class="col-md-2">
+        <div id="btn-add-maquina" class="waves-effect waves-dark btn btn-sm btn-success"> + Otra máquina</div>
+      </div>
+    </div>
+
+    <!--div class="row">
+      <div class=" col-md-5">
+        <label class="">Sección 1</label>
+
+        <select id="select-secciones-1" name="seccion" class="">
+          {{#each secciones}}
+          <option value="{{this.CodSeccion}}" {{{isSelected ../puesto/seccion this.CodSeccion}}}>{{this.Nombre}}
+          </option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="col-md-5">
+        <label class="">Máquina 1</label>
+
+        <select id="select-maquinas-1" name="maquina" class="">
+          {{#each maquinas}}
+          <option value="{{this.CodigoEtiqueta}}" {{{isSelected ../puesto/maquina/CodigoEtiqueta this.CodigoEtiqueta}}}>
+            {{this.Nombre}}</option>
+          {{/each}}
+        </select>
+      </div>
+
+      <div class="col-md-2 ">
+        <div id="btn-borrar-maquina-1" class="waves-effect waves-dark btn btn-sm btn-danger"> Quitar</div>
+      </div>
+    </div-->
+
+    <div id="body-step-1">
+
+    </div>
+
+    <div class="step-actions">
+      <button class="waves-effect waves-dark btn btn-sm btn-primary next-step">SIGUIENTE</button>
+    </div>
+  </div>
+</li>
