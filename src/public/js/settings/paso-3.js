@@ -7,7 +7,7 @@ function armarTablaIncidencias() {
     for (const incidencia of puesto.incidencias) {
         columnaActual++
         celdas += `<td>
-                        <div class="btn ${incidencia.Habilitada? 'btn-success':'btn-warning'}" id="incidencia-${incidencia.Numero}">
+                        <div class="btn ${incidencia.Habilitada? 'btn-success':'btn-warning'} btn-md" id="incidencia-${incidencia.Numero}">
                             <span>${incidencia.Nombre}</span>
                         </div>
                     </td>`
