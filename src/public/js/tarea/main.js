@@ -6,7 +6,7 @@ function cargarIncidencias(){
     for(const incidencia of puesto.incidencias){
         celdas += `
         <td>
-            <div class="btn btn-lg btn-warning">${incidencia.Nombre}</div>
+            <div class="btn btn-lg btn-warning"><span class="label-btn">${incidencia.Nombre}</span></div>
         </td>`
 
         contadorColumnas++
