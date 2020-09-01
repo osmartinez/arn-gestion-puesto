@@ -39,7 +39,7 @@ function addOperario(e) {
     document.getElementById('input-operario').innerHTML = '';
 
     $.ajax({
-        url: '/dashboard/operarios/entrada',
+        url: '/dashboard/fichajes/entrada',
         method: 'POST',
         dataType: 'json',
         data: {codigo: codigo},
@@ -59,7 +59,7 @@ function addOperario(e) {
 
 function salir(codigo){
     $.ajax({
-        url: '/dashboard/operarios/salida',
+        url: '/dashboard/fichajes/salida',
         method: 'POST',
         dataType: 'json',
         data: {codigo: codigo},
