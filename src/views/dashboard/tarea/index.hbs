@@ -1,6 +1,19 @@
 <style>
-    th {
-        max-height: 20px;
+    .matrix {
+        margin: 0 auto;
+        padding: 5px;
+    }
+
+    .matrix tr,
+    td {
+        padding: 5px;
+    }
+
+    .matrix div {
+        height: 90px;
+        width: 180px;
+        font-family: helvetica;
+        font-weight: bold;
     }
 </style>
 <div class="row">
@@ -50,6 +63,17 @@
 
     </div>
     <div class="col-md-6 col-lg-6 col-sm-6">
-
+        <table id="tabla-acciones" class="matrix">
+            <tr>
+                <td>
+                    <div class="btn btn-lg btn-success">TERMINAR</div>
+                </td>
+                <td>
+                    <div class="btn btn-lg btn-primary">PAUSAR</div>
+                </td>
+            </tr>
+        </table>
     </div>
 </div>
+
+<script src="/js/tarea/main.js"></script>
