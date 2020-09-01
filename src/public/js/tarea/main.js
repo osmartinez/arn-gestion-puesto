@@ -1,3 +1,10 @@
+document.addEventListener("keyup", keyUp, false);
+cargarIncidencias()
+
+let saldos = 0
+let cadenaLectura = ''
+let leyendoCodigo = false
+
 function cargarIncidencias(){
     let cuantasColumnas = 2
     let fila = 0
@@ -25,4 +32,71 @@ function cargarIncidencias(){
     }
 }
 
-cargarIncidencias()
+function buscarPrepaquete(codigoPrepaquete) {
+    $.ajax({
+        method: 'POST',
+        timeout: 3000,
+        url: `/dashboard/tarea/prepaquete`,
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(
+            {
+                codigoPrepaquete: '0'+codigoPrepaquete
+            }),
+        success: (data) => {
+            if (data != null && data.length == 1) {
+                //console.log(data[0])
+                let prepaquete = data[0]
+                $('#celda-orden-fabricacion').html(prepaquete.Codigo)
+                $('#celda-codigo-articulo').html(prepaquete.CodigoArticulo)
+                $('#celda-cantidad-pendiente').html(prepaquete.CantidadFabricar)
+                $('#celda-cantidad-pendiente-tarea').html('...')
+                $('#celda-modelo').html(prepaquete.DESCRIPCIONARTICULO)
+                $('#celda-cliente').html(prepaquete.NOMBRECLI)
+                $('#celda-utillaje').html(prepaquete.CodUtillaje)
+
+                /*elementoInfoCliente.innerHTML = prepaquete.NOMBRECLI
+                elementoInfoModelo.innerHTML = prepaquete.DESCRIPCIONARTICULO
+                elementoInfoPedido.innerHTML = prepaquete.PedidoLinea
+                elementoInfoUtillaje.innerHTML = prepaquete.CodUtillaje
+                elementoInfoTalla.innerHTML = prepaquete.Talla*/
+                console.log(prepaquete)
+            }
+            else{
+                error('No se ha podido recuperar el prepaquete')
+            }
+        },
+        error: (err) => {
+            console.log(err)
+        }
+    })
+}
+
+function buscarOF(codigoOF){
+
+}
+
+function keyUp(e) {
+    var code = String(e.code)
+    if(code.includes('Numpad') || code.includes('Digit')){
+        cadenaLectura += code[code.length - 1]
+    }
+
+    if(cadenaLectura.length == 12){
+        let prefijo = cadenaLectura[0]
+        if(prefijo == "4"){
+            info(`Codigo prepaquete reconocido\n${cadenaLectura}`)
+            buscarPrepaquete(cadenaLectura)
+        }
+        else if(prefijo == "0"){
+            info(`Codigo OF reconocido\n${cadenaLectura}`)
+            buscarOF(cadenaLectura)
+        }
+        else{
+            error(`Codigo no reconocido\n${cadenaLectura}`)
+        }
+        cadenaLectura = ''
+    }
+    
+}
+
