@@ -1,5 +1,5 @@
 <li class="step">
-  <div data-step-label="Sección y máquina" class="step-title waves-effect waves-dark">Paso 1 - Máquinas</div>
+  <div data-step-label="Sección y máquina" class="step-title waves-effect waves-dark">Paso 2 - Máquinas</div>
   <div id="step-1" class="step-new-content">
 
     <div class="row">
@@ -15,7 +15,7 @@
           <tbody id="tbody-maquinas">
             <tr id="fila-maquina-1">
               <td>
-                <select id="select-secciones-1" name="seccion" class="">
+                <select id="select-secciones-1" name="seccion-1" class="">
                   {{#each secciones}}
                   <option value="{{this.CodSeccion}}" {{{isSelected ../puesto/seccion this.CodSeccion}}}>{{this.Nombre}}
                   </option>
@@ -23,7 +23,7 @@
                 </select>
               </td>
               <td>
-                <select id="select-maquinas-1" name="maquina" class="select-maquinas">
+                <select id="select-maquinas-1" name="maquina-1" class="select-maquinas">
                   {{#each maquinas}}
                   <option value="{{this.CodigoEtiqueta}}"
                     {{{isSelected ../puesto/maquina/CodigoEtiqueta this.CodigoEtiqueta}}}>

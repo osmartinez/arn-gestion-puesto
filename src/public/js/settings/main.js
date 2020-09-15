@@ -7,7 +7,6 @@ $(document).ready(function () {
     $value.on('input change', () => {
         $valueSpan.html($value.val());
     });
-    Keyboard.init();
 })
 
 

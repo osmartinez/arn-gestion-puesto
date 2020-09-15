@@ -55,7 +55,7 @@ refrescarDatasource()
 
 function refrescarDatasource() {
     const selects = $('.select-maquinas')
-    puesto.maquinas = []
+    Puesto.Maquinas = []
     for(const select of selects){
         const codigoMaquina = $(select).find(":selected").val()
         $.ajax({
@@ -65,9 +65,9 @@ function refrescarDatasource() {
             dataType: 'json',
             success: (maquina) => {
                 if (maquina) {
-                    if(puesto.maquinas.filter(x=>x.ID == maquina.ID).length== 0){
+                    if(Puesto.Maquinas.filter(x=>x.ID == maquina.ID).length== 0){
                         maquina.NumeroFila = Number(select.id.split('-')[2])
-                        puesto.addMaquina(maquina)
+                        Puesto.addMaquina(maquina)
                     }
                     else{
                         error(`Hay una máquina repetida\n${maquina.Nombre}`)
@@ -84,7 +84,7 @@ function refrescarDatasource() {
 function borrarMaquina() {
     const numeroFila = $(this).attr('id').split('-')[3]
     $(`#fila-maquina-${numeroFila}`).remove()
-    puesto.removeMaquina({NumeroFila:numeroFila})
+    Puesto.removeMaquina({NumeroFila:numeroFila})
 }
 
 function buscarMaquinasSeccion() {

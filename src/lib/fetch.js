@@ -7,30 +7,6 @@ const host = config[env].server.host
 const url = `http://${host}:${port}/api`
 
 module.exports = {
-    async buscarMaquina(codigoMaquina) {
-        try {
-            var response = await fetch(`${url}/maquinas/${codigoMaquina}`)
-            var maquina = await response.json()
-            return maquina
-        } catch (err) {
-            console.error(err)
-            return null
-        }
-    },
-    async buscarOperario(id) {
-        try {
-            if (!isNaN(id)) {
-                id = 'B00' + id
-            }
-            var response = await fetch(`${url}/operarios/${id}`)
-            var user = await response.json()
-            return user
-        } catch (err) {
-            console.error(err)
-            return null
-        }
-    },
-
     async entradaOperarioPuesto(idOperario, idPuesto) {
         try {
             if (!isNaN(idOperario)) {
@@ -50,7 +26,6 @@ module.exports = {
             return null
         }
     },
-
     async salidaOperarioPuesto(idOperario, idPuesto) {
         try {
             if (!isNaN(idOperario)) {
@@ -69,7 +44,6 @@ module.exports = {
             return null
         }
     },
-
     async buscarOrden(id) {
         try {
             var response = await (fetch(`${url}/ordenesFabricacion/${id}`))
@@ -80,7 +54,6 @@ module.exports = {
             return null
         }
     },
-
     async buscarOperacion(id, codSeccion) {
         try {
             var response = await fetch(`${url}/ordenesFabricacion/buscarOperacion/${id}/${codSeccion}`)
@@ -91,7 +64,26 @@ module.exports = {
             return null
         }
     },
-
+    async buscarOperaciones(idOrden) {
+        try {
+            var response = await fetch(`${url}/ordenesFabricacion/buscarOperaciones/${idOrden}`)
+            var operaciones = await response.json()
+            return operaciones
+        } catch (err) {
+            console.error(err)
+            return null
+        }
+    },
+    async buscarOperacionesTallas(idOperacion){
+        try {
+            var response = await fetch(`${url}/ordenesFabricacion/buscarOperacionesTallas/${idOperacion}`)
+            var operacionesTallas = await response.json()
+            return operacionesTallas
+        } catch (err) {
+            console.error(err)
+            return null
+        }
+    },
     async buscarTodasSecciones() {
         try {
             var response = await fetch(`${url}/secciones`)
@@ -103,7 +95,6 @@ module.exports = {
             return null
         }
     },
-
     async buscarMaquinasEnSeccion(codSeccion) {
         try {
             var response = await fetch(`${url}/maquinas/enSeccion/${codSeccion}`)
@@ -114,7 +105,6 @@ module.exports = {
             return null
         }
     },
-
     async buscarPrepaquete(codigoPrepaquete, codigoSeccion) {
         try {
             var response = await fetch(`${url}/prepaquetes/${codigoPrepaquete}/${codigoSeccion}`)

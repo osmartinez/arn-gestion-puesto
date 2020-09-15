@@ -1,5 +1,6 @@
 const {buscarTodasSecciones,buscarMaquinasEnSeccion,buscarMaquina} =  require('../../lib/fetch')
 const configParams = require('../../lib/config.params')
+const puestoWebservice = require('../../lib/repository/puesto.ws')()
 
 module.exports = function(router){
     router.get('/settings',async (req,res)=>{
@@ -25,14 +26,19 @@ module.exports = function(router){
     })
 
     router.post('/settings',async (req,res)=>{
-        const {seccion, maquina, ritmo} = req.body
-        await configParams.write(seccion,maquina,ritmo)
-        res.redirect('/dashboard')
+        //const {seccion, maquina, ritmo} = req.body
+        //console.log(req.body)
+        //await configParams.write(seccion,maquina,ritmo)
+        //res.redirect('/dashboard')
+        const puesto = req.body
+        if(puesto.CrearNuevo){
+            const puesto = await puestoWebservice.crear(req.body.Descripcion, req.body.Observaciones)
+            console.log(puesto)
+        }
     })
 
     router.post('/settings/secciones',async(req,res)=>{
         const secciones = await buscarTodasSecciones()
-        console.log(secciones)
         res.json(secciones)
     })
 }

@@ -1,8 +1,16 @@
 <link href="/css/steppers.min.css" rel="stylesheet">
 <link href="/css/keyboard.css" rel="stylesheet">
 <script src="/js/steppers.min.js"></script>
-<script src="/js/keyboard.js"></script>
+<!--script src="/js/keyboard.js"></script-->
+<script>
+  console.log(window.innerHeight)
+  if (window.innerHeight <= 430) {
+    loadScript("/js/keyboard.js",  ()=>{Keyboard.init()});
+  } 
+</script>
 <script src="/js/material-select.min.js"></script>
+
+
 
 <form method="POST" action="/dashboard/settings">
   <ul class="stepper linear">
@@ -10,12 +18,15 @@
     {{> settings/paso-1}}
     {{> settings/paso-2}}
     {{> settings/paso-3}}
-        {{> settings/paso-4}}
-
+    {{> settings/paso-4}}
+    {{> settings/paso-5}}
   </ul>
 </form>
 
 <script src="/js/settings/main.js"></script>
+<script src="/js/settings/paso-0.js"></script>
 <script src="/js/settings/paso-1.js"></script>
 <script src="/js/settings/paso-2.js"></script>
 <script src="/js/settings/paso-3.js"></script>
+<script src="/js/settings/paso-4.js"></script>
+<script src="/js/settings/paso-5.js"></script>
