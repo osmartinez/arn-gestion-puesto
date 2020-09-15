@@ -44,7 +44,7 @@ var loadScript = function(src, callbackfn) {
 
 const Puesto = {
     Id: 0,
-    CrearNuevo:false,
+    CrearNuevo:true,
     Descripcion: '',
     Observaciones: '',
     CodigoEtiqueta: '',
@@ -52,7 +52,8 @@ const Puesto = {
     FechaCracion: '',
     PuestosConfiguracionesPins:{
         PinBuzzer: '',
-        PinLed:''
+        PinLed:'',
+        IdPuesto:0,
     },
     PuestosConfiguracionesIncidencias:[],
     Maquinas: [],

@@ -28,9 +28,9 @@ function armarTablaIO() {
 
         $(`#fila-pares-pulso`).append(`<td>
                                             <div class="def-number-input number-input safari_only">
-                                            <div onclick="this.parentNode.querySelector('input[type=number]').stepDown()" class="btn btn-danger btn-sm minus"><i class="fas fa-minus"></i></div>
+                                            <div onclick="this.parentNode.querySelector('input[type=number]').stepDown();this.parentNode.querySelector('input[type=number]').dispatchEvent(new Event('change'))" class="btn btn-danger btn-sm minus"><i class="fas fa-minus"></i></div>
                                             <input id="pares-pulso-${maquina.NumeroFila}" class="quantity" min="0" name="pares-pulso-${maquina.NumeroFila}" value="1" type="number">
-                                            <div onclick="this.parentNode.querySelector('input[type=number]').stepUp()" class="btn btn-success btn-sm plus"><i class="fas fa-plus"></i></div>
+                                            <div onclick="this.parentNode.querySelector('input[type=number]').stepUp();this.parentNode.querySelector('input[type=number]').dispatchEvent(new Event('change'))" class="btn btn-success btn-sm plus"><i class="fas fa-plus"></i></div>
                                             </div>
                                         </td>`)
 

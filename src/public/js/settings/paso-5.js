@@ -2,8 +2,9 @@ $('#btn-enviar').click(function(){
     $.ajax({
         method: 'POST',
         url: `/dashboard/settings`,
-        data: Puesto,
+        data: JSON.stringify(Puesto),
         dataType: 'json',
+        contentType:'application/json',
         success: (ok) => {
             window.location.href = "/dashboard";
         },

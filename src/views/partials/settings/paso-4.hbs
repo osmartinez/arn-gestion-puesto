@@ -9,11 +9,23 @@
         padding: 5px;
     }
 
-    .matrix label {
-        height: 90px;
-        width: 180px;
+    .matrix .card {
+        width: 350px;
+        height: 350px;
         font-family: helvetica;
         font-weight: bold;
+    }
+
+    .good-review-score {
+        background-color: #66CC33;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        margin-right: 5px
+    }
+
+    #input-incidencia {
+        text-transform: uppercase;
     }
 </style>
 <li class="step">
@@ -25,14 +37,13 @@
             <div class="col-md-4"><input class="use-keyboard-input" id="input-incidencia" type="text" /></div>
             <div class="col-md-6"><a id="btn-add-incidencia" class="btn btn-md btn-success"><i
                         class="fas fa-plus"></i></a></div>
+
         </div>
         <div class="row">
             <div class="col-md-6 col-sm-6 col-lg-6">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                    <table id="tabla-incidencias" class="matrix">
+                <table id="tabla-incidencias" class="matrix">
 
-                    </table>
-                </div>
+                </table>
             </div>
         </div>
         <div id="body-pins">

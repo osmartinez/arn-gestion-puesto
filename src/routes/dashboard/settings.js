@@ -1,6 +1,7 @@
 const {buscarTodasSecciones,buscarMaquinasEnSeccion,buscarMaquina} =  require('../../lib/fetch')
 const configParams = require('../../lib/config.params')
 const puestoWebservice = require('../../lib/repository/puesto.ws')()
+const maquinaWebService = require('../../lib/repository/maquina.ws')()
 
 module.exports = function(router){
     router.get('/settings',async (req,res)=>{
@@ -15,7 +16,7 @@ module.exports = function(router){
 
     router.post('/settings/buscarMaquina',async (req,res)=>{
         const {codigoMaquina} = req.body
-        var maquina = await buscarMaquina(codigoMaquina)
+        var maquina = await maquinaWebService.buscarPorCodigo(codigoMaquina)
         res.json(maquina)
     })
 
@@ -26,14 +27,20 @@ module.exports = function(router){
     })
 
     router.post('/settings',async (req,res)=>{
-        //const {seccion, maquina, ritmo} = req.body
-        //console.log(req.body)
-        //await configParams.write(seccion,maquina,ritmo)
-        //res.redirect('/dashboard')
+
         const puesto = req.body
+        console.log(puesto)
         if(puesto.CrearNuevo){
-            const puesto = await puestoWebservice.crear(req.body.Descripcion, req.body.Observaciones)
-            console.log(puesto)
+            const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
+                puesto.PuestosConfiguracionesPins.PinBuzzer,puesto.PuestosConfiguracionesPins.PinLed)
+            if( puestoNuevo != null && puestoNuevo.Id > 0){
+                for(const maquina of puesto.Maquinas){
+                    await maquinaWebService.actualizarConfiguracionPines(maquina.ID,maquina.EsPulsoManual,maquina.ProductoPorPulso, maquina.PinPulso)
+                    puestoNuevo.Maquinas = await maquinaWebService.asociarAPuesto(maquina.ID, puestoNuevo.Id)
+                }
+            }
+
+            console.log(puestoNuevo)
         }
     })
 

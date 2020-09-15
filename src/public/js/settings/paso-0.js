@@ -8,5 +8,5 @@ $('#puesto-observaciones').change(function(){
 
 $('#puesto-previo').change(function(){
     const nombre =   $('#puesto-previo').find(":selected").val()
-    Puesto.CrearNuevo = nombre == 'NUEVO'
+    Puesto.CrearNuevo = (nombre == 'NUEVO')
 })
