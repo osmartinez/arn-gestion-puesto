@@ -19,7 +19,7 @@ function armarTablaIO() {
                                 <div class="switch">
                                 <label class="font-weight-bold">
                                     <span></span>
-                                    <input id="check-pulso-manual-${maquina.NumeroFila}" name="check-pulso-manual-${maquina.NumeroFila}" type="checkbox" ${maquina.PulsoManual? 'checked':''}>
+                                    <input id="check-pulso-manual-${maquina.NumeroFila}" name="check-pulso-manual-${maquina.NumeroFila}" type="checkbox" ${maquina.EsPulsoManual? 'checked':''}>
                                     <span class="lever"></span>
                                     <span></span>
                                 </label>
@@ -29,23 +29,14 @@ function armarTablaIO() {
         $(`#fila-pares-pulso`).append(`<td>
                                             <div class="def-number-input number-input safari_only">
                                             <div onclick="this.parentNode.querySelector('input[type=number]').stepDown();this.parentNode.querySelector('input[type=number]').dispatchEvent(new Event('change'))" class="btn btn-danger btn-sm minus"><i class="fas fa-minus"></i></div>
-                                            <input id="pares-pulso-${maquina.NumeroFila}" class="quantity" min="0" name="pares-pulso-${maquina.NumeroFila}" value="1" type="number">
+                                            <input id="pares-pulso-${maquina.NumeroFila}" class="quantity" min="0" name="pares-pulso-${maquina.NumeroFila}" value="${maquina.ProductoPorPulso}" type="number">
                                             <div onclick="this.parentNode.querySelector('input[type=number]').stepUp();this.parentNode.querySelector('input[type=number]').dispatchEvent(new Event('change'))" class="btn btn-success btn-sm plus"><i class="fas fa-plus"></i></div>
                                             </div>
                                         </td>`)
 
         $(`#fila-pin-pulso`).append(`<td><select id="select-pin-pulso-${maquina.NumeroFila}" name="select-pin-pulso-${maquina.NumeroFila}">
-                                        <option value="GPIO4">GPIO4</option>
-                                        <option value="GPIO5">GPIO5</option>
-                                        <option value="GPIO6">GPIO6</option>
-                                        <option value="GPIO8">GPIO8</option>
+                                       ${allPins}
                                     </select></td>`)
-        /*$(`#fila-pin-buzzer`).append(`<td><select id="select-pin-buzzer-${maquina.NumeroFila}">
-                                        <option value="GPIO4">GPIO4</option>
-                                        <option value="GPIO5">GPIO5</option>
-                                        <option value="GPIO6">GPIO6</option>
-                                        <option value="GPIO8">GPIO8</option>
-                                    </select></td>`)*/
 
         $(`#check-pulso-manual-${maquina.NumeroFila}`).click(()=>{
             maquina.EsPulsoManual = $(`#check-pulso-manual-${maquina.NumeroFila}`).is(":checked")

@@ -42,6 +42,21 @@ var loadScript = function(src, callbackfn) {
 }
 
 
+const allPins = `
+<option value="GPIO4">GPIO4</option>
+<option value="GPIO5">GPIO5</option>
+<option value="GPIO6">GPIO6</option>
+<option value="GPIO8">GPIO8</option>
+<option value="GPIO9">GPIO9</option>
+<option value="GPIO10">GPIO10</option>
+<option value="GPIO11">GPIO11</option>
+`
+function armarTodo(){
+    armarFormulario()
+    armarTablaIO()
+    armarTablaIncidencias()
+}
+
 const Puesto = {
     Id: 0,
     CrearNuevo:true,
@@ -57,6 +72,49 @@ const Puesto = {
     },
     PuestosConfiguracionesIncidencias:[],
     Maquinas: [],
+    loadPuesto: function(idPuesto){
+        $.ajax({
+            method: 'POST',
+            url: `/dashboard/settings/buscarPuestoPorId`,
+            data: { idPuesto: idPuesto },
+            dataType: 'json',
+            success: (puesto) => {
+                
+                for(const prop in puesto){
+                    if(typeof puesto[prop] != 'function'){
+                        this[prop] = puesto[prop]
+                    }
+                }
+
+                for(const maq of this.Maquinas){
+                    maq.NumeroFila = maq.ID
+                }
+
+                for (const incidencia of this.PuestosConfiguracionesIncidencias){
+                    incidencia.Numero = incidencia.Id
+                }
+                
+                armarTodo()
+            },
+            error: (err) => {
+                error("Error al buscar máquina")
+            }
+        })
+
+    },
+    nuevo: function(){
+        this.CrearNuevo = true
+        this.Id = 0
+        this.Descripcion = ''
+        this.Observaciones = ''
+        this.CodigoEtiqueta = ''
+        this.CodUbicacion = ''
+        this.FechaCracion = ''
+        this.PuestosConfiguracionesPins = {PinBuzzer: '', PinLed: '', IdPuesto: 0}
+        this.PuestosConfiguracionesIncidencias = []
+        this.Maquinas = [] 
+        armarTodo()
+    },
     addMaquina: function (maquina) {
         if (typeof maquina != 'undefined') {
             if (Puesto.Maquinas.filter(x => x.ID == maquina.ID).length == 0) {

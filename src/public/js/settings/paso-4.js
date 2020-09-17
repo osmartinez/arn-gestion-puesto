@@ -23,7 +23,7 @@ function armarTablaIncidencias() {
                         <div class="col-md-6">
                             <label class="font-weight-bold">
                             <span></span>
-                            <input id="check-habilitada-${incidencia.Numero}"  type="checkbox" ${incidencia.Habilitada? 'checked':''}}>
+                            <input id="check-habilitada-${incidencia.Numero}"  type="checkbox" ${incidencia.Habilitada? 'checked':''}>
                             <span class="lever"></span>
                             </label>
                         </div>
@@ -36,7 +36,7 @@ function armarTablaIncidencias() {
                         <div class="col-md-6">
                             <label class="font-weight-bold">
                             <span></span>
-                            <input id="check-corregible-${incidencia.Numero}" type="checkbox"  ${incidencia.Corregible? 'checked':''}}>
+                            <input id="check-corregible-${incidencia.Numero}" type="checkbox"  ${incidencia.Corregible ? 'checked' : ''}>
                             <span class="lever"></span>
                             </label>
                         </div>
@@ -48,8 +48,10 @@ function armarTablaIncidencias() {
                             <span>Avisar a:</span>
                         </div>
                         <div class="col-md-6">
-                            <select>
+                            <select id="avisara-${incidencia.Numero}">
                                 <option value="NADIE"> - NADIE - </option>
+                                <option value="ENCARGADO"> ENCARGADO </option>
+                                <option value="INFORMATICA"> INFORMATICA </option>
                             </select>
                         </div>
                     </div>
@@ -59,21 +61,19 @@ function armarTablaIncidencias() {
                             <span>Pin Notificacion1:</span>
                         </div>
                         <div class="col-md-6">
-                            <select>
-                                <option value="GPIO4">GPIO4</option>
+                            <select id="pin-notificacion1-${incidencia.Numero}">
+                                ${allPins}
                             </select>
                         </div>
                     </div>
-
-                   
 
                     <div class="row switch">
                         <div class="col-md-6">
                             <span>Pin Notificacion2:</span>
                         </div>
                         <div class="col-md-6">
-                            <select>
-                                <option value="GPIO4">GPIO4</option>
+                            <select id="pin-notificacion2-${incidencia.Numero}">
+                                ${allPins}
                             </select>
                         </div>
                     </div>
@@ -108,6 +108,18 @@ function armarTablaIncidencias() {
     }
 
     for (const incidencia of Puesto.PuestosConfiguracionesIncidencias) {
+        $(`#pin-notificacion1-${incidencia.Numero}`).change(()=>{
+            incidencia.PinNotificacion1 = $(`#pin-notificacion1-${incidencia.Numero}`).find(":selected").val()
+        })
+
+        $(`#pin-notificacion2-${incidencia.Numero}`).change(()=>{
+            incidencia.PinNotificacion2 = $(`#pin-notificacion2-${incidencia.Numero}`).find(":selected").val()
+        })
+
+        $(`#avisara-${incidencia.Numero}`).change(()=>{
+            incidencia.AvisarA =  $(`#avisara-${incidencia.Numero}`).find(":selected").val()
+        })
+
         $(`#check-habilitada-${incidencia.Numero}`).change(function () {
             if ($(`#check-habilitada-${incidencia.Numero}`).prop('checked')) {
                 $(`#check-habilitada-${incidencia.Numero}`).prop('checked', true)
@@ -134,11 +146,15 @@ function armarTablaIncidencias() {
 
 $('#btn-add-incidencia').click(function () {
     Puesto.addIncidencia({
+        Id: 0,
         Numero: Puesto.PuestosConfiguracionesIncidencias.length + 1,
         Nombre: $('#input-incidencia').val(),
         Habilitada: false,
-        Corregible:false,
-        SegundosEjecucion:0,
+        Corregible: false,
+        SegundosEjecucion: 0,
+        AvisarA: null,
+        PinNotificacion1: null,
+        PinNotificacion2: null,
     })
     $('#input-incidencia').val('')
 })
