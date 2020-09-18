@@ -94,6 +94,7 @@ const Puesto = {
     },
     PuestosConfiguracionesIncidencias:[],
     Maquinas: [],
+    Operarios: [],
     loadPuesto: function(idPuesto){
         $.ajax({
             method: 'POST',
@@ -135,6 +136,7 @@ const Puesto = {
         this.PuestosConfiguracionesPins = {PinBuzzer: '', PinLed: '', IdPuesto: 0}
         this.PuestosConfiguracionesIncidencias = []
         this.Maquinas = [] 
+        this.Operarios = []
         armarTodo()
     },
     addMaquina: function (maquina) {

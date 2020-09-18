@@ -120,6 +120,53 @@ function PuestoWebservice() {
         }
     }
 
+    function reconstruirCodigoObrero(codigo){
+        if (!isNaN(codigo)) {
+            codigo = 'B00' + codigo
+        }
+        return codigo
+    }
+
+    async function entradaOperarioPorCodigoObrero(id, codigoObrero){
+        try{
+            const resp = await genericWebservice.post({
+                codigoObrero: reconstruirCodigoObrero(codigoObrero),
+                idPuesto: id
+            },wsName,'entradaOperarioPorCodigoObrero')
+            const operarios = await resp.json()
+            return operarios
+        }catch(err){
+            console.error(err)
+        }
+        return null
+    }
+
+    
+    async function salidaOperarioPorCodigoObrero(id, codigoObrero){
+        try{
+            const resp = await genericWebservice.post({
+                codigoObrero: codigoObrero,
+                idPuesto: id
+            },wsName,'salidaOperarioPorCodigoObrero')
+            const operarios = await resp.json()
+            return operarios
+        }catch(err){
+            console.error(err)
+        }
+        return null
+    }
+
+    async function buscarOperariosActuales(id){
+        try{
+            const resp = await genericWebservice.get(wsName,'buscarOperariosActuales',id)
+            const operarios = await resp.json()
+            return operarios
+        }catch(err){
+            console.error(err)
+        }
+        return null
+    }
+
     return {
         crear,
         actualizarIncidencia,
@@ -128,6 +175,10 @@ function PuestoWebservice() {
         obtenerConfiguracionesIncidencias,
         obtenerConfiguracionesPins,
         obtenerMaquinas,
+        entradaOperarioPorCodigoObrero,
+        salidaOperarioPorCodigoObrero,
+        buscarOperariosActuales,
+
     }
 }
 

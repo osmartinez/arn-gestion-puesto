@@ -1,7 +1,6 @@
 const input = document.getElementById('input-operario')
 const teclas = document.querySelectorAll('.tecla')
 
-let operarios = []
 
 for (const tecla of teclas) {
     tecla.addEventListener('click', () => {
@@ -18,16 +17,16 @@ document.getElementById('btn-entrar').addEventListener('click', addOperario);
 function pintarTabla(){
     let lista = document.getElementById('tbody');
     lista.innerHTML= ''
-    for(const operario of operarios){
+    for(const operario of Puesto.Operarios){
         lista.innerHTML +=
         `<tr>
-            <th scope="row">${operario.Id}</th>
+            <th scope="row">${operario.CodigoObrero}</th>
             <td>${operario.Nombre}</td>
             
             <td>
                     <li class="list-inline-item">
                         <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                            data-placement="top" title onclick="salir('${operario.Id}')" ><i class="fa fa-sign-out-alt"></i></button>
+                            data-placement="top" title onclick="salir('${operario.CodigoObrero}')" ><i class="fa fa-sign-out-alt"></i></button>
                     </li>
             </td>
         </tr>`;
@@ -43,11 +42,9 @@ function addOperario(e) {
         method: 'POST',
         dataType: 'json',
         data: {codigo: codigo},
-        success: (data)=>{
-            if(data.Id){
-                operarios.push(data)
-                pintarTabla()
-            }
+        success: (operarios)=>{
+            Puesto.Operarios = operarios
+            pintarTabla()
         },
         error: (err)=>{
             console.log(err)
@@ -63,11 +60,9 @@ function salir(codigo){
         method: 'POST',
         dataType: 'json',
         data: {codigo: codigo},
-        success: (data)=>{
-            if(data.Id){
-                operarios = operarios.filter(x=>x.Id != codigo)
-                pintarTabla()
-            }
+        success: (operarios)=>{
+            Puesto.Operarios = operarios
+            pintarTabla()
         },
         error: (err)=>{
             console.log(err)
