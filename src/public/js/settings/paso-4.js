@@ -49,9 +49,7 @@ function armarTablaIncidencias() {
                         </div>
                         <div class="col-md-6">
                             <select id="avisara-${incidencia.Numero}">
-                                <option value="NADIE"> - NADIE - </option>
-                                <option value="ENCARGADO"> ENCARGADO </option>
-                                <option value="INFORMATICA"> INFORMATICA </option>
+                                ${getAllAvisos(incidencia.AvisarA)}
                             </select>
                         </div>
                     </div>
@@ -62,7 +60,7 @@ function armarTablaIncidencias() {
                         </div>
                         <div class="col-md-6">
                             <select id="pin-notificacion1-${incidencia.Numero}">
-                                ${allPins}
+                                ${getAllPins(incidencia.PinNotificacion1)}
                             </select>
                         </div>
                     </div>
@@ -73,7 +71,7 @@ function armarTablaIncidencias() {
                         </div>
                         <div class="col-md-6">
                             <select id="pin-notificacion2-${incidencia.Numero}">
-                                ${allPins}
+                            ${getAllPins(incidencia.PinNotificacion2)}
                             </select>
                         </div>
                     </div>

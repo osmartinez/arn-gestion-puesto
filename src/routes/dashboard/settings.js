@@ -6,14 +6,12 @@ const maquinaWebService = require('../../lib/repository/maquina.ws')()
 
 module.exports = function(router){
     router.get('/settings',async (req,res)=>{
-        const secciones = await buscarTodasSecciones()
         const puestos = await puestoWebservice.obtenerTodos()
-        let maquinas = []
         const data = configParams.read()
         if(data.puesto.seccion){
             maquinas = await buscarMaquinasEnSeccion(data.puesto.seccion)
         }
-        res.render('dashboard/settings/index', {layout: 'main-dashboard', secciones: secciones, maquinas: maquinas, puesto: data.puesto, puestos: puestos})
+        res.render('dashboard/settings/index', {layout: 'main-dashboard', puesto: data.puesto, puestos: puestos})
     })
 
     router.post('/settings/buscarPuestoPorId',async (req,res)=>{
@@ -43,6 +41,7 @@ module.exports = function(router){
 
         // si tengo que crear un puesto
         if(puesto.CrearNuevo){
+            console.log('hola')
             // lo creo
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
                 puesto.PuestosConfiguracionesPins.PinBuzzer,puesto.PuestosConfiguracionesPins.PinLed)

@@ -13,28 +13,7 @@
             </tr>
           </thead>
           <tbody id="tbody-maquinas">
-            <tr id="fila-maquina-1">
-              <td>
-                <select id="select-secciones-1" name="seccion-1" class="">
-                  {{#each secciones}}
-                  <option value="{{this.CodSeccion}}" {{{isSelected ../puesto/seccion this.CodSeccion}}}>{{this.Nombre}}
-                  </option>
-                  {{/each}}
-                </select>
-              </td>
-              <td>
-                <select id="select-maquinas-1" name="maquina-1" class="select-maquinas">
-                  {{#each maquinas}}
-                  <option value="{{this.CodigoEtiqueta}}"
-                    {{{isSelected ../puesto/maquina/CodigoEtiqueta this.CodigoEtiqueta}}}>
-                    {{this.Nombre}}</option>
-                  {{/each}}
-                </select>
-              </td>
-              <td>
-                <div id="btn-borrar-maquina-1" class="waves-effect waves-dark btn btn-sm btn-danger"> Quitar</div>
-              </td>
-            </tr>
+           
           </tbody>
         </table>
 

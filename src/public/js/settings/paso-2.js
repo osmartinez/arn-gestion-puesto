@@ -35,7 +35,7 @@ function armarTablaIO() {
                                         </td>`)
 
         $(`#fila-pin-pulso`).append(`<td><select id="select-pin-pulso-${maquina.NumeroFila}" name="select-pin-pulso-${maquina.NumeroFila}">
-                                       ${allPins}
+                                       ${getAllPins(maquina.PinPulso)}
                                     </select></td>`)
 
         $(`#check-pulso-manual-${maquina.NumeroFila}`).click(()=>{

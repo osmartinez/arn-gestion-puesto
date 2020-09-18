@@ -18,6 +18,19 @@ function PuestoWebservice() {
                     return puesto
                 }
             }
+            else if(puestos.length== 1){
+                const resp2 = await genericWebservice.post({
+                    id: puestos[0].Id,
+                    descripcion: descripcion,
+                    observaciones: observaciones,
+                    pinBuzzer:pinBuzzer,
+                    pinLed:pinLed,
+                },wsName,'actualizar')
+                const puesto = await resp2.json()
+                if(puesto.Id){
+                    return puesto
+                }
+            }
             return null
 
         } catch (err) {

@@ -51,10 +51,32 @@ const allPins = `
 <option value="GPIO10">GPIO10</option>
 <option value="GPIO11">GPIO11</option>
 `
+
+function getAllPins(selected){
+    let ini = 1
+    const fin = 24
+    let pinsHTML = ''
+    for(;ini<=fin;ini++){
+        pinsHTML += `<option value="GPIO${ini}" ${selected=='GPIO'+ini? 'selected':''}>GPIO${ini}</option>\n`
+    }
+    return pinsHTML
+}
+
+function getAllAvisos(selected){
+    const avisos = ['NADIE', 'ENCARGADO','INFORMATICA','SUMINISTRO']
+    let avisosHTML = ''
+    for(const aviso of avisos){
+        avisosHTML += `<option value="${aviso}" ${selected==aviso? 'selected':''}>${aviso}</option>\n`
+    }
+    return avisosHTML
+}
+
 function armarTodo(){
     armarFormulario()
     armarTablaIO()
     armarTablaIncidencias()
+    armarTablaMaquinas()
+    armarTablaPinsPuesto()
 }
 
 const Puesto = {

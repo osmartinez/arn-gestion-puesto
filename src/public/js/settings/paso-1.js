@@ -1,28 +1,35 @@
 
-let numMaquinas = 1
 $('#btn-add-maquina').click(function () {
-    numMaquinas++
+    let NumeroFila = 0
+    if (Puesto.Maquinas != null && Puesto.Maquinas.length > 0) {
+        for (const maquina in Puesto.Maquinas) {
+            if (NumeroFila < maquina.NumeroFila) {
+                NumeroFila = maquina.NumeroFila
+            }
+        }
+    }
+    NumeroFila++
 
     $('#tbody-maquinas').append(`
-        <tr id="fila-maquina-${numMaquinas}">
+        <tr id="fila-maquina-${NumeroFila}">
             <td>
-                <select id="select-secciones-${numMaquinas}" name="seccion-${numMaquinas}" class="">
+                <select id="select-secciones-${NumeroFila}" class="">
                 
                 </select>
             </td>
             <td>
-                <select id="select-maquinas-${numMaquinas}" name="maquina-${numMaquinas}" class="select-maquinas">
+                <select id="select-maquinas-${NumeroFila}" class="select-maquinas">
                     
                 </select>
             </td>
             <td>
-                <div id="btn-borrar-maquina-${numMaquinas}" class="waves-effect waves-dark btn btn-sm btn-danger"> Quitar</div>
+                <div id="btn-borrar-maquina-${NumeroFila}" class="waves-effect waves-dark btn btn-sm btn-danger"> Quitar</div>
             </td>
         </tr>
     `)
 
-    $(`#btn-borrar-maquina-${numMaquinas}`).click(borrarMaquina)
-    $(`#select-maquinas-${numMaquinas}`).click(refrescarDatasource)
+    $(`#btn-borrar-maquina-${NumeroFila}`).click(borrarMaquina)
+    $(`#select-maquinas-${NumeroFila}`).click(refrescarDatasource)
 
     $.ajax({
         method: 'POST',
@@ -37,15 +44,16 @@ $('#btn-add-maquina').click(function () {
                 }
             }
 
-            $(`#select-secciones-${numMaquinas}`).html(innerHTML)
-            $(`#select-secciones-${numMaquinas}`).change(buscarMaquinasSeccion)
-            $(`#select-secciones-${numMaquinas}`).val(0);
+            $(`#select-secciones-${NumeroFila}`).html(innerHTML)
+            $(`#select-secciones-${NumeroFila}`).change(buscarMaquinasSeccion)
+            $(`#select-secciones-${NumeroFila}`).val(0);
 
         },
         error: (err) => {
             error("Error al traer secciones")
         }
     })
+
 })
 
 $('#select-maquinas-1').change(refrescarDatasource)
@@ -53,10 +61,59 @@ $('#select-secciones-1').change(buscarMaquinasSeccion)
 $('#btn-borrar-maquina-1').click(borrarMaquina)
 refrescarDatasource()
 
+function armarTablaMaquinas() {
+    $('#tbody-maquinas').html('')
+    for (const maquina of Puesto.Maquinas) {
+        $('#tbody-maquinas').append(`
+            <tr id="fila-maquina-${maquina.NumeroFila}">
+                <td>
+                    <select id="select-secciones-${maquina.NumeroFila}" class="">
+                    
+                    </select>
+                </td>
+                <td>
+                    <select id="select-maquinas-${maquina.NumeroFila}" class="select-maquinas">
+                        <option value="${maquina.CodigoEtiqueta}">${maquina.Nombre}</option>
+                    </select>
+                </td>
+                <td>
+                    <div id="btn-borrar-maquina-${maquina.NumeroFila}" class="waves-effect waves-dark btn btn-sm btn-danger"> Quitar</div>
+                </td>
+            </tr>
+        `)
+
+        $(`#btn-borrar-maquina-${maquina.NumeroFila}`).click(borrarMaquina)
+        $(`#select-maquinas-${maquina.NumeroFila}`).click(refrescarDatasource)
+
+        $.ajax({
+            method: 'POST',
+            url: `/dashboard/settings/secciones`,
+            dataType: 'json',
+
+            success: (secciones) => {
+                let innerHTML = ''
+                if (secciones) {
+                    for (const seccion of secciones) {
+                        innerHTML += `<option value="${seccion.CodSeccion}" ${seccion.CodSeccion == maquina.CodSeccion?'selected':''}>${seccion.Nombre}</option>`
+                    }
+                }
+
+                $(`#select-secciones-${maquina.NumeroFila}`).html(innerHTML)
+                $(`#select-secciones-${maquina.NumeroFila}`).change(buscarMaquinasSeccion)
+
+            },
+            error: (err) => {
+                error("Error al traer secciones")
+            }
+        })
+
+    }
+}
+
 function refrescarDatasource() {
     const selects = $('.select-maquinas')
     Puesto.Maquinas = []
-    for(const select of selects){
+    for (const select of selects) {
         const codigoMaquina = $(select).find(":selected").val()
         $.ajax({
             method: 'POST',
@@ -65,11 +122,11 @@ function refrescarDatasource() {
             dataType: 'json',
             success: (maquina) => {
                 if (maquina) {
-                    if(Puesto.Maquinas.filter(x=>x.ID == maquina.ID).length== 0){
+                    if (Puesto.Maquinas.filter(x => x.ID == maquina.ID).length == 0) {
                         maquina.NumeroFila = Number(select.id.split('-')[2])
                         Puesto.addMaquina(maquina)
                     }
-                    else{
+                    else {
                         error(`Hay una máquina repetida\n${maquina.Nombre}`)
                     }
                 }
@@ -84,7 +141,7 @@ function refrescarDatasource() {
 function borrarMaquina() {
     const numeroFila = $(this).attr('id').split('-')[3]
     $(`#fila-maquina-${numeroFila}`).remove()
-    Puesto.removeMaquina({NumeroFila:numeroFila})
+    Puesto.removeMaquina({ NumeroFila: numeroFila })
 }
 
 function buscarMaquinasSeccion() {
