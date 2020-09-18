@@ -1,17 +1,14 @@
-const {buscarTodasSecciones,buscarMaquinasEnSeccion,buscarMaquina} =  require('../../lib/fetch')
 const configParams = require('../../lib/config.params')
 const { response } = require('express')
 const puestoWebservice = require('../../lib/repository/puesto.ws')()
 const maquinaWebService = require('../../lib/repository/maquina.ws')()
+const seccionWebService = require('../../lib/repository/seccion.ws')()
 
 module.exports = function(router){
     router.get('/settings',async (req,res)=>{
         const puestos = await puestoWebservice.obtenerTodos()
-        const data = configParams.read()
-        if(data.puesto.seccion){
-            maquinas = await buscarMaquinasEnSeccion(data.puesto.seccion)
-        }
-        res.render('dashboard/settings/index', {layout: 'main-dashboard', puesto: data.puesto, puestos: puestos})
+        const puesto = configParams.read()
+        res.render('dashboard/settings/index', {layout: 'main-dashboard', puesto: puesto, puestos: puestos})
     })
 
     router.post('/settings/buscarPuestoPorId',async (req,res)=>{
@@ -31,17 +28,15 @@ module.exports = function(router){
 
     router.post('/settings/maquinasEnSeccion',async (req,res)=>{
         const {codSeccion} = req.body
-        var maquinas = await buscarMaquinasEnSeccion(codSeccion)
+        var maquinas = await maquinaWebService.buscarEnSeccion(codSeccion)
         res.json(maquinas)
     })
 
     router.post('/settings',async (req,res)=>{
         const puesto = req.body
-        console.log(puesto)
 
         // si tengo que crear un puesto
         if(puesto.CrearNuevo){
-            console.log('hola')
             // lo creo
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
                 puesto.PuestosConfiguracionesPins.PinBuzzer,puesto.PuestosConfiguracionesPins.PinLed)
@@ -62,8 +57,7 @@ module.exports = function(router){
                         incidencia.SegundosEjecucion, puestoNuevo.Id)
                 }
             }
-
-            console.log(puestoNuevo)
+            configParams.write(puestoNuevo)
         }
         // el puesto ya existe, solo actualizar
         else{
@@ -79,12 +73,14 @@ module.exports = function(router){
                         incidencia.PinNotificacion1, incidencia.PinNotificacion2, incidencia.AvisarA, incidencia.Corregible,
                         incidencia.SegundosEjecucion, puesto.Id)
                 }
+
+                configParams.write(puesto)
             }
         }
     })
 
     router.post('/settings/secciones',async(req,res)=>{
-        const secciones = await buscarTodasSecciones()
+        const secciones = await seccionWebService.buscarTodas()
         res.json(secciones)
     })
 }

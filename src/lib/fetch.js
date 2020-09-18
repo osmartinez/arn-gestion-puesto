@@ -84,27 +84,6 @@ module.exports = {
             return null
         }
     },
-    async buscarTodasSecciones() {
-        try {
-            var response = await fetch(`${url}/secciones`)
-            var secciones = await response.json()
-            return secciones
-        }
-        catch (err) {
-            console.error(err)
-            return null
-        }
-    },
-    async buscarMaquinasEnSeccion(codSeccion) {
-        try {
-            var response = await fetch(`${url}/maquinas/enSeccion/${codSeccion}`)
-            var maquinas = await response.json()
-            return maquinas
-        } catch (err) {
-            console.error(err)
-            return null
-        }
-    },
     async buscarPrepaquete(codigoPrepaquete, codigoSeccion) {
         try {
             var response = await fetch(`${url}/prepaquetes/${codigoPrepaquete}/${codigoSeccion}`)

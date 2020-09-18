@@ -52,10 +52,23 @@ function MaquinaWebservice() {
         return null
     }
 
+    async function buscarEnSeccion(codSeccion){
+        try{
+            const resp = await genericWebservice.get(wsName,'enSeccion',codSeccion)
+            const maquinas = await resp.json()
+            return maquinas
+        }catch(err){
+            console.error(err)
+        }
+        return null
+
+    }
+    
     return {
         asociarAPuesto,
         buscarPorCodigo,
         actualizarConfiguracionPines,
+        buscarEnSeccion,
     }
 }
 

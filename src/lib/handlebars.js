@@ -14,7 +14,7 @@ module.exports = {
     },
 
     nombreMaquina(){
-        var nombre =  configParams.read().puesto.maquina.Nombre
+        var nombre =  configParams.read().Descripcion
         return nombre
     }
 }
