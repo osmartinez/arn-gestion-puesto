@@ -1,402 +1,412 @@
 <style>
+    ul.timeline {
+        list-style-type: none;
+        position: relative;
+    }
+
+    ul.timeline:before {
+        content: ' ';
+        background: #d4d9df;
+        display: inline-block;
+        position: absolute;
+        left: 29px;
+        width: 2px;
+        height: 100%;
+        z-index: 400;
+    }
+
+    ul.timeline>li {
+        margin: 20px 0;
+        padding-left: 20px;
+    }
+
+    ul.timeline>li:before {
+        content: ' ';
+        background: white;
+        display: inline-block;
+        position: absolute;
+        border-radius: 50%;
+        border: 3px solid #22c0e8;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+        z-index: 400;
+    }
+
     .aside-left {
-        width: 250px;
+        width: 700px;
         height: 100vh;
         position: fixed;
         transition: .3s;
         border-radius: 10px;
-        left: -180px;
+        background-color: white;
+        border-style: solid;
+        border-color: black;
+        left: -600px;
         top: 70px;
         padding: 10px;
         transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
-    .aside-left.close {
+    .aside-left.cerrar {
         left: 0;
         transition: .2s;
+        z-index: 999;
         transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
     .btn-aside {
         position: relative;
         color: black;
-        font-size: 28px;
+        font-size: 35px;
     }
 
     .btn-aside-left {
-        left: 220px;
-    }
-
-    .btn-aside-left {
-        right: 220px;
+        left: 620px;
     }
 
     .btn-aside-bottom {
-        color: white;
         bottom: 10px;
     }
 
     .aside-right {
-        width: 250px;
+        width: 700px;
         height: 100vh;
         position: fixed;
         transition: .3s;
-        right: -180px;
+        right: -600px;
         top: 70px;
+        background-color: white;
+        border-style: solid;
+        border-color: black;
         border-radius: 10px;
         padding: 10px;
         transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
-    .aside-right.close {
+    .aside-right.cerrar {
         right: 0;
         transition: .2s;
+        z-index: 999;
         transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
     .aside-bottom {
-        width: 100%;
-        height: 250px;
+        width: 832px;
+        height: 500px;
         position: fixed;
-        background-color: #243a51;
         transition: .3s;
         border-radius: 10px;
-        bottom: -180px;
-        color: white;
+        bottom: -425px;
+        margin-left: 45px;
         padding: 10px;
+        background-color: white;
+        border-style: solid;
+        border-color: black;
+        border-width: ;
         transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
-    .aside-bottom.close {
+    .aside-bottom.cerrar {
         bottom: 0;
         transition: .2s;
+        opacity: 1;
+        z-index: 999;
         transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
-    body h2,
-    body h3 {
+    .icon {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .icon i {
+        font-size: 2.25rem;
+    }
+
+    .icon-shape {
+        display: inline-flex;
+        padding: 12px;
         text-align: center;
-        color: #fff;
-    }
-
-    body .points {
-        font-size: 14px;
-        margin-top: 0px;
-    }
-
-    body h2 {
-        font-size: 35px;
-        margin-top: 0px;
-    }
-
-    body h3 {
-        font-size: 20px;
-        margin-bottom: 10px;
-    }
-
-    .st-wrapper {
-        position: relative;
-        overflow: hidden;
-        width: 100%;
-        max-width: 96rem;
-        margin: auto;
-    }
-
-    .st-wrapper .st-background {
-        background-image: linear-gradient(95deg, #04064d, #aa25de 50%);
-        width: 700px;
-        height: 700px;
         border-radius: 50%;
-        position: absolute;
-        z-index: -5;
-    }
-
-    .st-wrapper .st-background:before {
-        content: '';
-        position: absolute;
-        background: #04064d;
-        width: 450px;
-        height: 450px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        border-radius: 50%;
-    }
-
-    .st-wrapper .st-background:nth-child(1) {
-        left: -250px;
-    }
-
-    .st-wrapper .st-background:nth-child(2) {
-        right: -250px;
-        top: -450px;
-    }
-
-    @media (max-width: 1024px) {
-        .st-wrapper .st-background:nth-child(2) {
-            display: none;
-        }
-    }
-
-    .st-card-container {
-
-        margin: -25px 30px 1px 30px;
-    }
-
-    .st-card-container .st-card {
-        position: relative;
-        border-radius: 5px;
-        background: rgba(3, 5, 64, .8);
-        margin: 4px;
-        padding: 10px;
-        flex: 1;
-        min-width: 12rem;
-        min-height: 10rem;
-        overflow: hidden;
-        display: flex;
         align-items: center;
         justify-content: center;
-        flex-direction: column;
-        box-sizing: border-box;
     }
 
-    .st-card-container .st-card .score {
-        color: #fff200;
-        font-size: 45px;
-        font-weight: 900;
-    }
-
-    .st-card-container .st-card .st-count-circle {
-        width: 120px;
-        height: 120px;
-        padding: 10px;
-
-        box-sizing: border-box;
-        text-align: center;
-        border-radius: 50%;
-        box-shadow: 0 0 11px 0 rgba(0, 0, 0, .38), 0 0 0px 25px rgba(255, 255, 255, 0.15);
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 14px;
-    }
-
-    .st-card-container .st-card .st-count-circle span {
-        display: block;
-        margin-top: -7px;
-    }
-
-    .st-card-container .st-card .player-info {
-        display: flex;
-        align-items: center;
-        color: #fff;
-        font-size: 20px;
-        position: relative;
-    }
-
-    .st-card-container .st-card .player-info>div {
-        z-index: 2;
-    }
-
-    .st-card-container .st-card .player-info h4 {
-        margin-top: 5px;
-        margin-bottom: 10px;
-    }
-
-    .st-card-container .st-card .player-info a {
-        text-decoration: none;
-        color: #fff;
-        text-align: left;
-    }
-
-    .st-card-container .st-card .player-info a:hover {
-        text-decoration: underline;
-    }
-
-    .st-card-container .st-card .player-info .fname,
-    .st-card-container .st-card .player-info .lname {
-        display: block;
-    }
-
-    .st-card-container .st-card .player-info .fname {
-        font-size: 14px;
-    }
-
-    .st-card-container .st-card .player-info .lname {
-        font-weight: bold;
-    }
-
-    .st-card-container .st-card .player-info .country {
-        font-size: 15px;
-        margin-bottom: 10px;
-    }
-
-    .st-card-container .st-card .player-info .country img {
-        width: 20px;
-        vertical-align: middle;
-    }
-
-    .st-card-container .st-card .player-info .avatar {
-        width: 100%;
-        text-align: right;
-    }
-
-    .st-card-container .st-card .player-info .avatar svg path {
-        stroke: #fff;
-        fill: #fff;
-    }
-
-    .st-card-container .st-card .player-info:before {
-        content: '';
-        position: absolute;
-        z-index: 1;
-        width: 250px;
-        height: 250px;
-        border: 80px solid rgba(255, 255, 255, 0.15);
-        border-radius: 50%;
-        top: 0px;
-        right: -250px;
-        transition: all 0.2s ease-in-out;
-    }
-
-    .st-card-container .st-card:hover .player-info:before {
-        transform: scale(1.2);
-    }
-
-    .st-card-container .st-card.small {
-        background-color: rgba(3, 5, 64, 1);
-    }
-
-    @media (max-width: 768px) {
-        .st-card-container .st-card.small {
-            max-width: 100%;
-        }
-    }
-
-    .st-card-container .st-card.large {
-        flex-grow: 2;
-        align-items: stretch;
-    }
-
-    .st-card-container .st-card.large.large:nth-child(2) .player-info:before {
-        border-color: #ff1e50;
-    }
-
-    .st-card-container .st-card.large.large:nth-child(3) .player-info:before {
-        border-color: #e7c100;
-    }
-
-    .st-card-container .st-card.large.large:nth-child(4) .player-info:before {
-        border-color: #65b813;
+    .icon-shape i {
+        font-size: 1.25rem;
     }
 </style>
 
-<div class="st-card-container container-flex">
+<div class="container">
     <div class="row">
         <div class="col-md-4">
-            <div class="st-card small">
-                <div class="st-count-circle">
-                    <span class="score">0</span>
-                    Tareas asignadas
+            <div class="w-full md:w-1/3 px-2">
+                <div class="card card-stats mb-4 mb-xl-0">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title text-uppercase text-muted mb-0">PARES FABRICADOS</h5>
+                                <span class="h2 font-weight-bold mb-0">0 / 9.090</span>
+                            </div>
+                            <div class="col-auto">
+                                <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
+                                    <i class="fas fa-chart-bar"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="mt-3 mb-0 text-muted text-sm">
+                            <span class="text-danger mr-2"><i class="fa fa-arrow-down"></i> 3.48%</span>
+                            <span class="text-nowrap">Comparado con el último turno</span>
+                        </p>
+                    </div>
                 </div>
             </div>
+
         </div>
 
-        <div class="col-md-8">
-            <div class="st-card large">
-                <div class="player-info">
-                    <div class="text">
-                        <h4>Contador1</h4>
-                        <div>
-                            <a href="" target="_blank">
-                                <span class="lname">ParesTotales</span>
-                            </a>
-                            <div class="score">
-                                <span> 0</span>
+        <div class="col-md-4">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">CONTADOR SALDOS</h5>
+                            <span class="h2 font-weight-bold mb-0">0</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-info text-white rounded-circle shadow">
+                                <i class="fas fa-percent"></i>
                             </div>
                         </div>
                     </div>
-                    <div class="avatar">
-                                            <button class="btn btn-lg btn-primary">RESET</button>
-
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn-floating btn-lg btn-default"><i class="fas fa-minus"></i></a>
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn-floating btn-lg btn-default"><i class="fas fa-plus"></i></a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div class="col-md-4">
+            <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <h5 class="card-title text-uppercase text-muted mb-0">CONTADOR PULSOS</h5>
+                            <span class="h2 font-weight-bold mb-0">0</span>
+                        </div>
+                        <div class="col-auto">
+                            <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
+                                <i class="fas fa-wave-square"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a class="btn-floating btn-lg btn-default"><i class="fas fa-minus"></i></a>
+                        </div>
+                        <div class="col-md-6">
+                            <a class="btn-floating btn-lg btn-default"><i class="fas fa-plus"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </div>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="w-full md:w-1/3 px-2">
+                <div class="rounded-lg shadow-sm mb-4">
+                    <div class="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
+                        <div class="px-3 pt-8 pb-10 text-center relative z-10">
+                            <h4 class="text-sm uppercase text-gray-500 leading-tight">Grafica 1</h4>
+                            <h3 class="text-3xl text-gray-700 font-semibold leading-tight my-3">8.028</h3>
+                            <span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>
+                        </div>
+                        <div class="absolute bottom-0 inset-x-0">
+                            <canvas id="chart3" height="70"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="w-full md:w-1/3 px-2">
+                <div class="rounded-lg shadow-sm mb-4">
+                    <div class="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
+                        <div class="px-3 pt-8 pb-10 text-center relative z-10">
+                            <h4 class="text-sm uppercase text-gray-500 leading-tight">Grafica 2</h4>
+                            <h3 class="text-3xl text-gray-700 font-semibold leading-tight my-3">3.682</h3>
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 5.71%</span>
+                        </div>
+                        <div class="absolute bottom-0 inset-x-0">
+                            <canvas id="chart1" height="70"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="w-full md:w-1/3 px-2">
+                <div class="rounded-lg shadow-sm mb-4">
+                    <div class="rounded-lg bg-white shadow-lg md:shadow-xl relative overflow-hidden">
+                        <div class="px-3 pt-8 pb-10 text-center relative z-10">
+                            <h4 class="text-sm uppercase text-gray-500 leading-tight">Grafica 3</h4>
+                            <h3 class="text-3xl text-gray-700 font-semibold leading-tight my-3">11.427</h3>
+                            <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 42.8%</span>
+                        </div>
+                        <div class="absolute bottom-0 inset-x-0">
+                            <canvas id="chart2" height="70"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+    </div>
+</div>
+
+</div>
+
+<div class="aside-left toggle rgba-blue-strong">
+    <a class="btn-aside btn-aside-left" href="#"><i class="fas fa-clipboard-list"></i></a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="treeview-colorful w-90 border border-secondary mx-4 my-12">
+                <h6 class="pt-3 pl-3">Tareas</h6>
+                <hr>
+                <ul class="treeview-colorful-list mb-3">
+                    <li class="treeview-colorful-items">
+                        <a class="treeview-colorful-items-header">
+                            <i class="fas fa-plus-circle"></i>
+                            <span><i class="far fa-bell ic-w mx-1"></i>TAREA 1</span>
+                        </a>
+                        <ul class="nested">
+                            <li>
+                                <div class="treeview-colorful-element"><i class="far fa-address-book ic-w mr-1"></i>FA.
+                                    ATLAS-SCHUHFABRIK GMBH &amp; CO.KG.
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i
+                                        class="far fa-address-book ic-w mr-1"></i>OF038650
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i
+                                        class="far fa-address-book ic-w mr-1"></i>GELSHOLE VERPACKT MICROTEX TABACO
+                                    36/48
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i class="fas fa-tools ic-w mr-1"></i>TM0277
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i class="fas fa-shoe-prints ic-w mr-1"></i>8190
+                                    p.
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="treeview-colorful-items">
+                        <a class="treeview-colorful-items-header">
+                            <i class="fas fa-plus-circle"></i>
+                            <span><i class="far fa-bell ic-w mx-1"></i>TAREA 2</span>
+                        </a>
+                        <ul class="nested">
+                            <li>
+                                <div class="treeview-colorful-element"><i
+                                        class="far fa-address-book ic-w mr-1"></i>FLUCHOS SLU
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i
+                                        class="far fa-address-book ic-w mr-1"></i>OF041800
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i
+                                        class="far fa-address-book ic-w mr-1"></i>DANIEL ARNEDRY MARINO 39/46
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i class="fas fa-tools ic-w mr-1"></i>TM0290
+                            </li>
+                            <li>
+                                <div class="treeview-colorful-element"><i class="fas fa-shoe-prints ic-w mr-1"></i>900
+                                    p.
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="aside-right toggle rgba-blue-strong">
+    <a class="btn-aside btn-aside-right" href="#"><i class="fas fa-chart-line"></i></a>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas class="barChart"></canvas>
+
+        </div>
+        <div class="col-md-6">
+            <canvas class="barChart"></canvas>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <canvas class="barChart"></canvas>
+
+        </div>
+        <div class="col-md-6">
+            <canvas class="barChart"></canvas>
+
+        </div>
+    </div>
+</div>
+
+<div class="aside-bottom toggle rgba-blue-strong">
+    <a class="btn-aside btn-aside-bottom" href="#"><i class="fas fa-history"></i></a>
 
     <div class="row">
         <div class="col-md-12">
-            <div class="st-card large">
-                <div class="player-info">
-                    <div class="text">
-                        <h4>Contador2</h4>
-                        <div>
-                            <a href="" target="_blank">
-                                <span class="lname">Squiddy</span>
-                            </a>
-                           
-                            <div class="score">
-                                343
-                            </div>
-                        </div>
-                    </div>
-                    <div class="avatar">
-                        
-                    </div>
-                </div>
-            </div>
+            <ul class="timeline">
+                <li>
+                    <i class="fas fa-user"></i>
+                    <a target="_blank" href="#">SALE: OSCAR MARTINEZ</a>
+                    <a href="#" class="float-right">hace 10 minutos</a>
+
+                </li>
+                <li>
+                    <i class="fas fa-clipboard-list"></i>
+                    <a href="#">FICHA: FA. ATLAS-SCHUHFABRIK GMBH &amp; CO.KG. OF038650 8190p.</a>
+                    <a href="#" class="float-right">hace 1 hora</a>
+                </li>
+                <li>
+                    <i class="fas fa-clipboard-list"></i>
+                    <a href="#">FICHA: FLUCHOS SLU OF041800 900.</a>
+                    <a href="#" class="float-right">hace 1 hora</a>
+                </li>
+                <li>
+                    <i class="fas fa-user"></i>
+                    <a href="#">ENTRA: OSCAR MARTINEZ</a>
+                    <a href="#" class="float-right">hace 4 horas</a>
+
+                </li>
+            </ul>
         </div>
 
     </div>
-
-    <div class="row">
-              <div class="col-md-12">
-            <div class="st-card large">
-                <div class="player-info">
-                    <div class="text">
-                        <h4>Contador3</h4>
-                        <div>
-                            <a href="" target="_blank">
-                                <span class="lname">Squiddy</span>
-                            </a>
-                           
-                            <div class="score">
-                                343
-                            </div>
-                        </div>
-                    </div>
-                    <div class="avatar">
-                        <svg width="100" height="100" viewBox="0 0 24 24">
-                            <path
-                                d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
-                            </path>
-                        </svg>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-
-</div>
-
-<aside class="aside-left toggle rgba-blue-strong">
-    <a class="btn-aside btn-aside-left" href="#"><i class="fas fa-angle-right"></i></a>
-</aside>
-
-<aside class="aside-right toggle rgba-blue-strong">
-    <a class="btn-aside btn-aside-right" href="#"><i class="fas fa-angle-left"></i></a>
-</aside>
-
-<aside class="aside-bottom toggle ">
-    <a class="btn-aside btn-aside-bottom" href="#"><i class="fas fa-angle-up"></i></a>
-</aside>
 
 <script>
     $(document).ready(function () {
         $(".toggle").click(function () {
-            $(this).toggleClass("close")
+            $(this).toggleClass("cerrar")
             var icono = $(this).children('.btn-aside').children('.fas').get()[0]
             var className = icono.className
             if (className.includes('left')) {
@@ -423,4 +433,132 @@
         }
     });
 
+
+    //bar
+    var grafico = document.getElementsByClassName("barChart");
+    for (var grafico of grafico) {
+        const ctx = grafico.getContext('2d')
+        var myBarChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderColor: [
+                        'rgba(255,99,132,1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        });
+    }
+
+
+
+    const chartOptions = {
+        maintainAspectRatio: false,
+        legend: {
+            display: false,
+        },
+        tooltips: {
+            enabled: false,
+        },
+        elements: {
+            point: {
+                radius: 0
+            },
+        },
+        scales: {
+            xAxes: [{
+                gridLines: false,
+                scaleLabel: false,
+                ticks: {
+                    display: false
+                }
+            }],
+            yAxes: [{
+                gridLines: false,
+                scaleLabel: false,
+                ticks: {
+                    display: false,
+                    suggestedMin: 0,
+                    suggestedMax: 10
+                }
+            }]
+        }
+    };
+    //
+    var ctx = document.getElementById('chart1').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: [1, 2, 1, 3, 5, 4, 7],
+            datasets: [
+                {
+                    backgroundColor: "rgba(101, 116, 205, 0.1)",
+                    borderColor: "rgba(101, 116, 205, 0.8)",
+                    borderWidth: 2,
+                    data: [1, 2, 1, 3, 5, 4, 7],
+                },
+            ],
+        },
+        options: chartOptions
+    });
+    //
+    var ctx = document.getElementById('chart2').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: [2, 3, 2, 9, 7, 7, 4],
+            datasets: [
+                {
+                    backgroundColor: "rgba(246, 109, 155, 0.1)",
+                    borderColor: "rgba(246, 109, 155, 0.8)",
+                    borderWidth: 2,
+                    data: [2, 3, 2, 9, 7, 7, 4],
+                },
+            ],
+        },
+        options: chartOptions
+    });
+    //
+    var ctx = document.getElementById('chart3').getContext('2d');
+    var chart = new Chart(ctx, {
+        type: "line",
+        data: {
+            labels: [2, 5, 1, 3, 2, 6, 7],
+            datasets: [
+                {
+                    backgroundColor: "rgba(246, 153, 63, 0.1)",
+                    borderColor: "rgba(246, 153, 63, 0.8)",
+                    borderWidth: 2,
+                    data: [2, 5, 1, 3, 2, 6, 7],
+                },
+            ],
+        },
+        options: chartOptions
+    });
 </script>
