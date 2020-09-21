@@ -6,10 +6,9 @@ const path = require('path')
 const flash = require ('connect-flash')
 const bodyParser = require('body-parser');
 const validator = require('express-validator');
-const passport = require('passport')
+const middlewares = require('./src/lib/middleware')
 // inicializar
 const app = express()
-require('./src/lib/passport')
 
 // configuracion
 app.set('port',process.env.PORT || 8080)
@@ -40,16 +39,13 @@ app.use(session({
 }))
 
 app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
 app.use(validator());
 
 // global var
-app.use((req, res, next) => {
+app.use(async (req, res, next) => {
     app.locals.message = req.flash('message')
     app.locals.success = req.flash('success')
-    res.locals.user = req.user
-    next();
+    await middlewares.middle(app,req,res,next)
   });
 
 

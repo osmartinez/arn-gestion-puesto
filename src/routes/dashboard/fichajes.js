@@ -3,8 +3,7 @@ const puestoWebService = require('../../lib/repository/puesto.ws')()
 
 module.exports = function(router){
     router.get('/operarios',async (req,res)=>{
-        const operarios = await puestoWebService.buscarOperariosActuales(configParams.read().Id)
-        res.render('dashboard/fichajes/index', {layout: 'main-dashboard', operarios: operarios})
+        res.render('dashboard/fichajes/index', {layout: 'main-dashboard'})
     })
 
     router.post('/fichajes/entrada',async (req,res)=>{

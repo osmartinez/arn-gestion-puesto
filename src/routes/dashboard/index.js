@@ -7,7 +7,7 @@ router.get('/',(req,res)=>{
 
 // subrutas
 require('./settings')(router)
-require('./operarios')(router)
+require('./fichajes')(router)
 require('./tarea')(router)
 require('./averia')(router)
 require('./incidencia-fichaje')(router)
