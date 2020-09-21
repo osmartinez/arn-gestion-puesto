@@ -1,89 +1,426 @@
 <style>
-    .matrix {
-        margin: 0 auto;
-        padding: 5px;
+    .aside-left {
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        transition: .3s;
+        border-radius: 10px;
+        left: -180px;
+        top: 70px;
+        padding: 10px;
+        transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
-    .matrix tr,
-    td {
-        padding: 5px;
+    .aside-left.close {
+        left: 0;
+        transition: .2s;
+        transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
     }
 
-    .matrix div {
-        height: 100px;
-        width: 205px;
-        font-family: helvetica;
+    .btn-aside {
+        position: relative;
+        color: black;
+        font-size: 28px;
+    }
+
+    .btn-aside-left {
+        left: 220px;
+    }
+
+    .btn-aside-left {
+        right: 220px;
+    }
+
+    .btn-aside-bottom {
+        color: white;
+        bottom: 10px;
+    }
+
+    .aside-right {
+        width: 250px;
+        height: 100vh;
+        position: fixed;
+        transition: .3s;
+        right: -180px;
+        top: 70px;
+        border-radius: 10px;
+        padding: 10px;
+        transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
+    }
+
+    .aside-right.close {
+        right: 0;
+        transition: .2s;
+        transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
+    }
+
+    .aside-bottom {
+        width: 100%;
+        height: 250px;
+        position: fixed;
+        background-color: #243a51;
+        transition: .3s;
+        border-radius: 10px;
+        bottom: -180px;
+        color: white;
+        padding: 10px;
+        transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
+    }
+
+    .aside-bottom.close {
+        bottom: 0;
+        transition: .2s;
+        transition-timing-function: cubic-bezier(0.9, 0, 1, 1);
+    }
+
+    body h2,
+    body h3 {
+        text-align: center;
+        color: #fff;
+    }
+
+    body .points {
+        font-size: 14px;
+        margin-top: 0px;
+    }
+
+    body h2 {
+        font-size: 35px;
+        margin-top: 0px;
+    }
+
+    body h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    .st-wrapper {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        max-width: 96rem;
+        margin: auto;
+    }
+
+    .st-wrapper .st-background {
+        background-image: linear-gradient(95deg, #04064d, #aa25de 50%);
+        width: 700px;
+        height: 700px;
+        border-radius: 50%;
+        position: absolute;
+        z-index: -5;
+    }
+
+    .st-wrapper .st-background:before {
+        content: '';
+        position: absolute;
+        background: #04064d;
+        width: 450px;
+        height: 450px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+    }
+
+    .st-wrapper .st-background:nth-child(1) {
+        left: -250px;
+    }
+
+    .st-wrapper .st-background:nth-child(2) {
+        right: -250px;
+        top: -450px;
+    }
+
+    @media (max-width: 1024px) {
+        .st-wrapper .st-background:nth-child(2) {
+            display: none;
+        }
+    }
+
+    .st-card-container {
+
+        margin: -25px 30px 1px 30px;
+    }
+
+    .st-card-container .st-card {
+        position: relative;
+        border-radius: 5px;
+        background: rgba(3, 5, 64, .8);
+        margin: 4px;
+        padding: 10px;
+        flex: 1;
+        min-width: 12rem;
+        min-height: 10rem;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        box-sizing: border-box;
+    }
+
+    .st-card-container .st-card .score {
+        color: #fff200;
+        font-size: 45px;
+        font-weight: 900;
+    }
+
+    .st-card-container .st-card .st-count-circle {
+        width: 120px;
+        height: 120px;
+        padding: 10px;
+
+        box-sizing: border-box;
+        text-align: center;
+        border-radius: 50%;
+        box-shadow: 0 0 11px 0 rgba(0, 0, 0, .38), 0 0 0px 25px rgba(255, 255, 255, 0.15);
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 14px;
+    }
+
+    .st-card-container .st-card .st-count-circle span {
+        display: block;
+        margin-top: -7px;
+    }
+
+    .st-card-container .st-card .player-info {
+        display: flex;
+        align-items: center;
+        color: #fff;
+        font-size: 20px;
+        position: relative;
+    }
+
+    .st-card-container .st-card .player-info>div {
+        z-index: 2;
+    }
+
+    .st-card-container .st-card .player-info h4 {
+        margin-top: 5px;
+        margin-bottom: 10px;
+    }
+
+    .st-card-container .st-card .player-info a {
+        text-decoration: none;
+        color: #fff;
+        text-align: left;
+    }
+
+    .st-card-container .st-card .player-info a:hover {
+        text-decoration: underline;
+    }
+
+    .st-card-container .st-card .player-info .fname,
+    .st-card-container .st-card .player-info .lname {
+        display: block;
+    }
+
+    .st-card-container .st-card .player-info .fname {
+        font-size: 14px;
+    }
+
+    .st-card-container .st-card .player-info .lname {
         font-weight: bold;
     }
-    .label-btn{
-        font-size: 22px;
+
+    .st-card-container .st-card .player-info .country {
+        font-size: 15px;
+        margin-bottom: 10px;
     }
 
-    .label-tabla{
-        font-size: 18px;
+    .st-card-container .st-card .player-info .country img {
+        width: 20px;
+        vertical-align: middle;
+    }
+
+    .st-card-container .st-card .player-info .avatar {
+        width: 100%;
+        text-align: right;
+    }
+
+    .st-card-container .st-card .player-info .avatar svg path {
+        stroke: #fff;
+        fill: #fff;
+    }
+
+    .st-card-container .st-card .player-info:before {
+        content: '';
+        position: absolute;
+        z-index: 1;
+        width: 250px;
+        height: 250px;
+        border: 80px solid rgba(255, 255, 255, 0.15);
+        border-radius: 50%;
+        top: 0px;
+        right: -250px;
+        transition: all 0.2s ease-in-out;
+    }
+
+    .st-card-container .st-card:hover .player-info:before {
+        transform: scale(1.2);
+    }
+
+    .st-card-container .st-card.small {
+        background-color: rgba(3, 5, 64, 1);
+    }
+
+    @media (max-width: 768px) {
+        .st-card-container .st-card.small {
+            max-width: 100%;
+        }
+    }
+
+    .st-card-container .st-card.large {
+        flex-grow: 2;
+        align-items: stretch;
+    }
+
+    .st-card-container .st-card.large.large:nth-child(2) .player-info:before {
+        border-color: #ff1e50;
+    }
+
+    .st-card-container .st-card.large.large:nth-child(3) .player-info:before {
+        border-color: #e7c100;
+    }
+
+    .st-card-container .st-card.large.large:nth-child(4) .player-info:before {
+        border-color: #65b813;
     }
 </style>
-<div class="row">
-    <div class="col-md-7 col-lg-7 col-sm-7">
-        <div class="row">
-            <div class="table-responsive">
-                <table class="table m-0">
-                    <tbody>
-                        <tr id="fila-orden-fabricacion">
-                            <th class="black text-white"><span class="label-tabla">Orden Fabricación</span></th>
-                            <td ><span id="celda-orden-fabricacion" class="label-tabla"></span></td>
-                        </tr>
-                        <tr id="fila-cantidad-pendiente">
-                            <th class="black text-white"><span class="label-tabla">Cantidad pendiente</span></th>
-                            <td ><span id="celda-cantidad-pendiente" class="label-tabla"></span></td>
 
-                        </tr>
-                        <tr id="fila-cantidad-pendiente-tarea">
-                            <th class="black text-white"><span class="label-tabla">Cantidad pendiente tarea</span></th>
-                            <td ><span id="celda-cantidad-pendiente-tarea" class="label-tabla"></span></td>
-                        </tr>
-                        <tr id="fila-codigo-articulo">
-                            <th class="black text-white"><span class="label-tabla">Código artículo</span></th>
-                            <td ><span  id="celda-codigo-articulo" class="label-tabla"></span></td>
-
-                        </tr>
-                        <tr id="fila-modelo">
-                            <th class="black text-white"><span class="label-tabla">Modelo</span></th>
-                            <td ><span id="celda-modelo" class="label-tabla"></span></td>
-                        </tr>
-                        <tr id="fila-cliente">
-                            <th class="black text-white"><span class="label-tabla">Cliente</span></th>
-                            <td ><span id="celda-cliente" class="label-tabla"></span></td>
-
-                        </tr>
-                        <tr id="fila-utillaje">
-                            <th class="black text-white"><span class="label-tabla">Utillaje</span></th>
-                            <td ><span id="celda-utillaje" class="label-tabla"></span></td>
-
-                        </tr>
-
-                    </tbody>
-                </table>
-
+<div class="st-card-container container-flex">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="st-card small">
+                <div class="st-count-circle">
+                    <span class="score">0</span>
+                    Tareas asignadas
+                </div>
             </div>
         </div>
-        <div class="row">
 
+        <div class="col-md-8">
+            <div class="st-card large">
+                <div class="player-info">
+                    <div class="text">
+                        <h4>Contador1</h4>
+                        <div>
+                            <a href="" target="_blank">
+                                <span class="lname">ParesTotales</span>
+                            </a>
+                            <div class="score">
+                                <span> 0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="avatar">
+                                            <button class="btn btn-lg btn-primary">RESET</button>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="st-card large">
+                <div class="player-info">
+                    <div class="text">
+                        <h4>Contador2</h4>
+                        <div>
+                            <a href="" target="_blank">
+                                <span class="lname">Squiddy</span>
+                            </a>
+                           
+                            <div class="score">
+                                343
+                            </div>
+                        </div>
+                    </div>
+                    <div class="avatar">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
-    <div class="col-md-5 col-lg-5 col-sm-5">
-        <table id="tabla-acciones" class="matrix">
-            <tr>
-                <td>
-                    <div class="btn btn-lg btn-success"><span class="label-btn">TERMINAR</span></div>
-                </td>
-                <td>
-                    <div class="btn btn-lg btn-primary"><span class="label-btn">PAUSAR</span></div>
-                </td>
-            </tr>
-        </table>
+
+    <div class="row">
+              <div class="col-md-12">
+            <div class="st-card large">
+                <div class="player-info">
+                    <div class="text">
+                        <h4>Contador3</h4>
+                        <div>
+                            <a href="" target="_blank">
+                                <span class="lname">Squiddy</span>
+                            </a>
+                           
+                            <div class="score">
+                                343
+                            </div>
+                        </div>
+                    </div>
+                    <div class="avatar">
+                        <svg width="100" height="100" viewBox="0 0 24 24">
+                            <path
+                                d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
-<script src="/js/tarea/main.js"></script>
+</div>
+
+<aside class="aside-left toggle rgba-blue-strong">
+    <a class="btn-aside btn-aside-left" href="#"><i class="fas fa-angle-right"></i></a>
+</aside>
+
+<aside class="aside-right toggle rgba-blue-strong">
+    <a class="btn-aside btn-aside-right" href="#"><i class="fas fa-angle-left"></i></a>
+</aside>
+
+<aside class="aside-bottom toggle ">
+    <a class="btn-aside btn-aside-bottom" href="#"><i class="fas fa-angle-up"></i></a>
+</aside>
+
+<script>
+    $(document).ready(function () {
+        $(".toggle").click(function () {
+            $(this).toggleClass("close")
+            var icono = $(this).children('.btn-aside').children('.fas').get()[0]
+            var className = icono.className
+            if (className.includes('left')) {
+                className = className.replace('left', 'right')
+            }
+            else if (className.includes('right')) {
+                className = className.replace('right', 'left')
+            }
+            else if (className.includes('up')) {
+                className = className.replace('up', 'down')
+            }
+            else if (className.includes('down')) {
+                className = className.replace('down', 'up')
+            }
+            icono.className = className
+        });
+    });
+
+    // click outside
+    $(document).mouseup(function (e) {
+        var container = $("aside");
+        if (!container.is(e.target) && container.has(e.target).length === 0) {
+            $("aside").removeClass("close")
+        }
+    });
+
+</script>
