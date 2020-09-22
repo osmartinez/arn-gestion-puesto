@@ -33,7 +33,6 @@ function GenericWebservice() {
     return {
         get,
         post
-
     }
 }
 

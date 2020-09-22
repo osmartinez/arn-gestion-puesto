@@ -1,16 +1,16 @@
 document.addEventListener("keyup", keyUp, false);
-cargarIncidencias()
+//cargarIncidencias()
 
 let saldos = 0
 let cadenaLectura = ''
 let leyendoCodigo = false
 
-function cargarIncidencias(){
+function cargarIncidencias() {
     let cuantasColumnas = 2
     let fila = 0
     let contadorColumnas = 0
     let celdas = ''
-    for(const incidencia of puesto.incidencias){
+    for (const incidencia of puesto.incidencias) {
         celdas += `
         <td>
             <div class="btn btn-lg btn-warning"><span class="label-btn">${incidencia.Nombre}</span></div>
@@ -18,7 +18,7 @@ function cargarIncidencias(){
 
         contadorColumnas++
 
-        if(contadorColumnas == cuantasColumnas){
+        if (contadorColumnas == cuantasColumnas) {
             let codigoFila = `<tr>${celdas}</tr>`
             $('#tabla-acciones').append(codigoFila)
             celdas = ''
@@ -26,7 +26,7 @@ function cargarIncidencias(){
         }
     }
 
-    if(celdas != ''){
+    if (celdas != '') {
         let codigoFila = `<tr>${celdas}</tr>`
         $('#tabla-acciones').append(codigoFila)
     }
@@ -41,7 +41,7 @@ function buscarPrepaquete(codigoPrepaquete) {
         contentType: 'application/json',
         data: JSON.stringify(
             {
-                codigoPrepaquete: '0'+codigoPrepaquete
+                codigoPrepaquete: '0' + codigoPrepaquete
             }),
         success: (data) => {
             if (data != null && data.length == 1) {
@@ -62,7 +62,7 @@ function buscarPrepaquete(codigoPrepaquete) {
                 elementoInfoTalla.innerHTML = prepaquete.Talla*/
                 console.log(prepaquete)
             }
-            else{
+            else {
                 error('No se ha podido recuperar el prepaquete')
             }
         },
@@ -72,31 +72,59 @@ function buscarPrepaquete(codigoPrepaquete) {
     })
 }
 
-function buscarOF(codigoOF){
+function buscarOF(codigoOF) {
 
 }
-
 function keyUp(e) {
     var code = String(e.code)
-    if(code.includes('Numpad') || code.includes('Digit')){
+    if (code.includes('Numpad') || code.includes('Digit')) {
         cadenaLectura += code[code.length - 1]
     }
 
-    if(cadenaLectura.length == 12){
+    if (cadenaLectura.length == 12) {
         let prefijo = cadenaLectura[0]
-        if(prefijo == "4"){
+        if (prefijo == "4") {
             info(`Codigo prepaquete reconocido\n${cadenaLectura}`)
             buscarPrepaquete(cadenaLectura)
         }
-        else if(prefijo == "0"){
+        else if (prefijo == "0") {
             info(`Codigo OF reconocido\n${cadenaLectura}`)
             buscarOF(cadenaLectura)
         }
-        else{
+        else {
             error(`Codigo no reconocido\n${cadenaLectura}`)
         }
         cadenaLectura = ''
     }
-    
+
 }
 
+
+$(document).ready(function () {
+    $(".toggle").click(function () {
+        $(this).toggleClass("cerrar")
+        var icono = $(this).children('.btn-aside').children('.fas').get()[0]
+        var className = icono.className
+        if (className.includes('left')) {
+            className = className.replace('left', 'right')
+        }
+        else if (className.includes('right')) {
+            className = className.replace('right', 'left')
+        }
+        else if (className.includes('up')) {
+            className = className.replace('up', 'down')
+        }
+        else if (className.includes('down')) {
+            className = className.replace('down', 'up')
+        }
+        icono.className = className
+    });
+});
+
+// click outside
+$(document).mouseup(function (e) {
+    var container = $("aside");
+    if (!container.is(e.target) && container.has(e.target).length === 0) {
+        $("aside").removeClass("close")
+    }
+});
