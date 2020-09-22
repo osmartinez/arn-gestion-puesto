@@ -47,19 +47,7 @@ function buscarPrepaquete(codigoPrepaquete) {
             if (data != null && data.length == 1) {
                 //console.log(data[0])
                 let prepaquete = data[0]
-                $('#celda-orden-fabricacion').html(prepaquete.Codigo)
-                $('#celda-codigo-articulo').html(prepaquete.CodigoArticulo)
-                $('#celda-cantidad-pendiente').html(prepaquete.CantidadFabricar)
-                $('#celda-cantidad-pendiente-tarea').html('...')
-                $('#celda-modelo').html(prepaquete.DESCRIPCIONARTICULO)
-                $('#celda-cliente').html(prepaquete.NOMBRECLI)
-                $('#celda-utillaje').html(prepaquete.CodUtillaje)
-
-                /*elementoInfoCliente.innerHTML = prepaquete.NOMBRECLI
-                elementoInfoModelo.innerHTML = prepaquete.DESCRIPCIONARTICULO
-                elementoInfoPedido.innerHTML = prepaquete.PedidoLinea
-                elementoInfoUtillaje.innerHTML = prepaquete.CodUtillaje
-                elementoInfoTalla.innerHTML = prepaquete.Talla*/
+                
                 console.log(prepaquete)
             }
             else {

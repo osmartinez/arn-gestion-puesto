@@ -1,4 +1,26 @@
-const chartOptions = {
+let intervaloAlertaVisual = null
+
+function encenderAlertaVisual(errorMsg) {
+    if (intervaloAlertaVisual != null) {
+        clearInterval(intervaloAlertaVisual)
+    }
+    let ofs = 0
+    error(errorMsg)
+    intervaloAlertaVisual = setInterval(function () {
+        $('#panel-central').css('background', 'rgba(255,0,0,' + Math.abs(Math.sin(ofs)) + ')');
+        ofs += 0.03;
+    }, 10);
+}
+
+function apagarAlertaVisual() {
+    if (intervaloAlertaVisual != null) {
+        clearInterval(intervaloAlertaVisual)
+        $('#panel-central').css('background', '');
+        info('Solucionado')
+    }
+}
+
+/*const chartOptions = {
     maintainAspectRatio: false,
     legend: {
         display: false,
@@ -80,4 +102,4 @@ var chart = new Chart(ctx, {
         ],
     },
     options: chartOptions
-});
+});*/

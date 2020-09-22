@@ -1,9 +1,9 @@
     /* PANEL CENTRAL */
-    .panel-central {
+    #panel-central {
         position: fixed;
         top: 70px;
-        left: 100px;
-        width: 830px;
+        left: 103px;
+        width: 820px;
     }
 
     .icon {

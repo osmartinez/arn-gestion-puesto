@@ -5,6 +5,8 @@ function error(msg) {
         showConfirmButton: false,
     })
 
+    swal.close()
+
     Toast.fire({
         type: 'error',
         title: msg
