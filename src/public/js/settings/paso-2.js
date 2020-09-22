@@ -14,12 +14,12 @@ function armarTablaIO() {
 
     for (const maquina of Puesto.Maquinas) {
         $(`#fila-maquina`).append(`<td>${maquina.Nombre}</td>`)
-        
+
         $(`#fila-pulso-manual`).append(`<td>
                                 <div class="switch">
                                 <label class="font-weight-bold">
                                     <span></span>
-                                    <input id="check-pulso-manual-${maquina.NumeroFila}" name="check-pulso-manual-${maquina.NumeroFila}" type="checkbox" ${maquina.EsPulsoManual? 'checked':''}>
+                                    <input id="check-pulso-manual-${maquina.NumeroFila}" name="check-pulso-manual-${maquina.NumeroFila}" type="checkbox" ${maquina.EsPulsoManual ? 'checked' : ''}>
                                     <span class="lever"></span>
                                     <span></span>
                                 </label>
@@ -38,15 +38,30 @@ function armarTablaIO() {
                                        ${getAllPins(maquina.PinPulso)}
                                     </select></td>`)
 
-        $(`#check-pulso-manual-${maquina.NumeroFila}`).click(()=>{
+        $(`#fila-descontar-auto`).append(`<td>
+                                        <div class="switch">
+                                        <label class="font-weight-bold">
+                                            <span></span>
+                                            <input id="descontar-auto-${maquina.NumeroFila}" type="checkbox" ${maquina.DescontarAutomaticamente ? 'checked' : ''}>
+                                            <span class="lever"></span>
+                                            <span></span>
+                                        </label>
+                                        </div>
+                                    </td>`)
+
+        $(`#check-pulso-manual-${maquina.NumeroFila}`).click(() => {
             maquina.EsPulsoManual = $(`#check-pulso-manual-${maquina.NumeroFila}`).is(":checked")
+        })
+
+        $(`#descontar-auto-${maquina.NumeroFila}`).click(() => {
+            maquina.DescontarAutomaticamente = $(`#descontar-auto-${maquina.NumeroFila}`).is(":checked")
         })
 
         $(`#pares-pulso-${maquina.NumeroFila}`).change(function () {
             maquina.ProductoPorPulso = Number($(`#pares-pulso-${maquina.NumeroFila}`).val())
         })
 
-        $(`#select-pin-pulso-${maquina.NumeroFila}`).change(()=>{
+        $(`#select-pin-pulso-${maquina.NumeroFila}`).change(() => {
             maquina.PinPulso = $(`#select-pin-pulso-${maquina.NumeroFila}`).find(":selected").val()
         })
 

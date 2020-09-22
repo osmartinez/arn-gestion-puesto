@@ -17,7 +17,6 @@ module.exports = {
                 body: JSON.stringify({ codigoOperario: idOperario, idMaquina: idPuesto }),
                 headers: { 'Content-Type': 'application/json' }
             }
-            console.log(body)
             var response = await fetch(`${url}/operarios/entrada`,body)
             var user = await response.json()
             return user

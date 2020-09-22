@@ -18,12 +18,10 @@ function GenericWebservice() {
 
     async function get() {
         let ruta = armarRuta(arguments)
-        console.log(ruta)
         return await fetch(ruta)
     }
 
     async function post(body, ...args) {
-        console.log(body)
         let ruta = armarRuta(args)
         return await fetch(ruta, {
             method: 'post',
