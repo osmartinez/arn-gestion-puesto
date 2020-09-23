@@ -36,18 +36,17 @@ function buscarPrepaquete(codigoPrepaquete) {
     $.ajax({
         method: 'POST',
         timeout: 3000,
-        url: `/dashboard/tarea/prepaquete`,
+        url: `/dashboard/tarea/ficharCaja`,
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify(
             {
-                codigoPrepaquete: '0' + codigoPrepaquete
+                codigoEtiqueta: '0' + codigoPrepaquete
             }),
         success: (data) => {
-            if (data != null && data.length == 1) {
+            if (data != null ) {
                 //console.log(data[0])
-                let prepaquete = data[0]
-                
+                let prepaquete = data   
                 console.log(prepaquete)
             }
             else {

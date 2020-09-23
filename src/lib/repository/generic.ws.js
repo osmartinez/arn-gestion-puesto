@@ -1,7 +1,7 @@
 const config = require('../../../config');
 const env = process.env.NODE_ENV || 'production';
-const port = config[env].server.port
-const host = config[env].server.host
+const port = config[env].rest.port
+const host = config[env].rest.host
 const url = `http://${host}:${port}/api`
 const fetch = require('node-fetch');
 

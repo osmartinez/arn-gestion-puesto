@@ -3,7 +3,6 @@ const env = process.env.NODE_ENV || 'production'
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const path = require('path')
-const flash = require ('connect-flash')
 const bodyParser = require('body-parser');
 const validator = require('express-validator');
 const middlewares = require('./src/lib/middleware')
@@ -36,13 +35,10 @@ app.set('view engine', '.hbs')
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-app.use(flash());
 app.use(validator());
 
 // global var
 app.use(async (req, res, next) => {
-    app.locals.message = req.flash('message')
-    app.locals.success = req.flash('success')
     await middlewares.middle(app,req,res,next)
   });
 

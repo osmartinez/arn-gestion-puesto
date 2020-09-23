@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Etiqueta = require('./etiqueta.model')
-const Operario = require('./operario.model')
+const Etiqueta = require('./etiqueta.model').schema
+const Operario = require('./operario.model').schema
 
 const tareaSchema = new mongoose.Schema({
     idSql: {type: Number, required:true},
     etiquetas: {type: [Etiqueta]},
-    fechaPrimerFichaje: {type:Date},
+    fechaPrimerFichaje: {type:Date,default: new Date()},
     utillaje: {type: String},
     tallaUtillaje: {type: String},
     tallasArticulo: {type: [String]},
@@ -15,9 +15,9 @@ const tareaSchema = new mongoose.Schema({
     cantidadFabricada: {type: Number},
 
     // generados por mi app
-    cantidadFabricadaConfirmada: {type:Number},
-    cantidadDefectuosaConfirmada: {type:Number},
-    cantidadSaldosConfirmados: {type:Number},
+    cantidadFabricadaConfirmada: {type:Number,default:0},
+    cantidadDefectuosaConfirmada: {type:Number,default:0},
+    cantidadSaldosConfirmados: {type:Number,default:0},
 
 })
 
