@@ -1,17 +1,27 @@
 const express = require ('express')
+const env = process.env.NODE_ENV || 'production'
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
-const session = require('express-session');
 const path = require('path')
 const flash = require ('connect-flash')
 const bodyParser = require('body-parser');
 const validator = require('express-validator');
 const middlewares = require('./src/lib/middleware')
-// inicializar
+const config = require('./config')
+const mongoose = require('mongoose')
+
+// inicializar express
 const app = express()
 
+// conexion db nosql
+mongoose.connect('mongodb://' + config[env].database.host + '/' + config[env].database.name, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+    useFindAndModify: false
+});
+
 // configuracion
-app.set('port',process.env.PORT || 8080)
 app.set('views',path.join(__dirname,'src/views'))
 app.engine('.hbs',exphbs({
     defaultLayout: 'main',
@@ -26,18 +36,6 @@ app.set('view engine', '.hbs')
 app.use(morgan('dev'))
 app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json())
-
-const expiryDate = new Date( Date.now() + 60 * 60 * 1000 ); // 1 hour
-
-app.use(session({
-    secret: 'supersecretpwddeoscarquetalestasyobieneeeaa',
-    resave: false,
-    saveUninitialized: false,
-    secure: true,
-    httpOnly: true,
-    expires: expiryDate
-}))
-
 app.use(flash());
 app.use(validator());
 
@@ -57,8 +55,9 @@ app.use('/dashboard',require('./src/routes/dashboard/index'))
 app.use(express.static(path.join(__dirname,'src/public')))
 
 // start server
-const server = app.listen(app.get('port'),()=>{
-    console.log('Listening on port ',app.get('port'))  
+const serverPort = config[env].server.port
+const server = app.listen(serverPort,()=>{
+    console.log(`[${env}] arn-gestion-puesto up and running on port ${serverPort}`)
 })
 
 module.exports = server
