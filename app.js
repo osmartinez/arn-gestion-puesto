@@ -50,6 +50,15 @@ app.use('/dashboard',require('./src/routes/dashboard/index'))
 // public
 app.use(express.static(path.join(__dirname,'src/public')))
 
+Array.prototype.sum = function (prop) {
+    var total = 0
+    for ( var i = 0, _len = this.length; i < _len; i++ ) {
+        total += this[i][prop]
+    }
+    return total
+}
+
+
 // start server
 const serverPort = config[env].server.port
 const server = app.listen(serverPort,()=>{

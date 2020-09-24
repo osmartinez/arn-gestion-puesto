@@ -7,6 +7,7 @@ const Operario = require('../../lib/model/operario.model')
 const Etiqueta = require('../../lib/model/etiqueta.model')
 const Prepaquete = require('../../lib/model/prepaquete.model')
 const MovimientoOperario = require('../../lib/model/movimientoOperario.model')
+const MovimientoPulso = require ('../../lib/model/movimientoPulso.model')
 const Helpers = require('../../lib/helpers')
 const mongoose = require('mongoose')
 const puestoWebService = require('../../lib/repository/puesto.ws')()
@@ -17,7 +18,42 @@ module.exports = function (router) {
         res.render('dashboard/tarea/index', { layout: 'main-dashboard' })
     })
 
-    router.post('/tarea/obtenerPuesto',async(req,res)=>{
+    router.post('/tarea/actualizarDefectuosas', async (req, res) => {
+        try {
+            const {defectuosas} = req.body
+            puesto = configParams.read()
+            if (puesto == null || !puesto.Id) {
+                throw new Error('No hay un puesto configurado en la pantalla')
+            }
+            else {
+                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                if(puestoTareaActual==null){
+                    res.status(500).json({
+                        message: 'No hay puesto actual!'
+                    })
+                }
+                else{
+                    for(const tarea of puestoTareaActual.tareas){
+                        if(tarea.cantidadFabricadaPuesto.sum('cantidad')<tarea.cantidadFabricar){
+                            tarea.cantidadDefectuosaPuesto.push(new MovimientoPulso({
+                                cantidad: Number(defectuosas)
+                            }))
+                            break;
+                        }
+                    }
+                    await puestoTareaActual.save()
+                    res.json(puestoTareaActual)
+                }
+            }
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
+    })
+
+    router.post('/tarea/obtenerPuesto', async (req, res) => {
         try {
             puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
@@ -28,15 +64,15 @@ module.exports = function (router) {
                 puesto.TareasPuesto = puestoTareaActual
                 res.json(puesto)
             }
-        }catch(err){
+        } catch (err) {
             console.error(err)
             res.status(500).json({
-                message:err
+                message: err
             })
         }
     })
 
-    router.post('/tarea/pulsoSimulado', async (req,res)=>{
+    router.post('/tarea/pulsoSimulado', async (req, res) => {
         try {
             puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
@@ -49,11 +85,13 @@ module.exports = function (router) {
                         message: 'No hay puesto actual!'
                     })
                 }
-                else{
+                else {
                     const productoPorPulso = 1
-                    for(const tarea of puestoTareaActual.tareas){
-                        if(tarea.cantidadFabricadaConfirmada < tarea.cantidadFabricar){
-                            tarea.cantidadFabricadaConfirmada += productoPorPulso
+                    for (const tarea of puestoTareaActual.tareas) {
+                        if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
+                            tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
+                                cantidad: productoPorPulso
+                            }))
                             await puestoTareaActual.save()
                             break
                         }
@@ -61,7 +99,7 @@ module.exports = function (router) {
                     return res.json(puestoTareaActual)
                 }
             }
-        }catch(err){
+        } catch (err) {
             console.error(err)
             res.status(500).json({
                 message: err
@@ -113,6 +151,12 @@ module.exports = function (router) {
                     const prepaquetesNuevos = []
                     for (const maquina of puesto.Maquinas) {
                         const prepaquetesResponse = await prepaqueteWebService.buscarPrepaquete(codigoEtiqueta, maquina.CodSeccion)
+                        if(prepaquetesResponse== null || prepaquetesResponse.length == 0){
+                            return res.status(404).json({
+                                message: 'No existe la etiqueta'
+                            })
+                        }
+
                         for (const pre of prepaquetesResponse) {
                             prepaquetesNuevos.push(new Prepaquete({
                                 codigoEtiqueta: pre.CodigoEtiqueta,
@@ -183,6 +227,96 @@ module.exports = function (router) {
                 }
                 else {
                     // si hay tareas en marcha
+
+                    const prepaquetesNuevos = []
+                    for (const maquina of puesto.Maquinas) {
+                        const prepaquetesResponse = await prepaqueteWebService.buscarPrepaquete(codigoEtiqueta, maquina.CodSeccion)
+                        if(prepaquetesResponse== null || prepaquetesResponse.length == 0){
+                            return res.status(404).json({
+                                message: 'No existe la etiqueta'
+                            })
+                        }
+                        else{
+                            const posibleIncompatibilidad =  puestoTareaActual.tareas.find(x=>x.utillaje == prepaquetesResponse[0].CodUtillaje
+                                && x.tallaUtillaje ==  prepaquetesResponse[0].IdUtillajeTalla) 
+
+                            if(posibleIncompatibilidad == null){
+                                return res.status(403).json({
+                                    message: 'No puedes meter una caja con otra configuración de utillaje, finaliza antes'
+                                })
+                            }
+                        }
+
+                        // la etiqueta se ha leido correctamente y no hay incompatibilidad entre las tareas
+                        for (const pre of prepaquetesResponse) {
+                            prepaquetesNuevos.push(new Prepaquete({
+                                codigoEtiqueta: pre.CodigoEtiqueta,
+                                codSeccion: maquina.CodSeccion,
+                                cantidad: pre.Cantidad,
+                                talla: pre.Talla,
+                                codigoOrden: pre.Codigo,
+                                cliente: pre.NOMBRECLI.trim(),
+                                modelo: pre.DESCRIPCIONARTICULO.trim(),
+                                referencia: pre.CodigoArticulo,
+                                utillaje: pre.CodUtillaje,
+                                tallasArticulo: pre.Tallas.split(','),
+                                tallaUtillaje: pre.IdUtillajeTalla,
+                                cantidadFabricar: pre.CantidadFabricar,
+                                cantidadFabricada: pre.CantidadFabricada,
+                                descripcionOperacion: pre.Descripcion,
+                                pedidoLinea: pre.PedidoLinea,
+                                idTarea: pre.IdTarea,
+                            }))
+                        }
+                    }
+
+
+                    const gruposPrepaquetes = Helpers.groupBy(prepaquetesNuevos, 'idTarea')
+                    /*
+                        {
+                            123312: [{codigoEtiqueta: '...', cantidad: 100}, ...]
+                            123313: [{...},...]
+                        }
+                    */
+
+                    const tareasNuevas = []
+                    for (const key in gruposPrepaquetes) {
+                        const prepaqueteAux = gruposPrepaquetes[key][0]
+                        const etiquetaNueva = new Etiqueta({
+                            codigoEtiqueta: codigoEtiqueta,
+                            esAgrupacion: codigoEtiqueta.startsWith('11'),
+                            prepaquetes: gruposPrepaquetes[key],
+                            codSeccion: prepaqueteAux.codSeccion,
+                        })
+
+                        const tareaExistente = puestoTareaActual.tareas.find(x=>x.idSql == key)
+                        if(tareaExistente==null){
+                            const tareaNueva = new Tarea({
+                                idSql: key,
+                                etiquetas: [etiquetaNueva],
+                                utillaje: prepaqueteAux.utillaje,
+                                tallaUtillaje: prepaqueteAux.tallaUtillaje,
+                                tallasArticulo: prepaqueteAux.tallasArticulo,
+                                cantidadFabricar: prepaqueteAux.cantidadFabricar,
+                                cantidadSaldos: -1,
+                                cantidadFabricada: prepaqueteAux.cantidadFabricada,
+                                modelo: prepaqueteAux.modelo,
+                                cliente: prepaqueteAux.cliente,
+                                referencia: prepaqueteAux.referencia,
+                                codigoOrden: prepaqueteAux.codigoOrden,
+                            })
+                            tareasNuevas.push(tareaNueva)
+                        }
+                        else{
+                            const etiquetaExistente = tareaExistente.etiquetas.find(x=>x.codigoEtiqueta = etiquetaNueva.codigoEtiqueta)
+                            if(etiquetaExistente == null){
+                                tareaExistente.etiquetas.push(etiquetaNueva)
+                            }
+                        }
+                    }
+
+                    await puestoTareaActual.save()
+
                     res.json(puestoTareaActual)
                 }
             }

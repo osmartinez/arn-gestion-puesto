@@ -52,7 +52,15 @@ function buscarPrepaquete(codigoPrepaquete) {
             }
         },
         error: (err) => {
-            console.log(err)
+            switch(err.status){
+                case 404:
+                    error('No existe la etiqueta!')
+                    break
+                case 403: 
+                    error('La etiqueta no coincide con el utillaje que hay actualmente')
+                break
+            }
+            
         }
     })
 }
@@ -61,7 +69,6 @@ function buscarOF(codigoOF) {
 
 }
 function keyUp(e) {
-    console.log(e.code)
     var code = String(e.code)
     if (code.includes('Numpad') || code.includes('Digit')) {
         cadenaLectura += code[code.length - 1]
