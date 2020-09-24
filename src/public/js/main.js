@@ -104,7 +104,7 @@ const Puesto = {
             data: { idPuesto: idPuesto },
             dataType: 'json',
             success: (puesto) => {
-                
+                this.CrearNuevo = false
                 for(const prop in puesto){
                     if(typeof puesto[prop] != 'function'){
                         this[prop] = puesto[prop]

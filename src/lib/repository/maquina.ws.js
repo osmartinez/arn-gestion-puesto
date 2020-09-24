@@ -19,6 +19,22 @@ function MaquinaWebservice() {
         return null
     }
 
+    async function desasociarPuesto(idPuesto) {
+        try {
+            const resp1 = await genericWebservice.post({
+                idPuesto:idPuesto,
+            },wsName, 'desasociarPuesto')
+            const maquinas = await resp1.json()
+            if(maquinas.length > 0){
+                return maquinas
+            }
+
+        } catch (err) {
+            console.error(err)
+        }
+        return null
+    }
+
     async function buscarPorCodigo(codigo){
         try{
             const resp = await genericWebservice.get(wsName,codigo)
@@ -37,10 +53,10 @@ function MaquinaWebservice() {
         try {
             const resp1 = await genericWebservice.post({
                 idMaquina:idMaquina,
-                esPulsoManual:esPulsoManual,
+                esPulsoManual:esPulsoManual == esPulsoManual == null?false:esPulsoManual,
                 productoPorPulso:productoPorPulso,
                 pinPulso:pinPulso,
-                descontarAuto:descontarAuto
+                descontarAuto:descontarAuto == null?false:descontarAuto
             },wsName, 'actualizarConfiguracionPines')
             const configuracion = await resp1.json()
             if(configuracion.IdMaquina){
@@ -70,6 +86,7 @@ function MaquinaWebservice() {
         buscarPorCodigo,
         actualizarConfiguracionPines,
         buscarEnSeccion,
+        desasociarPuesto,
     }
 }
 

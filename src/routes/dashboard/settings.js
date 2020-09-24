@@ -37,6 +37,7 @@ module.exports = function(router){
 
         // si tengo que crear un puesto
         if(puesto.CrearNuevo){
+
             // lo creo
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
                 puesto.PuestosConfiguracionesPins.PinBuzzer,puesto.PuestosConfiguracionesPins.PinLed)
@@ -62,6 +63,9 @@ module.exports = function(router){
         // el puesto ya existe, solo actualizar
         else{
             if(puesto.Id > 0){
+                // saco todas las maquinas del puesto
+                await maquinaWebService.desasociarPuesto(puesto.Id)
+
                 for(const maquina of puesto.Maquinas){
                     // actualizo los pines de la configuración de la máquina y machaco la lista de las maquinas del nuevo puesto con una recuperación renovada de las mismas
                     await maquinaWebService.actualizarConfiguracionPines(maquina.ID,maquina.EsPulsoManual,maquina.ProductoPorPulso, maquina.PinPulso)
