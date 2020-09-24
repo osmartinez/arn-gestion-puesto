@@ -13,6 +13,10 @@ const tareaSchema = new mongoose.Schema({
     cantidadFabricar: {type: Number},
     cantidadSaldos: {type:Number},
     cantidadFabricada: {type: Number},
+    cliente:{type:String},
+    modelo: {type:String},
+    referencia:{type: String},
+    codigoOrden: {type:String},
 
     // generados por mi app
     cantidadFabricadaConfirmada: {type:Number,default:0},

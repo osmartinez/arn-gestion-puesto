@@ -43,11 +43,9 @@ function buscarPrepaquete(codigoPrepaquete) {
             {
                 codigoEtiqueta: '0' + codigoPrepaquete
             }),
-        success: (data) => {
-            if (data != null ) {
-                //console.log(data[0])
-                let prepaquete = data   
-                console.log(prepaquete)
+        success: (tareasPuesto) => {
+            if (tareasPuesto != null ) {
+                Puesto.refrescarTareasPuesto(tareasPuesto)
             }
             else {
                 error('No se ha podido recuperar el prepaquete')
@@ -63,9 +61,28 @@ function buscarOF(codigoOF) {
 
 }
 function keyUp(e) {
+    console.log(e.code)
     var code = String(e.code)
     if (code.includes('Numpad') || code.includes('Digit')) {
         cadenaLectura += code[code.length - 1]
+    }
+    else if(e.code == 'F2'){
+        // F1 PRESIONADO SIMULAR PULSO
+        $.ajax({
+            method: 'POST',
+            timeout: 3000,
+            url: `/dashboard/tarea/pulsoSimulado`,
+            dataType: 'json',
+            success: (tareasActualesPuesto) => {
+                if(tareasActualesPuesto!=null){
+                    Puesto.refrescarTareasPuesto(tareasActualesPuesto)
+                }
+            },
+            error: (err) => {
+               error(err.message)
+            }
+        })
+        e.preventDefault()
     }
 
     if (cadenaLectura.length == 12) {
@@ -115,3 +132,22 @@ $(document).mouseup(function (e) {
         $("aside").removeClass("close")
     }
 });
+
+$.ajax({
+    method: 'POST',
+    timeout: 3000,
+    url: `/dashboard/tarea/obtenerPuesto`,
+    dataType: 'json',
+    success: (puesto) => {
+        if (puesto != null) {
+            Puesto.loadPuesto(puesto.Id)
+            Puesto.refrescarTareasPuesto(puesto.TareasPuesto)
+        }
+        else {
+            error('Puesto no configurado')
+        }
+    },
+    error: (err) => {
+        error(err.message)
+    }
+})

@@ -1,3 +1,11 @@
+Array.prototype.sum = function (prop) {
+    var total = 0
+    for (var i = 0, _len = this.length; i < _len; i++) {
+        total += this[i][prop]
+    }
+    return total
+}
+
 function error(msg) {
     const Toast = Swal.mixin({
         toast: true,
@@ -26,15 +34,15 @@ function info(msg) {
     })
 }
 
-var loadScript = function(src, callbackfn) {
+var loadScript = function (src, callbackfn) {
     var newScript = document.createElement("script");
     newScript.type = "text/javascript";
     newScript.setAttribute("async", "true");
     newScript.setAttribute("src", src);
 
-    if(newScript.readyState) {
-        newScript.onreadystatechange = function() {
-            if(/loaded|complete/.test(newScript.readyState)) callbackfn();
+    if (newScript.readyState) {
+        newScript.onreadystatechange = function () {
+            if (/loaded|complete/.test(newScript.readyState)) callbackfn();
         }
     } else {
         newScript.addEventListener("load", callbackfn, false);
@@ -54,26 +62,26 @@ const allPins = `
 <option value="GPIO11">GPIO11</option>
 `
 
-function getAllPins(selected){
+function getAllPins(selected) {
     let ini = 1
     const fin = 24
     let pinsHTML = ''
-    for(;ini<=fin;ini++){
-        pinsHTML += `<option value="GPIO${ini}" ${selected=='GPIO'+ini? 'selected':''}>GPIO${ini}</option>\n`
+    for (; ini <= fin; ini++) {
+        pinsHTML += `<option value="GPIO${ini}" ${selected == 'GPIO' + ini ? 'selected' : ''}>GPIO${ini}</option>\n`
     }
     return pinsHTML
 }
 
-function getAllAvisos(selected){
-    const avisos = ['NADIE', 'ENCARGADO','INFORMATICA','SUMINISTRO']
+function getAllAvisos(selected) {
+    const avisos = ['NADIE', 'ENCARGADO', 'INFORMATICA', 'SUMINISTRO']
     let avisosHTML = ''
-    for(const aviso of avisos){
-        avisosHTML += `<option value="${aviso}" ${selected==aviso? 'selected':''}>${aviso}</option>\n`
+    for (const aviso of avisos) {
+        avisosHTML += `<option value="${aviso}" ${selected == aviso ? 'selected' : ''}>${aviso}</option>\n`
     }
     return avisosHTML
 }
 
-function armarTodo(){
+function armarTodo() {
     armarFormulario()
     armarTablaIO()
     armarTablaIncidencias()
@@ -81,23 +89,23 @@ function armarTodo(){
     armarTablaPinsPuesto()
 }
 
-const Puesto = {
+let Puesto = {
     Id: 0,
-    CrearNuevo:true,
+    CrearNuevo: true,
     Descripcion: '',
     Observaciones: '',
     CodigoEtiqueta: '',
     CodUbicacion: '',
     FechaCracion: '',
-    PuestosConfiguracionesPins:{
+    PuestosConfiguracionesPins: {
         PinBuzzer: '',
-        PinLed:'',
-        IdPuesto:0,
+        PinLed: '',
+        IdPuesto: 0,
     },
-    PuestosConfiguracionesIncidencias:[],
+    PuestosConfiguracionesIncidencias: [],
     Maquinas: [],
     Operarios: [],
-    loadPuesto: function(idPuesto){
+    loadPuesto: function (idPuesto) {
         $.ajax({
             method: 'POST',
             url: `/dashboard/settings/buscarPuestoPorId`,
@@ -105,21 +113,23 @@ const Puesto = {
             dataType: 'json',
             success: (puesto) => {
                 this.CrearNuevo = false
-                for(const prop in puesto){
-                    if(typeof puesto[prop] != 'function'){
+                for (const prop in puesto) {
+                    if (typeof puesto[prop] != 'function') {
                         this[prop] = puesto[prop]
                     }
                 }
 
-                for(const maq of this.Maquinas){
+                for (const maq of this.Maquinas) {
                     maq.NumeroFila = maq.ID
                 }
 
-                for (const incidencia of this.PuestosConfiguracionesIncidencias){
+                for (const incidencia of this.PuestosConfiguracionesIncidencias) {
                     incidencia.Numero = incidencia.Id
                 }
-                
-                armarTodo()
+
+                if (armarTodo == 'function') {
+                    armarTodo()
+                }
             },
             error: (err) => {
                 error("Error al buscar máquina")
@@ -127,7 +137,7 @@ const Puesto = {
         })
 
     },
-    nuevo: function(){
+    nuevo: function () {
         this.CrearNuevo = true
         this.Id = 0
         this.Descripcion = ''
@@ -135,11 +145,19 @@ const Puesto = {
         this.CodigoEtiqueta = ''
         this.CodUbicacion = ''
         this.FechaCracion = ''
-        this.PuestosConfiguracionesPins = {PinBuzzer: '', PinLed: '', IdPuesto: 0}
+        this.PuestosConfiguracionesPins = { PinBuzzer: '', PinLed: '', IdPuesto: 0 }
         this.PuestosConfiguracionesIncidencias = []
-        this.Maquinas = [] 
+        this.Maquinas = []
         this.Operarios = []
         armarTodo()
+    },
+    refrescarTareasPuesto: function (tareasPuesto) {
+        if (tareasPuesto != null) {
+            this.TareasPuesto = tareasPuesto
+        }
+
+        refrescarTablaTareas()
+        refrescarPanelCentral()
     },
     addMaquina: function (maquina) {
         if (typeof maquina != 'undefined') {
@@ -175,3 +193,4 @@ const Puesto = {
 
     }
 }
+
