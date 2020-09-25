@@ -44,7 +44,7 @@ function buscarPrepaquete(codigoPrepaquete) {
                 codigoEtiqueta: '0' + codigoPrepaquete
             }),
         success: (tareasPuesto) => {
-            if (tareasPuesto != null ) {
+            if (tareasPuesto != null) {
                 Puesto.refrescarTareasPuesto(tareasPuesto)
             }
             else {
@@ -52,15 +52,15 @@ function buscarPrepaquete(codigoPrepaquete) {
             }
         },
         error: (err) => {
-            switch(err.status){
+            switch (err.status) {
                 case 404:
                     error('No existe la etiqueta!')
                     break
-                case 403: 
-                    error('La etiqueta no coincide con el utillaje que hay actualmente')
-                break
+                case 403:
+                    parpadearElemento('btn-terminar-tarea',error=true,'La etiqueta no coincide con el utillaje que hay actualmente.\nTermine antes la tarea actual.')
+                    break
             }
-            
+
         }
     })
 }
@@ -73,7 +73,7 @@ function keyUp(e) {
     if (code.includes('Numpad') || code.includes('Digit')) {
         cadenaLectura += code[code.length - 1]
     }
-    else if(e.code == 'F2'){
+    else if (e.code == 'F2') {
         // F1 PRESIONADO SIMULAR PULSO
         $.ajax({
             method: 'POST',
@@ -81,12 +81,12 @@ function keyUp(e) {
             url: `/dashboard/tarea/pulsoSimulado`,
             dataType: 'json',
             success: (tareasActualesPuesto) => {
-                if(tareasActualesPuesto!=null){
+                if (tareasActualesPuesto != null) {
                     Puesto.refrescarTareasPuesto(tareasActualesPuesto)
                 }
             },
             error: (err) => {
-               error(err.message)
+                error(err.message)
             }
         })
         e.preventDefault()

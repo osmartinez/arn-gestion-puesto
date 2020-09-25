@@ -1,25 +1,3 @@
-let intervaloAlertaVisual = null
-
-function encenderAlertaVisual(errorMsg) {
-    if (intervaloAlertaVisual != null) {
-        clearInterval(intervaloAlertaVisual)
-    }
-    let ofs = 0
-    error(errorMsg)
-    intervaloAlertaVisual = setInterval(function () {
-        $('#panel-central').css('background', 'rgba(255,0,0,' + Math.abs(Math.sin(ofs)) + ')');
-        ofs += 0.03;
-    }, 10);
-}
-
-function apagarAlertaVisual() {
-    if (intervaloAlertaVisual != null) {
-        clearInterval(intervaloAlertaVisual)
-        $('#panel-central').css('background', '');
-        info('Solucionado')
-    }
-}
-
 function cargarInformacionTarea(){
     if(Puesto.TareasPuesto!=null && Puesto.TareasPuesto.tareas != null &&  Puesto.TareasPuesto.tareas.length>0){
         $('#info-tarea').html(`
@@ -39,15 +17,19 @@ function cargarContadores(){
     if(Puesto.TareasPuesto!=null && Puesto.TareasPuesto.tareas != null &&  Puesto.TareasPuesto.tareas.length>0){
         let cantidadFabricadaPuesto = 0
         let cantidadDefectuosaPuesto = 0
+        let cantidadSaldosPuesto = 0
+
         for(const tarea of Puesto.TareasPuesto.tareas){
             cantidadFabricadaPuesto+= tarea.cantidadFabricadaPuesto.sum('cantidad')
             cantidadDefectuosaPuesto+= tarea.cantidadDefectuosaPuesto.sum('cantidad')
-
+            cantidadSaldosPuesto+= tarea.cantidadSaldosPuesto.sum('cantidad')
         }
         $('#contador-principal').html(String(cantidadFabricadaPuesto+cantidadDefectuosaPuesto))
+        $('#contador-saldos').html(String(cantidadSaldosPuesto))
     }
     else{
         $('#contador-principal').html('0')
+        $('#contador-saldos').html('0')
     }
 }
 
@@ -63,7 +45,9 @@ function refrescarPanelCentral(){
 }
 
 let timerContadorPrincipal = null
+let timerContadorSaldos = null
 let contadorPrincipal = 0
+let contadorSaldos = 0
 function doTimerContadorPrincipal(){
     $.ajax({
         method: 'POST',
@@ -80,6 +64,44 @@ function doTimerContadorPrincipal(){
     $('#sumador-principal').addClass('d-none')
     contadorPrincipal =0
 
+}
+function doTimerContadorSaldos(){
+    $.ajax({
+        method: 'POST',
+        url: `/dashboard/tarea/actualizarSaldos`,
+        data: { saldos: contadorSaldos },
+        dataType: 'json',
+        success: (tareasPuesto) => {
+          Puesto.refrescarTareasPuesto(tareasPuesto)
+        },
+        error: (err) => {
+            error(err.message)
+        }
+    })
+    $('#sumador-saldos').addClass('d-none')
+    contadorSaldos =0
+}
+
+function arrancarTimerContadorSaldos(){
+    if(timerContadorSaldos!=null){
+        clearTimeout(timerContadorSaldos)
+    }
+    $('#sumador-saldos').removeClass('d-none')
+    if(contadorSaldos>0){
+        $('#sumador-saldos').html(`<i class="fa fa-arrow-up"></i> ${contadorSaldos}`)
+        $('#sumador-saldos').removeClass('text-danger')
+        $('#sumador-saldos').addClass('text-success')
+
+    }
+    else if (contadorSaldos<0){
+        $('#sumador-saldos').html(`<i class="fa fa-arrow-down"></i> ${contadorSaldos*-1}`)
+        $('#sumador-saldos').removeClass('text-success')
+        $('#sumador-saldos').addClass('text-danger')    }
+    else{
+        $('#sumador-saldos').html(`${contadorSaldos}`)
+    }
+
+    timerContadorSaldos = setTimeout(doTimerContadorSaldos,2000)
 }
 
 function arrancarTimerContadorPrincipal(){
@@ -113,5 +135,16 @@ $('#btn-restar-principal').click(function(){
     contadorPrincipal -= 1
    arrancarTimerContadorPrincipal()
 })
+
+$('#btn-sumar-saldos').click(function(){
+    contadorSaldos += 1
+    arrancarTimerContadorSaldos()
+})
+
+$('#btn-restar-saldos').click(function(){
+    contadorSaldos -= 1
+    arrancarTimerContadorSaldos()
+})
+
 
 

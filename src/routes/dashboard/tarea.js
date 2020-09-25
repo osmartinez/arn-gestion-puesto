@@ -34,9 +34,46 @@ module.exports = function (router) {
                 }
                 else{
                     for(const tarea of puestoTareaActual.tareas){
-                        if(tarea.cantidadFabricadaPuesto.sum('cantidad')<tarea.cantidadFabricar){
+                        if((tarea.cantidadFabricadaPuesto.sum('cantidad')
+                        +tarea.cantidadDefectuosaPuesto.sum('cantidad'))<tarea.cantidadFabricar){
                             tarea.cantidadDefectuosaPuesto.push(new MovimientoPulso({
                                 cantidad: Number(defectuosas)
+                            }))
+                            break;
+                        }
+                    }
+                    await puestoTareaActual.save()
+                    res.json(puestoTareaActual)
+                }
+            }
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
+    })
+
+    router.post('/tarea/actualizarSaldos', async (req, res) => {
+        try {
+            const {saldos} = req.body
+            puesto = configParams.read()
+            if (puesto == null || !puesto.Id) {
+                throw new Error('No hay un puesto configurado en la pantalla')
+            }
+            else {
+                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                if(puestoTareaActual==null){
+                    res.status(500).json({
+                        message: 'No hay puesto actual!'
+                    })
+                }
+                else{
+                    for(const tarea of puestoTareaActual.tareas){
+                        if( (tarea.cantidadFabricadaPuesto.sum('cantidad')
+                        +tarea.cantidadDefectuosaPuesto.sum('cantidad'))<tarea.cantidadFabricar){
+                            tarea.cantidadSaldosPuesto.push(new MovimientoPulso({
+                                cantidad: Number(saldos)
                             }))
                             break;
                         }
@@ -308,7 +345,9 @@ module.exports = function (router) {
                             tareasNuevas.push(tareaNueva)
                         }
                         else{
-                            const etiquetaExistente = tareaExistente.etiquetas.find(x=>x.codigoEtiqueta = etiquetaNueva.codigoEtiqueta)
+                            console.log(tareaExistente.etiquetas)
+                            console.log(etiquetaNueva.codigoEtiqueta)
+                            const etiquetaExistente = tareaExistente.etiquetas.find(x=>x.codigoEtiqueta == etiquetaNueva.codigoEtiqueta)
                             if(etiquetaExistente == null){
                                 tareaExistente.etiquetas.push(etiquetaNueva)
                             }

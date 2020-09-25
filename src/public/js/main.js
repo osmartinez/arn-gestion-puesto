@@ -51,6 +51,34 @@ var loadScript = function (src, callbackfn) {
     document.documentElement.firstChild.appendChild(newScript);
 }
 
+function parpadearElemento(idElemento, error=false,mensaje, milisegundos=5000) {
+    var timer;
+
+    function blinking() {
+        timer = setInterval(blink, 400);
+        function blink() {
+            $(`#${idElemento}`).fadeOut(400, function() {
+                $(`#${idElemento}`).fadeIn(400);
+            });
+        }
+        setTimeout(()=>{
+            clearInterval(timer)
+        },milisegundos)
+    }
+
+    if(mensaje){
+        Swal.fire({
+            type: error?'error':'info',
+            title: error?'Error!':'Información',
+            text: mensaje,
+          })
+    }
+
+    if(idElemento){
+        blinking()
+    }
+}
+
 
 const allPins = `
 <option value="GPIO4">GPIO4</option>
