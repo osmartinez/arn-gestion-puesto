@@ -16,7 +16,7 @@
                         <div class="switch">
                             <label class="font-weight-bold">
                                 <span></span>
-                                <input id="check-contador-paquete-manual" type="checkbox">
+                                <input id="check-contador-paquete-manual" type="checkbox" {{isChecked Puesto.EsContadorPaquetesAutomatico true}} >
                                 <span class="lever"></span>
                             </label>
                         </div>
@@ -29,7 +29,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <input id="input-pares-paquete" value="0" type="number" />
+                        <input id="input-pares-paquete" value="{{Puesto.ContadorPaquetes}}" type="number" />
                     </div>
                 </div>
                 <div class="row">

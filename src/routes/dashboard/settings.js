@@ -40,7 +40,8 @@ module.exports = function(router){
 
             // lo creo
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
-                puesto.PuestosConfiguracionesPins.PinBuzzer,puesto.PuestosConfiguracionesPins.PinLed)
+                puesto.PuestosConfiguracionesPins.PinBuzzer,puesto.PuestosConfiguracionesPins.PinLed,puesto.PuestosConfiguracionesPins.ContadorPaquetes,
+                puesto.PuestosConfiguracionesPins.EsContadorPaquetesAutomatico)
             // si se ha creado correctamente
             if( puestoNuevo != null && puestoNuevo.Id > 0){
                 // para cada máquina en el puesto a configurar

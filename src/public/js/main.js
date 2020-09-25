@@ -140,7 +140,6 @@ let Puesto = {
             data: { idPuesto: idPuesto },
             dataType: 'json',
             success: (puesto) => {
-                this.CrearNuevo = false
                 for (const prop in puesto) {
                     if (typeof puesto[prop] != 'function') {
                         this[prop] = puesto[prop]
@@ -155,7 +154,7 @@ let Puesto = {
                     incidencia.Numero = incidencia.Id
                 }
 
-                if (armarTodo == 'function') {
+                if (typeof armarTodo === 'function') {
                     armarTodo()
                 }
             },

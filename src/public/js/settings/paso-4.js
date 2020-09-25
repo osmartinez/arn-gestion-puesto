@@ -1,6 +1,6 @@
 function armarTablaIncidencias() {
     $('#tabla-incidencias').html('')
-    let cuantasColumnas = 3
+    let cuantasColumnas = 2
     let columnaActual = 0
     let filaActual = 0
     let celdas = ''
