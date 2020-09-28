@@ -18,6 +18,36 @@ module.exports = function (router) {
         res.render('dashboard/tarea/index', { layout: 'main-dashboard' })
     })
 
+    router.post('/tarea/terminar',async(req,res)=>{
+        try {
+            const {defectuosas} = req.body
+            puesto = configParams.read()
+            if (puesto == null || !puesto.Id) {
+                throw new Error('No hay un puesto configurado en la pantalla')
+            }
+            else {
+                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                if(puestoTareaActual==null){
+                    res.status(500).json({
+                        message: 'No hay puesto actual!'
+                    })
+                }
+                else{
+                    puestoTareaActual.fechaFin = new Date()
+                    puestoTareaActual.terminado = true
+                    await puestoTareaActual.save()
+                    puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                    res.json(puestoTareaActual)
+                }
+            }
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
+    })
+
     router.post('/tarea/actualizarDefectuosas', async (req, res) => {
         try {
             const {defectuosas} = req.body

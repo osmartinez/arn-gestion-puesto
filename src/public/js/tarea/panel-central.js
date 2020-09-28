@@ -10,7 +10,6 @@ function cargarInformacionTarea(){
     else{
         $('#info-tarea').html('')
     }
-   
 }
 
 function cargarContadores(){
@@ -146,5 +145,17 @@ $('#btn-restar-saldos').click(function(){
     arrancarTimerContadorSaldos()
 })
 
-
+$('#btn-terminar-tarea').click(function(){
+    $.ajax({
+        method: 'POST',
+        url: `/dashboard/tarea/terminar`,
+        dataType: 'json',
+        success: (tareasPuesto) => {
+          Puesto.refrescarTareasPuesto(tareasPuesto)
+        },
+        error: (err) => {
+            error(err.message)
+        }
+    })
+})
 

@@ -51,30 +51,30 @@ var loadScript = function (src, callbackfn) {
     document.documentElement.firstChild.appendChild(newScript);
 }
 
-function parpadearElemento(idElemento, error=false,mensaje, milisegundos=5000) {
+function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 5000) {
     var timer;
 
     function blinking() {
         timer = setInterval(blink, 400);
         function blink() {
-            $(`#${idElemento}`).fadeOut(400, function() {
+            $(`#${idElemento}`).fadeOut(400, function () {
                 $(`#${idElemento}`).fadeIn(400);
             });
         }
-        setTimeout(()=>{
+        setTimeout(() => {
             clearInterval(timer)
-        },milisegundos)
+        }, milisegundos)
     }
 
-    if(mensaje){
+    if (mensaje) {
         Swal.fire({
-            type: error?'error':'info',
-            title: error?'Error!':'Información',
+            type: error ? 'error' : 'info',
+            title: error ? 'Error!' : 'Información',
             text: mensaje,
-          })
+        })
     }
 
-    if(idElemento){
+    if (idElemento) {
         blinking()
     }
 }
@@ -110,11 +110,13 @@ function getAllAvisos(selected) {
 }
 
 function armarTodo() {
-    armarFormulario()
-    armarTablaIO()
-    armarTablaIncidencias()
-    armarTablaMaquinas()
-    armarTablaPinsPuesto()
+    if(typeof armarFormulario == 'function'){
+        armarFormulario()
+        armarTablaIO()
+        armarTablaIncidencias()
+        armarTablaMaquinas()
+        armarTablaPinsPuesto()
+    }
 }
 
 let Puesto = {
@@ -179,9 +181,7 @@ let Puesto = {
         armarTodo()
     },
     refrescarTareasPuesto: function (tareasPuesto) {
-        if (tareasPuesto != null) {
-            this.TareasPuesto = tareasPuesto
-        }
+        this.TareasPuesto = tareasPuesto
 
         refrescarTablaTareas()
         refrescarPanelCentral()

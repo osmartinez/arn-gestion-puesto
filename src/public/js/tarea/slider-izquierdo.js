@@ -3,7 +3,7 @@ var $list = $('#lista-tareas').sortable({
 
 });
 
-function asignarEventosListaSliderIzquierda(){
+function asignarEventosListaSliderIzquierda() {
     $('.treeview-animated-items-header').click(function (e) {
         var jTarget = $(e.target),
             dir = jTarget.data('dir'),
@@ -22,12 +22,12 @@ function asignarEventosListaSliderIzquierda(){
                 }
                 break;
         }
-    
+
         $this = $(this);
         $target = $this.siblings('.nested');
         $pointerPlus = $this.children('.fa-plus-circle');
         $pointerMinus = $this.children('.fa-minus-circle');
-    
+
         $pointerPlus.removeClass('fa-plus-circle');
         $pointerPlus.addClass('fa-minus-circle');
         $pointerMinus.removeClass('fa-minus-circle');
@@ -38,26 +38,26 @@ function asignarEventosListaSliderIzquierda(){
         } else {
             $target.removeClass('active').slideUp();
         }
-    
+
         e.stopPropagation()
         return false;
-    
-    
+
+
     });
-    
+
     (function ($) {
-    
+
         let $allPanels = $('.nested').hide();
         let $elements = $('.treeview-animated-element');
-    
+
         $elements.click(function () {
             $this = $(this);
-    
+
             if ($this.hasClass('opened')) {
-    
+
                 $elements.removeClass('opened');
             } else {
-    
+
                 $elements.removeClass('opened');
                 $this.addClass('opened');
             }
@@ -69,33 +69,36 @@ function asignarEventosListaSliderIzquierda(){
 
 function refrescarTablaTareas() {
     $('#lista-tareas').html('')
-    for (const tarea of Puesto.TareasPuesto.tareas) {
-        //<button class=" btn-primary btn-lg btn-floating" style="font-size: 20px;" data-dir="up">&#8593;</button>
-        //<button class=" btn-danger btn-lg btn-floating" style="font-size: 20px;" data-dir="down">&#8595;</button>
-        $('#lista-tareas').append(`
-        <li data-z="one" class="tarea treeview-animated-items">
-        <a class="treeview-animated-items-header">
-            <i class="fas fa-plus-circle"></i>
-            <span><i class="far fa-bell ic-w mx-1"></i>1. ${tarea.modelo}</span>
-            
-        </a>
-
-        <ul class="nested">
-            <li>
-                <div class="treeview-animated-element"><i
-                        class="far fa-address-book ic-w mr-1"></i>${tarea.cliente}</div>
-            </li>
-            <li>
-                <div class="treeview-animated-element"><i
-                        class="fas fa-tools ic-w mr-1"></i>${tarea.utillaje}</div>
-            </li>
-            <li>
-                <div class="treeview-animated-element"><i
-                        class="fas fa-shoe-prints ic-w mr-1"></i>${tarea.cantidadFabricar}</div>
-            </li>
-    </li>
-        `)
+    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.tareas.length > 0) {
+        for (const tarea of Puesto.TareasPuesto.tareas) {
+            //<button class=" btn-primary btn-lg btn-floating" style="font-size: 20px;" data-dir="up">&#8593;</button>
+            //<button class=" btn-danger btn-lg btn-floating" style="font-size: 20px;" data-dir="down">&#8595;</button>
+            $('#lista-tareas').append(`
+            <li data-z="one" class="tarea treeview-animated-items">
+            <a class="treeview-animated-items-header">
+                <i class="fas fa-plus-circle"></i>
+                <span><i class="far fa-bell ic-w mx-1"></i>1. ${tarea.modelo}</span>
+                
+            </a>
+    
+            <ul class="nested">
+                <li>
+                    <div class="treeview-animated-element"><i
+                            class="far fa-address-book ic-w mr-1"></i>${tarea.cliente}</div>
+                </li>
+                <li>
+                    <div class="treeview-animated-element"><i
+                            class="fas fa-tools ic-w mr-1"></i>${tarea.utillaje}</div>
+                </li>
+                <li>
+                    <div class="treeview-animated-element"><i
+                            class="fas fa-shoe-prints ic-w mr-1"></i>${tarea.cantidadFabricar}</div>
+                </li>
+        </li>
+            `)
+        }
     }
+
 
     asignarEventosListaSliderIzquierda()
 }

@@ -9,7 +9,8 @@ const puestoTareasActualesSchema = new Schema({
     puesto: {type: Puesto},
     tareas: {type: [Tarea]},
     movimientosOperarios:{type: [MovimientoOperario]},
-    fechaUltimaActualizacion:{type: Date, default: new Date()},
+    fechaInicio:{type: Date, default: new Date()},
+    fechaFin:{type: Date},
     terminado: {type:Boolean, default:false}
 })
 
