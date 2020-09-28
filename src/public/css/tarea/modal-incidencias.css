@@ -1,0 +1,21 @@
+.matrix {
+    margin: 0 auto;
+    padding: 5px;
+}
+
+.matrix tr,
+td {
+    padding: 5px;
+}
+
+.matrix div {
+    height: 150px;
+    width: 230px;
+
+}
+
+.matrix div span{
+    font-size: 26px;
+    font-family: helvetica;
+    font-weight: bold;
+}

@@ -24,10 +24,35 @@ module.exports = {
         return nombre
     },
     buildTablaIncidencias(incidencias){
+        let filas = ''
+        let fila = ''
         let html = ''
+        let numIncidenciasPorFila = 2
+        let contadorIncidenciasPorFila = 0
+
         for(const incidencia of incidencias){
-            html+= `<button class="btn btn-warning btn-lg">${incidencia.Nombre}</button>`
+            if(contadorIncidenciasPorFila == numIncidenciasPorFila){
+                contadorIncidenciasPorFila = 0
+                filas+= `<tr>${fila}</tr>`
+                fila = ''
+            }
+            else{
+                fila +=`
+                <td>
+                    <div class="btn btn-warning btn-lg">
+                        <span>${incidencia.Nombre}</span>
+                    </div>
+                </td>`
+                contadorIncidenciasPorFila++
+            }
         }
+
+        if(fila!=''){
+            filas+= `<tr>${fila}</tr>`
+            fila = ''
+        }
+
+        html = `<table class="matrix">${filas}</table>`
         return html
     }
 }

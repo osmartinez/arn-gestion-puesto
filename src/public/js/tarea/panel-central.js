@@ -57,7 +57,7 @@ function doTimerContadorPrincipal(){
           Puesto.refrescarTareasPuesto(tareasPuesto)
         },
         error: (err) => {
-            error(err.message)
+            error(err.responseJSON.message)
         }
     })
     $('#sumador-principal').addClass('d-none')
@@ -74,7 +74,7 @@ function doTimerContadorSaldos(){
           Puesto.refrescarTareasPuesto(tareasPuesto)
         },
         error: (err) => {
-            error(err.message)
+            error(err.responseJSON.message)
         }
     })
     $('#sumador-saldos').addClass('d-none')
@@ -154,7 +154,7 @@ $('#btn-terminar-tarea').click(function(){
           Puesto.refrescarTareasPuesto(tareasPuesto)
         },
         error: (err) => {
-            error(err.message)
+            error(err.responseJSON.message)
         }
     })
 })

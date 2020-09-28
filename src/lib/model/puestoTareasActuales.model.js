@@ -8,7 +8,6 @@ const puestoTareasActualesSchema = new Schema({
     _id: mongoose.Schema.Types.ObjectId,
     puesto: {type: Puesto},
     tareas: {type: [Tarea]},
-    movimientosOperarios:{type: [MovimientoOperario]},
     fechaInicio:{type: Date, default: new Date()},
     fechaFin:{type: Date},
     terminado: {type:Boolean, default:false}

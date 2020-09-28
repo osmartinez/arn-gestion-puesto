@@ -20,13 +20,13 @@ function pintarTabla(){
     for(const operario of Puesto.Operarios){
         lista.innerHTML +=
         `<tr>
-            <th scope="row">${operario.CodigoObrero}</th>
-            <td>${operario.Nombre}</td>
+            <th scope="row">${operario.codigoOperarioSql}</th>
+            <td>${operario.nombre}</td>
             
             <td>
                     <li class="list-inline-item">
                         <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                            data-placement="top" title onclick="salir('${operario.CodigoObrero}')" ><i class="fa fa-sign-out-alt"></i></button>
+                            data-placement="top" title onclick="salir('${operario.codigoOperarioSql}')" ><i class="fa fa-sign-out-alt"></i></button>
                     </li>
             </td>
         </tr>`;
@@ -47,7 +47,7 @@ function addOperario(e) {
             pintarTabla()
         },
         error: (err)=>{
-            console.log(err)
+            error(err.responseJSON.message)
         }
     })
     

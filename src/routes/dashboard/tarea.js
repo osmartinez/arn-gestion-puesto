@@ -3,10 +3,8 @@ const PuestoTareasActuales = require('../../lib/model/puestoTareasActuales.model
 const Puesto = require('../../lib/model/puesto.model')
 const Tarea = require('../../lib/model/tarea.model')
 const Maquina = require('../../lib/model/maquina.model')
-const Operario = require('../../lib/model/operario.model')
 const Etiqueta = require('../../lib/model/etiqueta.model')
 const Prepaquete = require('../../lib/model/prepaquete.model')
-const MovimientoOperario = require('../../lib/model/movimientoOperario.model')
 const MovimientoPulso = require ('../../lib/model/movimientoPulso.model')
 const Helpers = require('../../lib/helpers')
 const mongoose = require('mongoose')
@@ -29,7 +27,7 @@ module.exports = function (router) {
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                 if(puestoTareaActual==null){
                     res.status(500).json({
-                        message: 'No hay puesto actual!'
+                        message: 'No hay tarea cargada'
                     })
                 }
                 else{
@@ -59,7 +57,7 @@ module.exports = function (router) {
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                 if(puestoTareaActual==null){
                     res.status(500).json({
-                        message: 'No hay puesto actual!'
+                        message: 'No hay tarea cargada'
                     })
                 }
                 else{
@@ -95,7 +93,7 @@ module.exports = function (router) {
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                 if(puestoTareaActual==null){
                     res.status(500).json({
-                        message: 'No hay puesto actual!'
+                        message: 'No hay tarea cargada'
                     })
                 }
                 else{
@@ -200,20 +198,7 @@ module.exports = function (router) {
                         maquinas: maquinasNuevas
                     })
 
-                    const operariosNuevo = []
-                    const operariosActuales = await puestoWebService.buscarOperariosActuales(puesto.Id)
-                    for (const operario of operariosActuales) {
-                        operariosNuevo.push(new Operario({
-                            idSql: operario.IdOperario,
-                            codigoObrero: operario.CodigoObrero,
-                            codigoEtiqueta: operario.CodigoEtiqueta,
-                            fechaEntrada: operario.FechaEntradaReal,
-                        }))
-                    }
-
-                    const movimientoOperarioNuevo = new MovimientoOperario({
-                        operariosActuales: operariosNuevo,
-                    })
+                    
 
                     const prepaquetesNuevos = []
                     for (const maquina of puesto.Maquinas) {
@@ -285,7 +270,6 @@ module.exports = function (router) {
                         _id: new mongoose.Types.ObjectId(),
                         tareas: tareasNuevas,
                         puesto: puestoNuevo,
-                        movimientosOperarios: [movimientoOperarioNuevo]
                     })
 
                     await puestoTareaActual.save()

@@ -86,13 +86,13 @@
                 <tbody id="tbody">
                     {{#each Operarios}}
                     <tr>
-                        <th scope="row">{{this.CodigoObrero}}</th>
-                        <td>{{this.Nombre}}</td>
+                        <th scope="row">{{this.codigoOperarioSql}}</th>
+                        <td>{{this.nombre}}</td>
 
                         <td>
                             <li class="list-inline-item">
                                 <button class="btn btn-danger btn-sm rounded-0" type="button" data-toggle="tooltip"
-                                    data-placement="top" title onclick="salir('{{this.CodigoObrero}}')"><i
+                                    data-placement="top" title onclick="salir('{{this.codigoOperarioSql}}')"><i
                                         class="fa fa-sign-out-alt"></i></button>
                             </li>
                         </td>

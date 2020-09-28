@@ -86,7 +86,7 @@ function keyUp(e) {
                 }
             },
             error: (err) => {
-                error(err.message)
+                error(err.responseJSON.message)
             }
         })
         e.preventDefault()
@@ -155,6 +155,6 @@ $.ajax({
         }
     },
     error: (err) => {
-        error(err.message)
+        error(err.responseJSON.message)
     }
 })
