@@ -8,10 +8,11 @@ const validator = require('express-validator');
 const middlewares = require('./src/lib/middleware')
 const config = require('./config')
 const mongoose = require('mongoose')
+const GpioConfiguracion = require('./src/lib/pins/gpio.config')
 
 // inicializar express
 const app = express()
-
+GpioConfiguracion.iniciar()
 // conexion db nosql
 mongoose.connect('mongodb://' + config[env].database.host + '/' + config[env].database.name, {
     useNewUrlParser: true,
