@@ -36,7 +36,7 @@ module.exports = function (router) {
     router.post('/settings/configurarPaquetes', async (req, res) => {
         try {
             const { Id, ContadorPaquetes, EsContadorPaquetesAutomatico } = req.body
-            let puesto = await puestoWebservice.obtenerPorId(Id)
+            const puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 return res.status(404).json({
                     message: 'No hay puesto configurado'
@@ -46,7 +46,8 @@ module.exports = function (router) {
                 await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
                     puesto.PinBuzzer, puesto.PinLed, Number(ContadorPaquetes),
                     EsContadorPaquetesAutomatico)
-                puesto = await puestoWebservice.obtenerPorId(Id)
+                puesto.ContadorPaquetes = ContadorPaquetes
+                puesto.EsContadorPaquetesAutomatico = EsContadorPaquetesAutomatico
                 configParams.write(puesto)
                 res.json(puesto)
             }

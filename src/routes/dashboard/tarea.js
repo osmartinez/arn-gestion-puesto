@@ -6,8 +6,9 @@ const Tarea = require('../../lib/model/tarea.model')
 const Maquina = require('../../lib/model/maquina.model')
 const Etiqueta = require('../../lib/model/etiqueta.model')
 const Prepaquete = require('../../lib/model/prepaquete.model')
-const MovimientoPulso = require ('../../lib/model/movimientoPulso.model')
+const MovimientoPulso = require('../../lib/model/movimientoPulso.model')
 const MovimientoOperario = require('../../lib/model/movimientoOperario.model')
+const Paquete = require('../../lib/model/paquete.model')
 
 const Helpers = require('../../lib/helpers')
 const mongoose = require('mongoose')
@@ -19,21 +20,21 @@ module.exports = function (router) {
         res.render('dashboard/tarea/index', { layout: 'main-dashboard' })
     })
 
-    router.post('/tarea/terminar',async(req,res)=>{
+    router.post('/tarea/terminar', async (req, res) => {
         try {
-            const {defectuosas} = req.body
+            const { defectuosas } = req.body
             puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 throw new Error('No hay un puesto configurado en la pantalla')
             }
             else {
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
-                if(puestoTareaActual==null){
+                if (puestoTareaActual == null) {
                     res.status(500).json({
                         message: 'No hay tarea cargada'
                     })
                 }
-                else{
+                else {
                     puestoTareaActual.fechaFin = new Date()
                     puestoTareaActual.terminado = true
                     await puestoTareaActual.save()
@@ -51,22 +52,22 @@ module.exports = function (router) {
 
     router.post('/tarea/actualizarDefectuosas', async (req, res) => {
         try {
-            const {defectuosas} = req.body
+            const { defectuosas } = req.body
             puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 throw new Error('No hay un puesto configurado en la pantalla')
             }
             else {
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
-                if(puestoTareaActual==null){
+                if (puestoTareaActual == null) {
                     res.status(500).json({
                         message: 'No hay tarea cargada'
                     })
                 }
-                else{
-                    for(const tarea of puestoTareaActual.tareas){
-                        if((tarea.cantidadFabricadaPuesto.sum('cantidad')
-                        +tarea.cantidadDefectuosaPuesto.sum('cantidad'))<tarea.cantidadFabricar){
+                else {
+                    for (const tarea of puestoTareaActual.tareas) {
+                        if ((tarea.cantidadFabricadaPuesto.sum('cantidad')
+                            + tarea.cantidadDefectuosaPuesto.sum('cantidad')) < tarea.cantidadFabricar) {
                             tarea.cantidadDefectuosaPuesto.push(new MovimientoPulso({
                                 cantidad: Number(defectuosas)
                             }))
@@ -87,22 +88,22 @@ module.exports = function (router) {
 
     router.post('/tarea/actualizarSaldos', async (req, res) => {
         try {
-            const {saldos} = req.body
+            const { saldos } = req.body
             puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 throw new Error('No hay un puesto configurado en la pantalla')
             }
             else {
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
-                if(puestoTareaActual==null){
+                if (puestoTareaActual == null) {
                     res.status(500).json({
                         message: 'No hay tarea cargada'
                     })
                 }
-                else{
-                    for(const tarea of puestoTareaActual.tareas){
-                        if( (tarea.cantidadFabricadaPuesto.sum('cantidad')
-                        +tarea.cantidadDefectuosaPuesto.sum('cantidad'))<tarea.cantidadFabricar){
+                else {
+                    for (const tarea of puestoTareaActual.tareas) {
+                        if ((tarea.cantidadFabricadaPuesto.sum('cantidad')
+                            + tarea.cantidadDefectuosaPuesto.sum('cantidad')) < tarea.cantidadFabricar) {
                             tarea.cantidadSaldosPuesto.push(new MovimientoPulso({
                                 cantidad: Number(saldos)
                             }))
@@ -160,10 +161,28 @@ module.exports = function (router) {
                             tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
                                 cantidad: productoPorPulso
                             }))
+
+
+                            let paqueteModificar = tarea.paquetes.find(p => p.cerrado == false)
+                            if (paqueteModificar == null) {
+                                tarea.paquetes.push(new Paquete({
+                                    cantidad: productoPorPulso,
+                                }))
+                            }
+                            else {
+                                paqueteModificar.cantidad += productoPorPulso
+                                if (puesto.EsContadorPaquetesAutomatico) {
+                                    if (paqueteModificar.cantidad >= puesto.ContadorPaquetes) {
+                                        paqueteModificar.cerrado = true
+                                    }
+                                }
+                            }
+
                             await puestoTareaActual.save()
                             break
                         }
                     }
+
                     return res.json(puestoTareaActual)
                 }
             }
@@ -184,7 +203,7 @@ module.exports = function (router) {
             }
             else {
                 const operariosActuales = await MovimientoOperario.find({ idPuestoSql: puesto.Id, fechaSalida: null })
-                if(operariosActuales==null ||operariosActuales.length == 0){
+                if (operariosActuales == null || operariosActuales.length == 0) {
                     return res.status(405).json({
                         message: 'No hay ningún operario registrado'
                     })
@@ -208,12 +227,12 @@ module.exports = function (router) {
                         maquinas: maquinasNuevas
                     })
 
-                    
+
 
                     const prepaquetesNuevos = []
                     for (const maquina of puesto.Maquinas) {
                         const prepaquetesResponse = await prepaqueteWebService.buscarPrepaquete(codigoEtiqueta, maquina.CodSeccion)
-                        if(prepaquetesResponse== null || prepaquetesResponse.length == 0){
+                        if (prepaquetesResponse == null || prepaquetesResponse.length == 0) {
                             return res.status(404).json({
                                 message: 'No existe la etiqueta'
                             })
@@ -292,16 +311,16 @@ module.exports = function (router) {
                     const prepaquetesNuevos = []
                     for (const maquina of puesto.Maquinas) {
                         const prepaquetesResponse = await prepaqueteWebService.buscarPrepaquete(codigoEtiqueta, maquina.CodSeccion)
-                        if(prepaquetesResponse== null || prepaquetesResponse.length == 0){
+                        if (prepaquetesResponse == null || prepaquetesResponse.length == 0) {
                             return res.status(404).json({
                                 message: 'No existe la etiqueta'
                             })
                         }
-                        else{
-                            const posibleIncompatibilidad =  puestoTareaActual.tareas.find(x=>x.utillaje == prepaquetesResponse[0].CodUtillaje
-                                && x.tallaUtillaje ==  prepaquetesResponse[0].IdUtillajeTalla) 
+                        else {
+                            const posibleIncompatibilidad = puestoTareaActual.tareas.find(x => x.utillaje == prepaquetesResponse[0].CodUtillaje
+                                && x.tallaUtillaje == prepaquetesResponse[0].IdUtillajeTalla)
 
-                            if(posibleIncompatibilidad == null){
+                            if (posibleIncompatibilidad == null) {
                                 return res.status(403).json({
                                     message: 'No puedes meter una caja con otra configuración de utillaje, finaliza antes'
                                 })
@@ -350,8 +369,8 @@ module.exports = function (router) {
                             codSeccion: prepaqueteAux.codSeccion,
                         })
 
-                        const tareaExistente = puestoTareaActual.tareas.find(x=>x.idSql == key)
-                        if(tareaExistente==null){
+                        const tareaExistente = puestoTareaActual.tareas.find(x => x.idSql == key)
+                        if (tareaExistente == null) {
                             const tareaNueva = new Tarea({
                                 idSql: key,
                                 etiquetas: [etiquetaNueva],
@@ -368,11 +387,11 @@ module.exports = function (router) {
                             })
                             tareasNuevas.push(tareaNueva)
                         }
-                        else{
+                        else {
                             console.log(tareaExistente.etiquetas)
                             console.log(etiquetaNueva.codigoEtiqueta)
-                            const etiquetaExistente = tareaExistente.etiquetas.find(x=>x.codigoEtiqueta == etiquetaNueva.codigoEtiqueta)
-                            if(etiquetaExistente == null){
+                            const etiquetaExistente = tareaExistente.etiquetas.find(x => x.codigoEtiqueta == etiquetaNueva.codigoEtiqueta)
+                            if (etiquetaExistente == null) {
                                 tareaExistente.etiquetas.push(etiquetaNueva)
                             }
                         }
@@ -392,5 +411,60 @@ module.exports = function (router) {
             })
         }
 
+    })
+
+    router.post('/tarea/normalizarPaquetes', async (req, res) => {
+        try {
+            puesto = configParams.read()
+            if (puesto == null || !puesto.Id) {
+                throw new Error('No hay un puesto configurado en la pantalla')
+            }
+            else {
+                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                if (puestoTareaActual == null) {
+                    res.status(500).json({
+                        message: 'No hay puesto actual!'
+                    })
+                }
+                else {
+                    for (const tarea of puestoTareaActual.tareas) {
+                        if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
+                            let paqueteNormalizar= tarea.paquetes.find(p => p.cerrado == false)
+                            if (paqueteNormalizar == null) {
+                                tarea.paquetes.push(new Paquete({
+                                    cantidad: 0,
+                                }))
+                            }
+                            else {
+                                if(paqueteNormalizar.cantidad<puesto.ContadorPaquetes){
+                                    res.status(403).json({
+                                        message: 'No puedes cerrar un paquete que no ha llegado al mínimo'
+                                    })
+                                }
+                                else{
+                                    paqueteNormalizar.cerrado = true
+                                    const cantidadNormalizar = paqueteNormalizar.cantidad - puesto.ContadorPaquetes
+                                    paqueteNormalizar.cantidad -=cantidadNormalizar
+                                    tarea.paquetes.push(new Paquete({
+                                        cantidad: cantidadNormalizar,
+                                    }))
+                                }
+
+                            }
+
+                            break
+                        }
+                    }
+
+                    await puestoTareaActual.save()
+                    return res.json(puestoTareaActual)
+                }
+            }
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
     })
 }

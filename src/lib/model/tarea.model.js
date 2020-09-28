@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const Etiqueta = require('./etiqueta.model').schema
-const Operario = require('./operario.model').schema
 const MovimientoPulso = require('./movimientoPulso.model').schema
+const Paquete = require('./paquete.model').schema
 
 const tareaSchema = new mongoose.Schema({
     idSql: {type: Number, required:true},
@@ -23,6 +23,8 @@ const tareaSchema = new mongoose.Schema({
     cantidadFabricadaPuesto: {type: [MovimientoPulso]},
     cantidadDefectuosaPuesto: {type: [MovimientoPulso]},
     cantidadSaldosPuesto: {type: [MovimientoPulso]},
+    paquetes: {type: [Paquete]}
+
 
 })
 

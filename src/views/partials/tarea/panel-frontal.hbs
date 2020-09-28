@@ -89,16 +89,16 @@
         </div>
 
         <div class="col-md-4">
-            <div class="card card-stats mb-4 mb-xl-0">
+            <div id="card-contador-paquetes" class="card card-stats mb-4 mb-xl-0">
                 <div class="w-full md:w-1/3 px-2">
                     <div class="card-body">
                         <div class="row">
                             <div class="col">
                                 <h5 class="card-title text-uppercase text-muted mb-0">CONTADOR PAQUETES</h5>
-                                <span class="h2 font-weight-bold mb-0">0</span>
-                                <span id="sumador-pares-paquete" class="text-success">0</span>
-                                <span id="separador-paquetes" class="text-success">/</span>
-                                <span id="pares-por-paquete" class="text-success">{{Puesto.ContadorPaquetes}}</span>
+                                <span id="contador-paquetes" class="h2 font-weight-bold mb-0">0</span>
+                                <span id="sumador-pares-paquete" class="contador-paquetes text-success">0</span>
+                                <span id="separador-paquetes" class="contador-paquetes text-success">/</span>
+                                <span id="pares-por-paquete" class="contador-paquetes text-success">{{Puesto.ContadorPaquetes}}</span>
                             </div>
                             <div id="btn-config-contador-paquetes" class="col-auto" data-toggle="modal"
                                 data-target="#modalConfigurarSetPaquete">
@@ -111,7 +111,7 @@
                             <div class="col-md-6">
                             </div>
                             <div class="col-md-6">
-                                <a class="btn-floating btn-lg {{#if Puesto.EsContadorPaquetesAutomatico}} btn-light disabled aria-disabled="true" {{else}} btn-default {{/if}}"  role="button"><i class="fas fa-sync"></i></a>
+                                <a id="btn-normalizar-paquetes" class="btn-floating btn-lg {{#if Puesto.EsContadorPaquetesAutomatico}} btn-light disabled aria-disabled="true" {{else}} btn-default {{/if}}"  role="button"><i class="fas fa-sync"></i></a>
                             </div>
                         </div>
                     </div>
