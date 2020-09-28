@@ -59,6 +59,10 @@ function buscarPrepaquete(codigoPrepaquete) {
                 case 403:
                     parpadearElemento('btn-terminar-tarea',error=true,'La etiqueta no coincide con el utillaje que hay actualmente.\nTermine antes la tarea actual.')
                     break
+                case 405:
+                    parpadearElemento('btn-operarios',error=true,`<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                    break
+
             }
 
         }

@@ -1,4 +1,5 @@
 const configParams = require('../../lib/config.params')
+
 const PuestoTareasActuales = require('../../lib/model/puestoTareasActuales.model')
 const Puesto = require('../../lib/model/puesto.model')
 const Tarea = require('../../lib/model/tarea.model')
@@ -6,6 +7,8 @@ const Maquina = require('../../lib/model/maquina.model')
 const Etiqueta = require('../../lib/model/etiqueta.model')
 const Prepaquete = require('../../lib/model/prepaquete.model')
 const MovimientoPulso = require ('../../lib/model/movimientoPulso.model')
+const MovimientoOperario = require('../../lib/model/movimientoOperario.model')
+
 const Helpers = require('../../lib/helpers')
 const mongoose = require('mongoose')
 const puestoWebService = require('../../lib/repository/puesto.ws')()
@@ -180,6 +183,13 @@ module.exports = function (router) {
                 throw new Error('No hay un puesto configurado en la pantalla')
             }
             else {
+                const operariosActuales = await MovimientoOperario.find({ idPuestoSql: puesto.Id, fechaSalida: null })
+                if(operariosActuales==null ||operariosActuales.length == 0){
+                    return res.status(405).json({
+                        message: 'No hay ningún operario registrado'
+                    })
+                }
+
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                 if (puestoTareaActual == null) {
                     const maquinasNuevas = []

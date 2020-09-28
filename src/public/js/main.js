@@ -51,7 +51,7 @@ var loadScript = function (src, callbackfn) {
     document.documentElement.firstChild.appendChild(newScript);
 }
 
-function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 5000) {
+function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 4000) {
     var timer;
 
     function blinking() {
@@ -63,14 +63,18 @@ function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 50
         }
         setTimeout(() => {
             clearInterval(timer)
+            if(mensaje){
+                Swal.close()
+            }
         }, milisegundos)
     }
 
     if (mensaje) {
         Swal.fire({
             type: error ? 'error' : 'info',
-            title: error ? 'Error!' : 'Información',
-            text: mensaje,
+            title: error ? '¡Error!' : 'Información',
+            html: `${mensaje}`,
+            showConfirmButton:false,
         })
     }
 

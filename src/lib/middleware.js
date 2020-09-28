@@ -17,7 +17,6 @@ module.exports = {
         if (app.locals.Puesto.Id) {
             app.locals.Operarios = multipleMongooseToObj(await MovimientoOperario.find({ idPuestoSql: data.Id, fechaSalida: null }))
         }
-        console.log(app.locals.Operarios)
         next()
     }
 }
