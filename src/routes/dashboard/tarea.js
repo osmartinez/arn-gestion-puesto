@@ -141,6 +141,74 @@ module.exports = function (router) {
         }
     })
 
+    router.post('/tarea/pulsoMaquina',async(req,res)=>{
+        const {idMaquina} = req.body
+        try{
+            const puesto = configParams.read()
+            if(puesto==null || !puesto.Id){
+                return res.status(404).json({
+                    message: 'No hay puesto configurado'
+                })
+            }
+            
+            const maquina = puesto.Maquinas.find(m=>m.ID == idMaquina)
+            if(maquina == null || !maquina.EsPulsoManual){
+                return res.status(404).json({
+                    message: 'No existe la maquina con pulso automatico en el puesto configurado'
+                })
+            }
+            else{
+                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                if(puestoTareaActual== null){
+                    return res.status(404).json({
+                        message: 'No hay tarea en el puesto'
+                    })
+                }
+                else{
+                    await consumirPulso(maquina.ProductoPorPulso, puestoTareaActual)
+                    return res.json(puestoTareaActual)
+                }
+            }
+
+
+        }catch(err){
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
+
+    })
+
+    async function consumirPulso(cuantosPares, puestoTareaActual){
+        for (const tarea of puestoTareaActual.tareas) {
+            if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
+                tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
+                    cantidad: cuantosPares
+                }))
+
+
+                let paqueteModificar = tarea.paquetes.find(p => p.cerrado == false)
+                if (paqueteModificar == null) {
+                    tarea.paquetes.push(new Paquete({
+                        cantidad: cuantosPares,
+                    }))
+                }
+                else {
+                    paqueteModificar.cantidad += cuantosPares
+                    if (puesto.EsContadorPaquetesAutomatico) {
+                        if (paqueteModificar.cantidad >= puesto.ContadorPaquetes) {
+                            paqueteModificar.cerrado = true
+                        }
+                    }
+                }
+
+                await puestoTareaActual.save()
+                break
+            }
+        }
+    }
+
     router.post('/tarea/pulsoSimulado', async (req, res) => {
         try {
             puesto = configParams.read()
@@ -156,33 +224,7 @@ module.exports = function (router) {
                 }
                 else {
                     const productoPorPulso = 1
-                    for (const tarea of puestoTareaActual.tareas) {
-                        if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
-                            tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
-                                cantidad: productoPorPulso
-                            }))
-
-
-                            let paqueteModificar = tarea.paquetes.find(p => p.cerrado == false)
-                            if (paqueteModificar == null) {
-                                tarea.paquetes.push(new Paquete({
-                                    cantidad: productoPorPulso,
-                                }))
-                            }
-                            else {
-                                paqueteModificar.cantidad += productoPorPulso
-                                if (puesto.EsContadorPaquetesAutomatico) {
-                                    if (paqueteModificar.cantidad >= puesto.ContadorPaquetes) {
-                                        paqueteModificar.cerrado = true
-                                    }
-                                }
-                            }
-
-                            await puestoTareaActual.save()
-                            break
-                        }
-                    }
-
+                    consumirPulso(productoPorPulso, puestoTareaActual)
                     return res.json(puestoTareaActual)
                 }
             }

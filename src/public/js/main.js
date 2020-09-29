@@ -63,7 +63,7 @@ function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 40
         }
         setTimeout(() => {
             clearInterval(timer)
-            if(mensaje){
+            if (mensaje) {
                 Swal.close()
             }
         }, milisegundos)
@@ -74,7 +74,7 @@ function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 40
             type: error ? 'error' : 'info',
             title: error ? '¡Error!' : 'Información',
             html: `${mensaje}`,
-            showConfirmButton:false,
+            showConfirmButton: false,
         })
     }
 
@@ -114,7 +114,7 @@ function getAllAvisos(selected) {
 }
 
 function armarTodo() {
-    if(typeof armarFormulario == 'function'){
+    if (typeof armarFormulario == 'function') {
         armarFormulario()
         armarTablaIO()
         armarTablaIncidencias()
@@ -226,17 +226,36 @@ let Puesto = {
 }
 
 
-setInterval(()=>{
+setInterval(() => {
     $.ajax({
         method: 'POST',
         url: `/dashboard/gpio/obtenerEstadoPins`,
         dataType: 'json',
-        success: (pins) => {
-            console.log(pins)
+        success: (PINS) => {
+            for (const pin of PINS) {
+                if (PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
+                    const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
+                    if (maquina != null) {
+                        $.ajax({
+                            method: 'POST',
+                            url: `/dashboard/tarea/pulsoMaquina`,
+                            dataType: 'json',
+                            data: JSON.stringify({ idMaquina:maquina.ID }),
+                            success: (tareasPuesto) => {
+                                Puesto.refrescarTareasPuesto(tareasPuesto)
+                            },
+                            error: (err) => {
+                                error(err.responseJSON.message)
+                            }
+                        })
+                        break
+                    }
+                }
+            }
         },
         error: (err) => {
             error("Error petición pins")
         }
     })
-},2000)
+}, 2000)
 
