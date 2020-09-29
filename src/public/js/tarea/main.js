@@ -57,10 +57,10 @@ function buscarPrepaquete(codigoPrepaquete) {
                     error('No existe la etiqueta!')
                     break
                 case 403:
-                    parpadearElemento('btn-terminar-tarea',error=true,'La etiqueta no coincide con el utillaje que hay actualmente.\nTermine antes la tarea actual.')
+                    parpadearElemento('btn-terminar-tarea', error = true, 'La etiqueta no coincide con el utillaje que hay actualmente.\nTermine antes la tarea actual.')
                     break
                 case 405:
-                    parpadearElemento('btn-operarios',error=true,`<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
                     break
 
             }
@@ -172,10 +172,10 @@ setInterval(() => {
             for (const pin in PINS) {
 
                 // detectar pulso principal pares
-                if (PINS[pin].type=='main-pulse' && PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
-                    if(PINS[pin].flanco == 'up'){
+                if (PINS[pin].type == 'main-pulse' && PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
+                    if (PINS[pin].flanco == 'up') {
                         const pulso = PINS[pin].pulsesUp.pop()
-                        if(pulso === 1){
+                        if (pulso === 1) {
                             const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
                             if (maquina != null) {
                                 console.log(maquina)
@@ -184,7 +184,13 @@ setInterval(() => {
                                     url: `/dashboard/tarea/pulsoMaquina`,
                                     contentType: "application/json",
                                     dataType: 'json',
-                                    data: JSON.stringify({ idMaquina:maquina.ID }),
+                                    data: JSON.stringify(
+                                        {
+                                            IdMaquina: maquina.ID,
+                                            EsPulsoManual: maquina.EsPulsoManual,
+                                            ProductoPorPulso: maquina.ProductoPorPulso,
+                                            PinPulso: maquina.PinPulso,
+                                        }),
                                     success: (tareasPuesto) => {
                                         Puesto.refrescarTareasPuesto(tareasPuesto)
                                     },
@@ -196,7 +202,7 @@ setInterval(() => {
                             }
                         }
                     }
-                   
+
                 }
             }
         },

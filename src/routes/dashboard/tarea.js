@@ -142,40 +142,37 @@ module.exports = function (router) {
         }
     })
 
-    router.post('/tarea/pulsoMaquina',async(req,res)=>{
-        const {idMaquina} = req.body
-        try{
+    router.post('/tarea/pulsoMaquina', async (req, res) => {
+        const { IdMaquina, PinPulso, ProductoPorPulso, EsPulsoManual } = req.body
+        try {
             const puesto = configParams.read()
-            if(puesto==null || !puesto.Id){
+            if (puesto == null || !puesto.Id) {
                 return res.status(404).json({
                     message: 'No hay puesto configurado'
                 })
             }
-            
-            const maquina = puesto.Maquinas.find(m=>m.ID == idMaquina)
-            if(maquina == null || maquina.EsPulsoManual){
-                return res.status(404).json({
-                    message: 'No existe la maquina con pulso automatico en el puesto configurado'
+
+            const operariosActuales = await MovimientoOperario.find({ idPuestoSql: puesto.Id, fechaSalida: null })
+            if (operariosActuales == null || operariosActuales.length == 0) {
+                return res.status(405).json({
+                    message: 'No hay ningún operario registrado'
                 })
             }
-            else{
-                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
-                if(puestoTareaActual== null){
-                    return res.status(404).json({
-                        message: 'No hay tarea en el puesto'
-                    })
-                }
-                else{
-                    await consumirPulso(maquina.ProductoPorPulso, puestoTareaActual,puesto)
-                    if(GpioConfiguracion.PINS[maquina.PinPulso].flanco == 'up'){
-                        GpioConfiguracion.PINS[maquina.PinPulso].pulsesUp.pop()
-                    }
-                    return res.json(puestoTareaActual)
-                }
+
+            let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+            if (puestoTareaActual == null) {
+                return res.status(404).json({
+                    message: 'No hay tarea en el puesto'
+                })
             }
-
-
-        }catch(err){
+            else {
+                await consumirPulso(ProductoPorPulso, puestoTareaActual, puesto)
+                if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
+                    GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
+                }
+                return res.json(puestoTareaActual)
+            }
+        } catch (err) {
             console.error(err)
             res.status(500).json({
                 message: err
@@ -184,7 +181,7 @@ module.exports = function (router) {
 
     })
 
-    async function consumirPulso(cuantosPares, puestoTareaActual,puesto){
+    async function consumirPulso(cuantosPares, puestoTareaActual, puesto) {
         for (const tarea of puestoTareaActual.tareas) {
             if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
                 tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
@@ -220,6 +217,13 @@ module.exports = function (router) {
                 throw new Error('No hay un puesto configurado en la pantalla')
             }
             else {
+                const operariosActuales = await MovimientoOperario.find({ idPuestoSql: puesto.Id, fechaSalida: null })
+                if (operariosActuales == null || operariosActuales.length == 0) {
+                    return res.status(405).json({
+                        message: 'No hay ningún operario registrado'
+                    })
+                }
+                
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                 if (puestoTareaActual == null) {
                     res.status(500).json({
@@ -228,7 +232,7 @@ module.exports = function (router) {
                 }
                 else {
                     const productoPorPulso = 1
-                    consumirPulso(productoPorPulso, puestoTareaActual,puesto)
+                    consumirPulso(productoPorPulso, puestoTareaActual, puesto)
                     return res.json(puestoTareaActual)
                 }
             }
@@ -475,22 +479,22 @@ module.exports = function (router) {
                 else {
                     for (const tarea of puestoTareaActual.tareas) {
                         if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
-                            let paqueteNormalizar= tarea.paquetes.find(p => p.cerrado == false)
+                            let paqueteNormalizar = tarea.paquetes.find(p => p.cerrado == false)
                             if (paqueteNormalizar == null) {
                                 tarea.paquetes.push(new Paquete({
                                     cantidad: 0,
                                 }))
                             }
                             else {
-                                if(paqueteNormalizar.cantidad<puesto.ContadorPaquetes){
+                                if (paqueteNormalizar.cantidad < puesto.ContadorPaquetes) {
                                     res.status(403).json({
                                         message: 'No puedes cerrar un paquete que no ha llegado al mínimo'
                                     })
                                 }
-                                else{
+                                else {
                                     paqueteNormalizar.cerrado = true
                                     const cantidadNormalizar = paqueteNormalizar.cantidad - puesto.ContadorPaquetes
-                                    paqueteNormalizar.cantidad -=cantidadNormalizar
+                                    paqueteNormalizar.cantidad -= cantidadNormalizar
                                     tarea.paquetes.push(new Paquete({
                                         cantidad: cantidadNormalizar,
                                     }))
