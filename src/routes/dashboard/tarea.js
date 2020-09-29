@@ -145,6 +145,10 @@ module.exports = function (router) {
     router.post('/tarea/pulsoMaquina', async (req, res) => {
         const { IdMaquina, PinPulso, ProductoPorPulso, EsPulsoManual } = req.body
         try {
+            if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
+                GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
+            }
+            
             const puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 return res.status(404).json({
@@ -167,9 +171,7 @@ module.exports = function (router) {
             }
             else {
                 await consumirPulso(ProductoPorPulso, puestoTareaActual, puesto)
-                if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
-                    GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
-                }
+                
                 return res.json(puestoTareaActual)
             }
         } catch (err) {
@@ -223,7 +225,7 @@ module.exports = function (router) {
                         message: 'No hay ningún operario registrado'
                     })
                 }
-                
+
                 let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                 if (puestoTareaActual == null) {
                     res.status(500).json({
