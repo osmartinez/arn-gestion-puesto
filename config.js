@@ -20,11 +20,11 @@ var config = {
             port: '3000'
         },
         rest:{
-            host: '192.168.0.104',
+            host: '192.168.0.109',
             port: 3000,
         },
         database:{
-            host:'localhost',
+            host:'192.168.0.109',
             port:27017,
             name: 'test',
         }
