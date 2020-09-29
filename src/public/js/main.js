@@ -232,7 +232,7 @@ setInterval(() => {
         url: `/dashboard/gpio/obtenerEstadoPins`,
         dataType: 'json',
         success: (PINS) => {
-            for (const pin of PINS) {
+            for (const pin in PINS) {
                 if (PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
                     const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
                     if (maquina != null) {
