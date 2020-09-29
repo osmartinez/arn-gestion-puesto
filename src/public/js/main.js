@@ -239,6 +239,7 @@ setInterval(() => {
                         $.ajax({
                             method: 'POST',
                             url: `/dashboard/tarea/pulsoMaquina`,
+                            contentType: "application/json",
                             dataType: 'json',
                             data: JSON.stringify({ idMaquina:maquina.ID }),
                             success: (tareasPuesto) => {
