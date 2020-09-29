@@ -233,7 +233,7 @@ setInterval(() => {
         dataType: 'json',
         success: (PINS) => {
             for (const pin in PINS) {
-                if (PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
+                if (PINS[pin].status == 'on' && PINS[pin].mode == 'in' && PINS[pin].value == 1) {
                     const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
                     if (maquina != null) {
                         $.ajax({
