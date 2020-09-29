@@ -54,13 +54,18 @@ function ConfiguracionGPIO() {
             if (PINS[PIN].status == 'on' && PINS[PIN].mode == 'in') {
                 PINS[PIN].previous_value = PINS[PIN].value
                 PINS[PIN].value = PINS[PIN].gpio_object.readSync()
-                if (PINS[PIN].previous_value != PINS[PIN].value) {
-                    if (PINS[PIN].flanco == 'up') {
-                        PINS[PIN].pulsesUp.push(1)
+                if (PINS[PIN].previous_value !== PINS[PIN].value) {
+                    if (PINS[PIN].value == 1) {
+                        if (PINS[PIN].flanco == 'up') {
+                            PINS[PIN].pulsesUp.push(1)
+                        }
                     }
-                    else if (PINS[PIN].flanco == 'down') {
-                        PINS[PIN].pulsesDown.push(1)
+                    else{
+                        if (PINS[PIN].flanco == 'down') {
+                            PINS[PIN].pulsesDown.push(1)
+                        }
                     }
+                   
                 }
 
             }

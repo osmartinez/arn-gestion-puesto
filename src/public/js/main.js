@@ -235,7 +235,7 @@ setInterval(() => {
             for (const pin in PINS) {
 
                 // detectar pulso principal pares
-                if (PINS[pin].type=='main-pulse' == PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
+                if (PINS[pin].type=='main-pulse' && PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
                     if(PINS[pin].flanco == 'up'){
                         const pulso = PINS[pin].pulsesUp.pop()
                         if(pulso === 1){
