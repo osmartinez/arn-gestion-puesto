@@ -207,7 +207,15 @@ setInterval(() => {
             }
         },
         error: (err) => {
-            error("Error petición pins")
+            switch (err.status) {
+                case 404:
+                    error(err.responseJSON.message)
+                    break
+                case 405:
+                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                    break
+
+            }
         }
     })
 }, 100)
