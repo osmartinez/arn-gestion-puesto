@@ -5,7 +5,7 @@ function cargarInformacionTarea() {
         </br>
         <${Puesto.TareasPuesto.tareas[0].tallaUtillaje}>
         </br>
-        ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')}</p>`)
+        ${Puesto.TareasPuesto.tareas.sum('cantidadFabricada') } / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')}</p>`)
     }
     else {
         $('#info-tarea').html('')
