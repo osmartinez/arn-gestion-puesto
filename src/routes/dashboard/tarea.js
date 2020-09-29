@@ -152,7 +152,7 @@ module.exports = function (router) {
             }
             
             const maquina = puesto.Maquinas.find(m=>m.ID == idMaquina)
-            if(maquina == null || !maquina.EsPulsoManual){
+            if(maquina == null || maquina.EsPulsoManual){
                 return res.status(404).json({
                     message: 'No existe la maquina con pulso automatico en el puesto configurado'
                 })
