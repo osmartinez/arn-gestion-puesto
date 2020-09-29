@@ -143,6 +143,7 @@ module.exports = function (router) {
 
     router.post('/tarea/pulsoMaquina',async(req,res)=>{
         const {idMaquina} = req.body
+        console.log(req.body)
         try{
             const puesto = configParams.read()
             if(puesto==null || !puesto.Id){
