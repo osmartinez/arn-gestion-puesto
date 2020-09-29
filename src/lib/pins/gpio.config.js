@@ -18,15 +18,32 @@ function ConfiguracionGPIO(){
         }
     }
 
+    function configurarPuesto(puesto){
+        // entradas
+        for(const maquina of puesto.Maquinas){
+            if(!maquina.EsPulsoManual){
+                if(maquina.PinPulso != null && maquina.PinPulso != 'null'){
+                    PINS[maquina.PinPulso].mode = 'in'
+                    PINS[maquina.PinPulso].mode = 'on'
+                    try{
+                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, 'in')
+                    }catch(err){
+                        console.error(`Error al abrir el ${maquina.PinPulso}`)
+                    }
+                }
+            }
+        }
+    }
+
     function configurarPin(pin, modo){
         PINS[pin].mode = modo
         PINS[pin].status = 'on'
         PINS[pin].gpio_object = new Gpio(PINS[pin].number, modo)
     }
 
-    function refrescarValores(){
+    function refrescarValoresLectura(){
         for(const PIN in PINS){
-            if(PINS[PIN].status == 'on'){
+            if(PINS[PIN].status == 'on' && PINS[PIN].mode == 'in'){
                 PINS[PIN].value = PINS[PIN].gpio_object.readSync()
             }
         }
@@ -46,8 +63,9 @@ function ConfiguracionGPIO(){
         pinCount,
         iniciar,
         configurarPin,
-        refrescarValores,
+        refrescarValoresLectura,
         escribirValor,
+        configurarPuesto,
     }
 }
 

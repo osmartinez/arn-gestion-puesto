@@ -34,5 +34,6 @@ require('./fichajes')(router)
 require('./tarea')(router)
 require('./averia')(router)
 require('./incidencia-fichaje')(router)
+require('./gpio')(router)
 
 module.exports = router

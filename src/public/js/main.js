@@ -225,3 +225,18 @@ let Puesto = {
     }
 }
 
+
+setInterval(()=>{
+    $.ajax({
+        method: 'POST',
+        url: `/dashboard/gpio/obtenerEstadoPins`,
+        dataType: 'json',
+        success: (pins) => {
+            console.log(pins)
+        },
+        error: (err) => {
+            error("Error petición pins")
+        }
+    })
+},2000)
+

@@ -4,6 +4,7 @@ const config = require('../../../config')
 const puestoWebservice = require('../../lib/repository/puesto.ws')()
 const maquinaWebService = require('../../lib/repository/maquina.ws')()
 const seccionWebService = require('../../lib/repository/seccion.ws')()
+const GpioConfiguracion = require('../../lib/pins/gpio.config')
 
 module.exports = function (router) {
     router.get('/settings', async (req, res) => {
@@ -71,6 +72,10 @@ module.exports = function (router) {
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
                 puesto.PuestosConfiguracionesPins.PinBuzzer, puesto.PuestosConfiguracionesPins.PinLed, puesto.PuestosConfiguracionesPins.ContadorPaquetes,
                 puesto.PuestosConfiguracionesPins.EsContadorPaquetesAutomatico)
+
+            // reseteo todos los gpios
+            GpioConfiguracion.iniciar()
+
             // si se ha creado correctamente
             if (puestoNuevo != null && puestoNuevo.Id > 0) {
                 // para cada máquina en el puesto a configurar
@@ -89,6 +94,7 @@ module.exports = function (router) {
                 }
             }
             configParams.write(puestoNuevo)
+            GpioConfiguracion.configurarPuesto(puestoNuevo)
         }
         // el puesto ya existe, solo actualizar
         else {
@@ -109,6 +115,8 @@ module.exports = function (router) {
                 }
 
                 configParams.write(puesto)
+                GpioConfiguracion.configurarPuesto(puesto)
+
             }
         }
     })
