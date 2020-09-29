@@ -24,7 +24,7 @@ function ConfiguracionGPIO(){
             if(!maquina.EsPulsoManual){
                 if(maquina.PinPulso != null && maquina.PinPulso != 'null'){
                     PINS[maquina.PinPulso].mode = 'in'
-                    PINS[maquina.PinPulso].mode = 'on'
+                    PINS[maquina.PinPulso].status = 'on'
                     try{
                     PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, 'in')
                     }catch(err){
