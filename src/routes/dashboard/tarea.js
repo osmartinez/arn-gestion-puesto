@@ -143,7 +143,6 @@ module.exports = function (router) {
 
     router.post('/tarea/pulsoMaquina',async(req,res)=>{
         const {idMaquina} = req.body
-        console.log(req.body)
         try{
             const puesto = configParams.read()
             if(puesto==null || !puesto.Id){
@@ -166,7 +165,7 @@ module.exports = function (router) {
                     })
                 }
                 else{
-                    await consumirPulso(maquina.ProductoPorPulso, puestoTareaActual)
+                    await consumirPulso(maquina.ProductoPorPulso, puestoTareaActual,puesto)
                     return res.json(puestoTareaActual)
                 }
             }
@@ -181,7 +180,7 @@ module.exports = function (router) {
 
     })
 
-    async function consumirPulso(cuantosPares, puestoTareaActual){
+    async function consumirPulso(cuantosPares, puestoTareaActual,puesto){
         for (const tarea of puestoTareaActual.tareas) {
             if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
                 tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
@@ -225,7 +224,7 @@ module.exports = function (router) {
                 }
                 else {
                     const productoPorPulso = 1
-                    consumirPulso(productoPorPulso, puestoTareaActual)
+                    consumirPulso(productoPorPulso, puestoTareaActual,puesto)
                     return res.json(puestoTareaActual)
                 }
             }
