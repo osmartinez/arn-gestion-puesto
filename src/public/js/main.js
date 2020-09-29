@@ -257,5 +257,5 @@ setInterval(() => {
             error("Error petición pins")
         }
     })
-}, 2000)
+}, 100)
 
