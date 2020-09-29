@@ -9,10 +9,16 @@ const middlewares = require('./src/lib/middleware')
 const config = require('./config')
 const mongoose = require('mongoose')
 const GpioConfiguracion = require('./src/lib/pins/gpio.config')
+const configParams = require('./src/lib/config.params')
 
 // inicializar express
 const app = express()
 GpioConfiguracion.iniciar()
+const puestoActual = configParams.read()
+if(puestoActual!=null && puestoActual.Id){
+    GpioConfiguracion.configurarPuesto(puestoActual)
+}
+
 // conexion db nosql
 mongoose.connect('mongodb://' + config[env].database.host + '/' + config[env].database.name, {
     useNewUrlParser: true,
