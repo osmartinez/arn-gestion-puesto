@@ -233,24 +233,32 @@ setInterval(() => {
         dataType: 'json',
         success: (PINS) => {
             for (const pin in PINS) {
-                if (PINS[pin].status == 'on' && PINS[pin].mode == 'in' && PINS[pin].value == 1) {
-                    const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
-                    if (maquina != null) {
-                        $.ajax({
-                            method: 'POST',
-                            url: `/dashboard/tarea/pulsoMaquina`,
-                            contentType: "application/json",
-                            dataType: 'json',
-                            data: JSON.stringify({ idMaquina:maquina.ID }),
-                            success: (tareasPuesto) => {
-                                Puesto.refrescarTareasPuesto(tareasPuesto)
-                            },
-                            error: (err) => {
-                                error(err.responseJSON.message)
+
+                // detectar pulso principal pares
+                if (PINS[pin].type=='main-pulse' == PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
+                    if(PINS[pin].flanco == 'up'){
+                        const pulso = PINS[pin].pulsesUp.pop()
+                        if(pulso === 1){
+                            const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
+                            if (maquina != null) {
+                                $.ajax({
+                                    method: 'POST',
+                                    url: `/dashboard/tarea/pulsoMaquina`,
+                                    contentType: "application/json",
+                                    dataType: 'json',
+                                    data: JSON.stringify({ idMaquina:maquina.ID }),
+                                    success: (tareasPuesto) => {
+                                        Puesto.refrescarTareasPuesto(tareasPuesto)
+                                    },
+                                    error: (err) => {
+                                        error(err.responseJSON.message)
+                                    }
+                                })
+                                break
                             }
-                        })
-                        break
+                        }
                     }
+                   
                 }
             }
         },
