@@ -16,8 +16,8 @@ var config = {
     },
     production: {
         server: {
-            host: '192.168.0.104',
-            port: '3000'
+            host: 'localhost',
+            port: 8080
         },
         rest:{
             host: '192.168.0.109',
