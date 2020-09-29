@@ -34,13 +34,42 @@ function ConfiguracionGPIO() {
                     PINS[maquina.PinPulso].type = 'main-pulse'
 
                     try {
-                        PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, 'in')
+                        PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode)
                     } catch (err) {
                         console.error(`Error al abrir el ${maquina.PinPulso}`)
                     }
                 }
             }
         }
+
+        for(const configIncidencia of puesto.PuestosConfiguracionesIncidencias){
+            if(configIncidencia.Habilitada){
+                if(configIncidencia.PinNotificacion1 != null && configIncidencia.PinNotificacion1 != 'null'){
+                    PINS[configIncidencia.PinNotificacion1].mode = 'out'
+                    PINS[configIncidencia.PinNotificacion1].status = 'on'
+                    PINS[configIncidencia.PinNotificacion1].type = 'incidence'
+                }
+
+                if(configIncidencia.PinNotificacion2 != null && configIncidencia.PinNotificacion2 != 'null'){
+                    PINS[configIncidencia.PinNotificacion2].mode = 'out'
+                    PINS[configIncidencia.PinNotificacion2].status = 'on'
+                    PINS[configIncidencia.PinNotificacion2].type = 'incidence'
+                }
+
+                try {
+                    PINS[configIncidencia.PinNotificacion1].gpio_object = new Gpio(PINS[configIncidencia.PinNotificacion1].number, PINS[configIncidencia.PinNotificacion1].mode)
+                    PINS[configIncidencia.PinNotificacion2].gpio_object = new Gpio(PINS[configIncidencia.PinNotificacion2].number, PINS[configIncidencia.PinNotificacion2].mode)
+
+                } catch (err) {
+                    console.error(`Error al abrir el ${configIncidencia.PinNotificacion1}`)
+                    console.error(`Error al abrir el ${configIncidencia.PinNotificacion2}`)
+                }
+
+            }
+        }
+
+        // salidas puesto pinled&pinbuzzer
+
     }
 
     function configurarPin(pin, modo) {

@@ -190,6 +190,7 @@ setInterval(() => {
                                             EsPulsoManual: maquina.EsPulsoManual,
                                             ProductoPorPulso: maquina.ProductoPorPulso,
                                             PinPulso: maquina.PinPulso,
+                                            DescontarAutomaticamente: maquina.DescontarAutomaticamente
                                         }),
                                     success: (tareasPuesto) => {
                                         Puesto.refrescarTareasPuesto(tareasPuesto)

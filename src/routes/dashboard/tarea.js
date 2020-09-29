@@ -148,7 +148,7 @@ module.exports = function (router) {
             if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
                 GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
             }
-            
+
             const puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 return res.status(404).json({
@@ -489,9 +489,13 @@ module.exports = function (router) {
                             }
                             else {
                                 if (paqueteNormalizar.cantidad < puesto.ContadorPaquetes) {
-                                    res.status(403).json({
+                                    /*res.status(403).json({
                                         message: 'No puedes cerrar un paquete que no ha llegado al mínimo'
-                                    })
+                                    })*/
+                                    paqueteNormalizar.cerrado= true
+                                    tarea.paquetes.push(new Paquete({
+                                        cantidad: 0,
+                                    }))
                                 }
                                 else {
                                     paqueteNormalizar.cerrado = true
