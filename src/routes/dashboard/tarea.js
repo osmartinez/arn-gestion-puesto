@@ -14,6 +14,7 @@ const Helpers = require('../../lib/helpers')
 const mongoose = require('mongoose')
 const puestoWebService = require('../../lib/repository/puesto.ws')()
 const prepaqueteWebService = require('../../lib/repository/prepaquete.ws')()
+const GpioConfiguracion = require('../../lib/pins/gpio.config')
 
 module.exports = function (router) {
     router.get('/tarea', (req, res) => {
@@ -166,6 +167,9 @@ module.exports = function (router) {
                 }
                 else{
                     await consumirPulso(maquina.ProductoPorPulso, puestoTareaActual,puesto)
+                    if(GpioConfiguracion.PINS[maquina.PinPulso].flanco == 'up'){
+                        GpioConfiguracion.PINS[maquina.PinPulso].pulsesUp.pop()
+                    }
                     return res.json(puestoTareaActual)
                 }
             }
