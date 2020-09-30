@@ -226,3 +226,35 @@ setInterval(() => {
         }
     })
 }, 100)
+
+// intervalor que busca todos los pares fabricados de la tarea actual por otros puestos
+setInterval(()=>{
+    if(Puesto!=null && Puesto.TareasPuesto !=null && Puesto.TareasPuesto.tareas.length > 0){
+        const idsTareas = []
+        for(const tarea of Puesto.TareasPuesto.tareas){
+            idsTareas.push(tarea.idSql)
+        }
+        $.ajax({
+            method: 'POST',
+            url: `/dashboard/tarea/recopilarParesOtrosPuestos`,
+            contentType: "application/json",
+            dataType: 'json',
+            data: JSON.stringify(
+                {
+                    idPuesto: Puesto.Id,
+                    idsTareas: idsTareas
+                }),
+            success: (resultado) => {
+                cargarInformacionTarea(resultado.cantidad)
+            },
+            error: (err) => {
+                switch (err.status) {
+                    default:
+                        error(err.responseJSON.message)
+                        break
+                }
+            }
+        })
+    }
+
+},5000)

@@ -8,6 +8,7 @@ const tareaSchema = new mongoose.Schema({
     idSql: {type: Number, required:true},
     etiquetas: {type: [Etiqueta]},
     fechaPrimerFichaje: {type:Date,default: new Date()},
+    fechaFin:{type:Date, default: null},
     utillaje: {type: String},
     tallaUtillaje: {type: String},
     tallasArticulo: {type: [String]},
@@ -18,7 +19,8 @@ const tareaSchema = new mongoose.Schema({
     modelo: {type:String},
     referencia:{type: String},
     codigoOrden: {type:String},
-
+    terminado: {type:Boolean, default:false},
+    
     // generados por mi app
     cantidadFabricadaPuesto: {type: [MovimientoPulso]},
     cantidadDefectuosaPuesto: {type: [MovimientoPulso]},

@@ -82,6 +82,7 @@ function ConfiguracionGPIO() {
         for (const PIN in PINS) {
             if (PINS[PIN].status == 'on' && PINS[PIN].mode == 'in') {
                 PINS[PIN].previous_value = PINS[PIN].value
+                if(PINS[PIN].gpio_object == null)continue
                 PINS[PIN].value = PINS[PIN].gpio_object.readSync()
                 if (PINS[PIN].previous_value !== PINS[PIN].value) {
                     if (PINS[PIN].value == 1) {

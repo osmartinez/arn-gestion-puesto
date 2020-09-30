@@ -38,6 +38,10 @@ module.exports = function (router) {
                 else {
                     puestoTareaActual.fechaFin = new Date()
                     puestoTareaActual.terminado = true
+                    for (const tarea of puestoTareaActual.tareas) {
+                        tarea.fechaFin = puestoTareaActual.fechaFin
+                        tarea.terminado = true
+                    }
                     await puestoTareaActual.save()
                     puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
                     res.json(puestoTareaActual)
@@ -171,7 +175,7 @@ module.exports = function (router) {
             }
             else {
                 await consumirPulso(ProductoPorPulso, puestoTareaActual, puesto)
-                
+
                 return res.json(puestoTareaActual)
             }
         } catch (err) {
@@ -492,7 +496,7 @@ module.exports = function (router) {
                                     /*res.status(403).json({
                                         message: 'No puedes cerrar un paquete que no ha llegado al mínimo'
                                     })*/
-                                    paqueteNormalizar.cerrado= true
+                                    paqueteNormalizar.cerrado = true
                                     tarea.paquetes.push(new Paquete({
                                         cantidad: 0,
                                     }))
@@ -523,4 +527,40 @@ module.exports = function (router) {
             })
         }
     })
+
+    router.post('/tarea/recopilarParesOtrosPuestos', async (req, res) => {
+        const { idsTareas, idPuesto } = req.body
+
+        try {
+            let cantidad = 0
+            let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+            for (const id of idsTareas) {
+                const tareaActual = puestoTareaActual.tareas.find(x => x.idSql == id)
+                if (tareaActual != null) {
+                    const resultados = await PuestoTareasActuales.find({
+                        "terminado": false, "tareas.idSql": id, "tareas.terminado": true,
+                        "tareas.fechaFin": { "$lte": tareaActual.fechaPrimerFichaje }
+                    })
+                    for (const resultado of resultados) {
+                        for (const tarea of resultado.tareas) {
+                            if (tarea.idSql == id) {
+                                cantidad += tarea.cantidadFabricadaPuesto.sum('cantidad') + tarea.cantidadDefectuosaPuesto.sum('cantidad')
+                            }
+                        }
+                    }
+                }
+
+            }
+            res.json({
+                cantidad: cantidad
+            })
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
+
+    })
+
 }
