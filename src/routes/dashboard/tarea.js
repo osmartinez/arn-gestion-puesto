@@ -14,6 +14,7 @@ const Helpers = require('../../lib/helpers')
 const mongoose = require('mongoose')
 const puestoWebService = require('../../lib/repository/puesto.ws')()
 const prepaqueteWebService = require('../../lib/repository/prepaquete.ws')()
+const tareaProgramadaWebService = require('../../lib/repository/tareaProgramada.ws')()
 const GpioConfiguracion = require('../../lib/pins/gpio.config')
 
 module.exports = function (router) {
@@ -39,8 +40,15 @@ module.exports = function (router) {
                     puestoTareaActual.fechaFin = new Date()
                     puestoTareaActual.terminado = true
                     for (const tarea of puestoTareaActual.tareas) {
-                        tarea.fechaFin = puestoTareaActual.fechaFin
-                        tarea.terminado = true
+                        if(!tarea.terminado){
+                            tarea.fechaFin = puestoTareaActual.fechaFin
+                            tarea.terminado = true
+                            for(const maquina of puesto.Maquinas){
+                                const resultadoConsumo = await tareaProgramadaWebService.consumirEnPuesto(tarea.idSql,tarea.cantidadFabricadaPuesto.sum('cantidad')+tarea.cantidadDefectuosaPuesto.sum('cantidad'),maquina.ID)
+                                console.log(resultadoConsumo)
+                            }
+                        }
+
                     }
                     await puestoTareaActual.save()
                     puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
@@ -533,13 +541,13 @@ module.exports = function (router) {
 
         try {
             let cantidad = 0
-            let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+            let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": idPuesto, terminado: false })
             for (const id of idsTareas) {
                 const tareaActual = puestoTareaActual.tareas.find(x => x.idSql == id)
                 if (tareaActual != null) {
                     const resultados = await PuestoTareasActuales.find({
-                        "terminado": false, "tareas.idSql": id, "tareas.terminado": true,
-                        "tareas.fechaFin": { "$lte": tareaActual.fechaPrimerFichaje }
+                        "tareas.idSql": id, 
+                        "tareas.fechaFin":{$gte: tareaActual.fechaPrimerFichaje},
                     })
                     for (const resultado of resultados) {
                         for (const tarea of resultado.tareas) {

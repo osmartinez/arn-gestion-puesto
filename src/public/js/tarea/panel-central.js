@@ -1,11 +1,11 @@
 function cargarInformacionTarea(cantidadFabricadaOtrosPuestos) {
     if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.tareas != null && Puesto.TareasPuesto.tareas.length > 0) {
         $('#info-tarea').html(`
-        <p>${Puesto.TareasPuesto.tareas[0].utillaje}
+        <p><row>${Puesto.TareasPuesto.tareas[0].utillaje}</row>
         </br>
-        <${Puesto.TareasPuesto.tareas[0].tallaUtillaje}>
+        <${Puesto.TareasPuesto.tareas[0].tallaUtillaje}> 
         </br>
-        ${(cantidadFabricadaOtrosPuestos==null?0:cantidadFabricadaOtrosPuestos)+Puesto.TareasPuesto.tareas.sum('cantidadFabricada') } / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')}</p>`)
+        ${Puesto.TareasPuesto.tareas.sum('cantidadFabricada') } ${(cantidadFabricadaOtrosPuestos==null || cantidadFabricadaOtrosPuestos==0?'':`+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')} </p>`)
     }
     else {
         $('#info-tarea').html('')

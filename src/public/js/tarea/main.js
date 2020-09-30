@@ -178,7 +178,6 @@ setInterval(() => {
                         if (pulso === 1) {
                             const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
                             if (maquina != null) {
-                                console.log(maquina)
                                 $.ajax({
                                     method: 'POST',
                                     url: `/dashboard/tarea/pulsoMaquina`,
