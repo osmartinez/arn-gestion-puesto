@@ -17,16 +17,16 @@ var config = {
     production: {
         server: {
             host: 'localhost',
-            port: 8080
+            port: 3000
         },
         rest:{
-            host: '192.168.0.109',
+            host: '192.168.0.104',
             port: 3000,
         },
         database:{
-            host:'192.168.0.109',
-            port:27017,
-            name: 'test',
+            host:'192.168.0.104',
+            port: 27017,
+            name: 'prod',
         }
     },
 };
