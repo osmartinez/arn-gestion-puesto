@@ -1,11 +1,23 @@
 function cargarInformacionTarea(cantidadFabricadaOtrosPuestos) {
     if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.tareas != null && Puesto.TareasPuesto.tareas.length > 0) {
+        let cantidadFabricadaPuesto = 0
+        let cantidadDefectuosaPuesto = 0
+        let cantidadSaldosPuesto = 0
+
+        for (const tarea of Puesto.TareasPuesto.tareas) {
+            cantidadFabricadaPuesto += tarea.cantidadFabricadaPuesto.sum('cantidad')
+            cantidadDefectuosaPuesto += tarea.cantidadDefectuosaPuesto.sum('cantidad')
+            cantidadSaldosPuesto += tarea.cantidadSaldosPuesto.sum('cantidad')
+        }
+
+        const cantidadFabricada = Puesto.TareasPuesto.tareas.sum('cantidadFabricada') + cantidadFabricadaPuesto + cantidadDefectuosaPuesto - cantidadSaldosPuesto
+
         $('#info-tarea').html(`
         <p><row>${Puesto.TareasPuesto.tareas[0].utillaje}</row>
         </br>
         <${Puesto.TareasPuesto.tareas[0].tallaUtillaje}> 
         </br>
-        ${Puesto.TareasPuesto.tareas.sum('cantidadFabricada') } ${(cantidadFabricadaOtrosPuestos==null || cantidadFabricadaOtrosPuestos==0?'':`+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')} </p>`)
+        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos==null || cantidadFabricadaOtrosPuestos==0?'':`+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')} </p>`)
     }
     else {
         $('#info-tarea').html('')
