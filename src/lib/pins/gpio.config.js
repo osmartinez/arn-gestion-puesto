@@ -42,7 +42,7 @@ function ConfiguracionGPIO() {
             }
         }
 
-        for(const configIncidencia of puesto.PuestosConfiguracionesIncidencias){
+        /*for(const configIncidencia of puesto.PuestosConfiguracionesIncidencias){
             if(configIncidencia.Habilitada){
                 if(configIncidencia.PinNotificacion1 != null && configIncidencia.PinNotificacion1 != 'null'){
                     PINS[configIncidencia.PinNotificacion1].mode = 'out'
@@ -66,7 +66,7 @@ function ConfiguracionGPIO() {
                 }
 
             }
-        }
+        }*/
 
         // salidas puesto pinled&pinbuzzer
 
