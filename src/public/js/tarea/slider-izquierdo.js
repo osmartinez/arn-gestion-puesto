@@ -88,11 +88,11 @@ function refrescarTablaTareas() {
                 </li>
                 <li>
                     <div class="treeview-animated-element"><i
-                            class="fas fa-tools ic-w mr-1"></i>${tarea.utillaje}</div>
+                            class="fas fa-tools ic-w mr-1"></i>${tarea.utillaje} &lt;${tarea.tallaUtillaje}&gt;</div>
                 </li>
                 <li>
                     <div class="treeview-animated-element"><i
-                            class="fas fa-shoe-prints ic-w mr-1"></i>${tarea.cantidadFabricar}</div>
+                            class="fas fa-shoe-prints ic-w mr-1"></i>${tarea.cantidadFabricar}  &lt;${tarea.tallasArticulo.join(',')}&gt;</div>
                 </li>
         </li>
             `)
