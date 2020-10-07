@@ -550,11 +550,14 @@ module.exports = function (router) {
                         "tareas.fechaFin":{$gte: tareaActual.fechaPrimerFichaje},
                     })
                     for (const resultado of resultados) {
-                        for (const tarea of resultado.tareas) {
-                            if (tarea.idSql == id) {
-                                cantidad += tarea.cantidadFabricadaPuesto.sum('cantidad') + tarea.cantidadDefectuosaPuesto.sum('cantidad')
+                        if(resultado.idSql != idPuesto){
+                            for (const tarea of resultado.tareas) {
+                                if (tarea.idSql == id) {
+                                    cantidad += tarea.cantidadFabricadaPuesto.sum('cantidad') + tarea.cantidadDefectuosaPuesto.sum('cantidad')
+                                }
                             }
                         }
+                        
                     }
                 }
 
