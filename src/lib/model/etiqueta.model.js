@@ -7,7 +7,7 @@ const etiquetaSchema = new mongoose.Schema({
     esAgrupacion: {type:Boolean},
     prepaquetes: {type: [Prepaquete]},
     codSeccion: {type: String},
-    fechaLectura: {type:Date, default: new Date().toUTCString()}
+    fechaLectura: {type:Date, default: Date.now}
 })
 
 module.exports = mongoose.model('Etiqueta', etiquetaSchema)

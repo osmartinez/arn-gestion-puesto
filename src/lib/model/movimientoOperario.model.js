@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 const movimientoOperarioSchema = new mongoose.Schema({
     idPuestoSql: { type: Number },
-    fechaEntrada: { type: Date, default: new Date().toUTCString() },
+    fechaEntrada: { type: Date, default: Date.now },
     fechaSalida: { type: Date, default: null },
     idOperarioSql: { type: Number },
     codigoOperarioSql: { type: String },
