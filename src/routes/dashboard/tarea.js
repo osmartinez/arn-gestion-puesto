@@ -196,32 +196,33 @@ module.exports = function (router) {
     })
 
     async function consumirPulso(cuantosPares, puestoTareaActual, puesto) {
-        for (const tarea of puestoTareaActual.tareas) {
-            if (tarea.cantidadFabricadaPuesto.sum('cantidad') < tarea.cantidadFabricar) {
-                tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
-                    cantidad: cuantosPares
+        // vamos a suponer por ahora que solo hay una tarea en el puesto
+        if(puestoTareaActual.tareas.length == 1){
+            const tarea = puestoTareaActual.tareas[0]
+            tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
+                cantidad: cuantosPares
+            }))
+
+
+            let paqueteModificar = tarea.paquetes.find(p => p.cerrado == false)
+            if (paqueteModificar == null) {
+                tarea.paquetes.push(new Paquete({
+                    cantidad: cuantosPares,
                 }))
-
-
-                let paqueteModificar = tarea.paquetes.find(p => p.cerrado == false)
-                if (paqueteModificar == null) {
-                    tarea.paquetes.push(new Paquete({
-                        cantidad: cuantosPares,
-                    }))
-                }
-                else {
-                    paqueteModificar.cantidad += cuantosPares
-                    if (puesto.EsContadorPaquetesAutomatico) {
-                        if (paqueteModificar.cantidad >= puesto.ContadorPaquetes) {
-                            paqueteModificar.cerrado = true
-                        }
+            }
+            else {
+                paqueteModificar.cantidad += cuantosPares
+                if (puesto.EsContadorPaquetesAutomatico) {
+                    if (paqueteModificar.cantidad >= puesto.ContadorPaquetes) {
+                        paqueteModificar.cerrado = true
                     }
                 }
-
-                await puestoTareaActual.save()
-                break
             }
+
+            await puestoTareaActual.save()
+            break
         }
+        
     }
 
     router.post('/tarea/pulsoSimulado', async (req, res) => {
