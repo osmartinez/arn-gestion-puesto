@@ -68,7 +68,7 @@ module.exports = function (router) {
             }
             else {
                 if(movimientoActual!= null){
-                    movimientoActual.fechaSalida = new Date()
+                    movimientoActual.fechaSalida = new Date().toUTCString()
                     await movimientoActual.save()
                 }
                 

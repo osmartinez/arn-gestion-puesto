@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
-const Operario = require('./operario.model').schema
 
 const movimientoOperarioSchema = new mongoose.Schema({
     idPuestoSql: { type: Number },
-    fechaEntrada: { type: Date, default: new Date() },
+    fechaEntrada: { type: Date, default: new Date().toUTCString() },
     fechaSalida: { type: Date, default: null },
     idOperarioSql: { type: Number },
     codigoOperarioSql: { type: String },

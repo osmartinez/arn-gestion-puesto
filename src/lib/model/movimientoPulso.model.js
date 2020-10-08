@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const movimientoPulsoSchema = new mongoose.Schema({
-    fechaMovimiento: {type:Date, default: new Date()},
+    fechaMovimiento: {type:Date, default: new Date().toUTCString()},
     cantidad: {type: Number}
 })
 
