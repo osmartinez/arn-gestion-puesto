@@ -37,7 +37,7 @@ module.exports = function (router) {
                     })
                 }
                 else {
-                    puestoTareaActual.fechaFin = new Date().toUTCString()
+                    puestoTareaActual.fechaFin = Date.now()
                     puestoTareaActual.terminado = true
                     for (const tarea of puestoTareaActual.tareas) {
                         if(!tarea.terminado){
