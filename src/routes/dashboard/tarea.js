@@ -198,15 +198,14 @@ module.exports = function (router) {
     async function consumirPulso(cuantosPares, puestoTareaActual, puesto) {
         // vamos a suponer por ahora que solo hay una tarea en el puesto
         if(puestoTareaActual.tareas.length == 1){
-            const tarea = puestoTareaActual.tareas[0]
-            tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
+            puestoTareaActual.tareas[0].cantidadFabricadaPuesto.push(new MovimientoPulso({
                 cantidad: cuantosPares
             }))
 
 
-            let paqueteModificar = tarea.paquetes.find(p => p.cerrado == false)
+            let paqueteModificar = puestoTareaActual.tareas[0].paquetes.find(p => p.cerrado == false)
             if (paqueteModificar == null) {
-                tarea.paquetes.push(new Paquete({
+                puestoTareaActual.tareas[0].paquetes.push(new Paquete({
                     cantidad: cuantosPares,
                 }))
             }
