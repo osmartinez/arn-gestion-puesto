@@ -78,16 +78,14 @@ module.exports = function (router) {
                     })
                 }
                 else {
-                    for (const tarea of puestoTareaActual.tareas) {
-                        if ((tarea.cantidadFabricadaPuesto.sum('cantidad')
-                            + tarea.cantidadDefectuosaPuesto.sum('cantidad')) < tarea.cantidadFabricar) {
-                            tarea.cantidadDefectuosaPuesto.push(new MovimientoPulso({
-                                cantidad: Number(defectuosas)
-                            }))
-                            break;
-                        }
+                    if(puestoTareaActual.tareas.length == 1){
+                        puestoTareaActual.tareas[0].cantidadDefectuosaPuesto.push(new MovimientoPulso({
+                            cantidad: Number(defectuosas)
+                        }))
+                        await puestoTareaActual.save()
                     }
-                    await puestoTareaActual.save()
+                    
+                   
                     res.json(puestoTareaActual)
                 }
             }
@@ -114,16 +112,14 @@ module.exports = function (router) {
                     })
                 }
                 else {
-                    for (const tarea of puestoTareaActual.tareas) {
-                        if ((tarea.cantidadFabricadaPuesto.sum('cantidad')
-                            + tarea.cantidadDefectuosaPuesto.sum('cantidad')) < tarea.cantidadFabricar) {
-                            tarea.cantidadSaldosPuesto.push(new MovimientoPulso({
-                                cantidad: Number(saldos)
-                            }))
-                            break;
-                        }
+                    if(puestoTareaActual.tareas.length == 1){
+                        puestoTareaActual.tareas[0].cantidadSaldosPuesto.push(new MovimientoPulso({
+                            cantidad: Number(saldos)
+                        }))
+                        await puestoTareaActual.save()
+
                     }
-                    await puestoTareaActual.save()
+                   
                     res.json(puestoTareaActual)
                 }
             }
