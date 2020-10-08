@@ -220,7 +220,6 @@ module.exports = function (router) {
             }
 
             await puestoTareaActual.save()
-            break
         }
         
     }
