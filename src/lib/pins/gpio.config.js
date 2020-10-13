@@ -1,8 +1,7 @@
 const Gpio = require('onoff').Gpio
 
 function ConfiguracionGPIO() {
-    const PINS = {
-    }
+    const PINS = { }
 
     const pinCount = 26
 
@@ -18,6 +17,7 @@ function ConfiguracionGPIO() {
                 previous_value: 0,
                 pulsesUp: [],
                 pulsesDown: [],
+                depends_on: -1,
                 type: null,
             }
         }
@@ -37,6 +37,10 @@ function ConfiguracionGPIO() {
                         PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode)
                     } catch (err) {
                         console.error(`Error al abrir el ${maquina.PinPulso}`)
+                    }
+
+                    if(maquina.PinPulso2 != null && maquina.PinPulso2 != 'null') {
+                        PINS[maquina.PinPulso].depends_on =Number(maquina.PinPulso2.replace('GPIO',''))
                     }
                 }
             }
@@ -83,11 +87,20 @@ function ConfiguracionGPIO() {
             if (PINS[PIN].status == 'on' && PINS[PIN].mode == 'in') {
                 PINS[PIN].previous_value = PINS[PIN].value
                 if(PINS[PIN].gpio_object == null)continue
+
                 PINS[PIN].value = PINS[PIN].gpio_object.readSync()
                 if (PINS[PIN].previous_value !== PINS[PIN].value) {
                     if (PINS[PIN].value == 1) {
                         if (PINS[PIN].flanco == 'up') {
-                            PINS[PIN].pulsesUp.push(1)
+                            if(PINS[PIN].depends_on>0){
+                                const value_depends = PINS[`GPIO${PINS[PIN].depends_on}`].gpio_object.readSync()
+                                if(value_depends == 1){
+                                    PINS[PIN].pulsesUp.push(1)
+                                }
+                            }
+                            else{
+                                PINS[PIN].pulsesUp.push(1)
+                            }
                         }
                     }
                     else{
