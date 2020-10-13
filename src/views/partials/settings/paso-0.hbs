@@ -9,10 +9,10 @@
       <div class="col-md-8">
         <select id='puesto-previo' name="config-previa">
           <option value="NUEVO">- NUEVO -</option>
-                  {{#each puestos}}
-                  <option value="{{this.Id}}">{{this.Descripcion}}
-                  </option>
-                  {{/each}}
+          {{#each puestos}}
+          <option value="{{this.Id}}">{{this.Descripcion}}
+          </option>
+          {{/each}}
         </select>
       </div>
     </div>
@@ -24,7 +24,7 @@
         <input id="puesto-descripcion" name="nombre" class="use-keyboard-input" type="text" />
       </div>
     </div>
-        <div class="row">
+    <div class="row">
       <div class="col-md-4">
         <span>Observaciones</span>
       </div>
@@ -32,6 +32,24 @@
         <input id="puesto-observaciones" name="observaciones" class="use-keyboard-input" type="text" />
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-4">
+        <span>Puesto manual?</span>
+      </div>
+      <div class="col-md-8">
+        <div class="switch">
+          <label class="font-weight-bold">
+            <span></span>
+            <input id="es-puesto-manual" type="checkbox">
+            <span class="lever"></span>
+            <span></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+
 
 
     <div id="body-step-0">

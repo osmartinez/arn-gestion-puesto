@@ -1,0 +1,59 @@
+<div class="modal fade" id="modal-terminar-manual" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+    aria-hidden="true">
+    <!-- Change class .modal-sm to change the size of the modal -->
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title w-100 text-center" id="myModalLabel">Introduce cantidades</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body w-200 text-center">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Cantidad producida</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="easy-get">
+                            <input class="input-modal-terminar-manual easy-put" readonly="true"
+                                id="input-pares-producidos" type="number" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Cantidad defectuosa</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="easy-get">
+                            <input class="input-modal-terminar-manual easy-put" readonly="true"
+                                id="input-pares-defectuosos" type="number" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h4>Cantidad saldos</h5>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="easy-get">
+
+                            <input class="input-modal-terminar-manual easy-put" readonly="true" id="input-pares-saldos"
+                                type="number" />
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer  w-100 text-center">
+                <div class="col-md-6">
+                    <button type="button" class="btn btn-danger btn-lg" data-dismiss="modal">CANCELAR</button>
+                </div>
+                <div class="col-md-6">
+                    <button id="btn-terminar-manual" type="button" class="btn btn-success btn-lg">TERMINAR</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

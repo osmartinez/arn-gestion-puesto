@@ -83,7 +83,6 @@ function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 40
     }
 }
 
-
 const allPins = `
 <option value="GPIO4">GPIO4</option>
 <option value="GPIO5">GPIO5</option>
@@ -131,6 +130,7 @@ let Puesto = {
     CodigoEtiqueta: '',
     CodUbicacion: '',
     FechaCracion: '',
+    EsManual: false,
     PuestosConfiguracionesPins: {
         PinBuzzer: '',
         PinLed: '',
@@ -172,6 +172,7 @@ let Puesto = {
     },
     nuevo: function () {
         this.CrearNuevo = true
+        this.EsManual = false
         this.Id = 0
         this.Descripcion = ''
         this.Observaciones = ''
@@ -186,13 +187,13 @@ let Puesto = {
     },
     refrescarTareasPuesto: function (tareasPuesto) {
         this.TareasPuesto = tareasPuesto
-
         refrescarTablaTareas()
         refrescarPanelCentral()
     },
     addMaquina: function (maquina) {
         if (typeof maquina != 'undefined') {
             if (Puesto.Maquinas.filter(x => x.ID == maquina.ID).length == 0) {
+                maquina.ProductoPorPulso = 1
                 Puesto.Maquinas.push(maquina)
                 armarTablaIO()
                 info("Maquina añadida")
@@ -202,14 +203,12 @@ let Puesto = {
             }
         }
     },
-
     removeMaquina: function (maquina) {
         if (typeof maquina != 'undefined') {
             Puesto.Maquinas = Puesto.Maquinas.filter(x => x.NumeroFila != maquina.NumeroFila)
             armarTablaIO()
         }
     },
-
     addIncidencia: function (incidencia) {
         if (typeof incidencia != 'undefined') {
             if (Puesto.PuestosConfiguracionesIncidencias.filter(x => x.Nombre == incidencia.Nombre).length == 0) {

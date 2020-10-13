@@ -1,10 +1,10 @@
 $(document).ready(function () {
     $('.easy-get').on('click', () => {
-        show_easy_numpad();
+        show_easy_numpad(event.target);
     });
 });
 
-function show_easy_numpad() {
+function show_easy_numpad(target) {
     var easy_numpad = `
         <div class="easy-numpad-frame" id="easy-numpad-frame">
             <div class="easy-numpad-container">
@@ -34,7 +34,7 @@ function show_easy_numpad() {
                         <tr>
                             <td class="tecla" colspan="2" onclick="easynum()"><a href="0">0</a></td>
                             <td class="tecla" onclick="easynum()"><a href=".">.</a></td>
-                            <td class="tecla"><a href="Done" class="done" id="done" onclick="easy_numpad_done()">OK</a></td>
+                            <td class="tecla"><a href="#" class="done" id="done" onclick="easy_numpad_done('${target.id}')">OK</a></td>
                         </tr>
                     </table>
                 </div>
@@ -74,9 +74,12 @@ function easy_numpad_cancel() {
     event.preventDefault();
     $('#easy-numpad-frame').remove();
 }
-function easy_numpad_done() {
+function easy_numpad_done(id) {
     event.preventDefault();
     var easy_numpad_output_val = $('#easy-numpad-output').text();
-    $('.easy-put').val(easy_numpad_output_val);
+    if(easy_numpad_output_val.trim()==''){
+        easy_numpad_output_val=0
+    }
+    $(`#${id}`).val(Number(easy_numpad_output_val));
     easy_numpad_close();
 }

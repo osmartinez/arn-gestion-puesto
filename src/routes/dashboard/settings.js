@@ -71,7 +71,7 @@ module.exports = function (router) {
             // lo creo
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
                 puesto.PuestosConfiguracionesPins.PinBuzzer, puesto.PuestosConfiguracionesPins.PinLed, puesto.PuestosConfiguracionesPins.ContadorPaquetes,
-                puesto.PuestosConfiguracionesPins.EsContadorPaquetesAutomatico)
+                puesto.PuestosConfiguracionesPins.EsContadorPaquetesAutomatico,puesto.EsManual)
 
             // reseteo todos los gpios
             GpioConfiguracion.iniciar()
@@ -99,6 +99,10 @@ module.exports = function (router) {
         // el puesto ya existe, solo actualizar
         else {
             if (puesto.Id > 0) {
+                 await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,
+                    puesto.PuestosConfiguracionesPins.PinBuzzer, puesto.PuestosConfiguracionesPins.PinLed, puesto.PuestosConfiguracionesPins.ContadorPaquetes,
+                    puesto.PuestosConfiguracionesPins.EsContadorPaquetesAutomatico,puesto.EsManual)
+
                 // saco todas las maquinas del puesto
                 await maquinaWebService.desasociarPuesto(puesto.Id)
 

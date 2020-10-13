@@ -2,7 +2,7 @@ const genericWebservice = require('./generic.ws')()
 const wsName = 'puestos'
 
 function PuestoWebservice() {
-    async function crear(descripcion, observaciones,pinBuzzer,pinLed, contadorPaquetes, esContadorPaquetesAutomatico) {
+    async function crear(descripcion, observaciones,pinBuzzer,pinLed, contadorPaquetes, esContadorPaquetesAutomatico,esManual) {
         try {
             const resp1 = await genericWebservice.get(wsName, 'buscarPorDescripcion', descripcion)
             const puestos = await resp1.json()
@@ -14,6 +14,7 @@ function PuestoWebservice() {
                     pinLed:pinLed==null?'null':pinLed,
                     contadorPaquetes: contadorPaquetes==null?0:contadorPaquetes,
                     esContadorPaquetesAutomatico: esContadorPaquetesAutomatico==null?true:esContadorPaquetesAutomatico,
+                    esManual: esManual==null?false:esManual,
                 },wsName,'crear')
                 const puesto = await resp2.json()
                 if(puesto.Id){
@@ -29,6 +30,7 @@ function PuestoWebservice() {
                     pinLed:pinLed==null?'null':pinLed,
                     contadorPaquetes: contadorPaquetes==null?0:contadorPaquetes,
                     esContadorPaquetesAutomatico: esContadorPaquetesAutomatico==null?true:esContadorPaquetesAutomatico,
+                    esManual: esManual==null?false:esManual,
                 },wsName,'actualizar')
                 const puesto = await resp2.json()
                 if(puesto.Id){

@@ -17,7 +17,7 @@ function cargarInformacionTarea(cantidadFabricadaOtrosPuestos) {
         </br>
         <${Puesto.TareasPuesto.tareas[0].tallaUtillaje}> 
         </br>
-        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos==null || cantidadFabricadaOtrosPuestos==0?'':`+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')} </p>`)
+        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos == null || cantidadFabricadaOtrosPuestos == 0 ? '' : `+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')} </p>`)
     }
     else {
         $('#info-tarea').html('')
@@ -184,20 +184,30 @@ $('#btn-restar-saldos').click(function () {
 })
 
 $('#btn-terminar-tarea').click(function () {
-    $.ajax({
-        method: 'POST',
-        url: `/dashboard/tarea/terminar`,
-        dataType: 'json',
-        success: (tareasPuesto) => {
-            Puesto.refrescarTareasPuesto(tareasPuesto)
-        },
-        error: (err) => {
-            error(err.responseJSON.message)
-        }
-    })
+    if (Puesto.EsManual) {
+        $('#input-pares-producidos').val(Puesto.TareasPuesto.tareas[0].cantidadFabricar)
+        $('#input-pares-defectuosos').val(0)
+        $('#input-pares-saldos').val(0)
+
+        $('#modal-terminar-manual').modal('show');
+    }
+    else {
+        $.ajax({
+            method: 'POST',
+            url: `/dashboard/tarea/terminar`,
+            dataType: 'json',
+            success: (tareasPuesto) => {
+                Puesto.refrescarTareasPuesto(tareasPuesto)
+            },
+            error: (err) => {
+                error(err.responseJSON.message)
+            }
+        })
+    }
+
 })
 
-$('#btn-normalizar-paquetes').click(function(){
+$('#btn-normalizar-paquetes').click(function () {
     $.ajax({
         method: 'POST',
         url: `/dashboard/tarea/normalizarPaquetes`,

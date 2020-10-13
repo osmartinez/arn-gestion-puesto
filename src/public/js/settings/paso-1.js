@@ -94,7 +94,7 @@ function armarTablaMaquinas() {
                 let innerHTML = ''
                 if (secciones) {
                     for (const seccion of secciones) {
-                        innerHTML += `<option value="${seccion.CodSeccion}" ${seccion.CodSeccion == maquina.CodSeccion?'selected':''}>${seccion.Nombre}</option>`
+                        innerHTML += `<option value="${seccion.CodSeccion}" ${seccion.CodSeccion == maquina.CodSeccion ? 'selected' : ''}>${seccion.Nombre}</option>`
                     }
                 }
 

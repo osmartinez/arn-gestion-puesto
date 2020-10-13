@@ -22,9 +22,59 @@ module.exports = function (router) {
         res.render('dashboard/tarea/index', { layout: 'main-dashboard' })
     })
 
+    router.post('/tarea/terminarManual', async (req, res) => {
+        try {
+            const {fabricada, defectuosa,saldos} = req.body
+            puesto = configParams.read()
+            if (puesto == null || !puesto.Id) {
+                throw new Error('No hay un puesto configurado en la pantalla')
+            }
+            else {
+                let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                if (puestoTareaActual == null) {
+                    res.status(500).json({
+                        message: 'No hay tarea cargada'
+                    })
+                }
+                else {
+                    puestoTareaActual.fechaFin = Date.now()
+                    puestoTareaActual.terminado = true
+                    for (const tarea of puestoTareaActual.tareas) {
+                        if(!tarea.terminado){
+                            tarea.fechaFin = puestoTareaActual.fechaFin
+                            tarea.terminado = true
+                            tarea.cantidadFabricadaPuesto.push(new MovimientoPulso({
+                                cantidad: Number(fabricada)
+                            }))
+                            tarea.cantidadDefectuosaPuesto.push(new MovimientoPulso({
+                                cantidad: Number(defectuosa)
+                            }))
+                            tarea.cantidadSaldosPuesto.push(new MovimientoPulso({
+                                cantidad: Number(saldos)
+                            }))
+                            for(const maquina of puesto.Maquinas){
+                                const resultadoConsumo = await tareaProgramadaWebService.consumirEnPuesto(tarea.idSql,tarea.cantidadFabricadaPuesto.sum('cantidad')+tarea.cantidadDefectuosaPuesto.sum('cantidad')-tarea.cantidadSaldosPuesto.sum('cantidad'),maquina.ID)
+                                console.log(resultadoConsumo)
+                            }
+                        }
+
+                    }
+                    await puestoTareaActual.save()
+                    puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
+                    res.json(puestoTareaActual)
+                }
+            }
+        } catch (err) {
+            console.error(err)
+            res.status(500).json({
+                message: err
+            })
+        }
+    })
+
+
     router.post('/tarea/terminar', async (req, res) => {
         try {
-            const { defectuosas } = req.body
             puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
                 throw new Error('No hay un puesto configurado en la pantalla')
@@ -44,7 +94,7 @@ module.exports = function (router) {
                             tarea.fechaFin = puestoTareaActual.fechaFin
                             tarea.terminado = true
                             for(const maquina of puesto.Maquinas){
-                                const resultadoConsumo = await tareaProgramadaWebService.consumirEnPuesto(tarea.idSql,tarea.cantidadFabricadaPuesto.sum('cantidad')+tarea.cantidadDefectuosaPuesto.sum('cantidad'),maquina.ID)
+                                const resultadoConsumo = await tareaProgramadaWebService.consumirEnPuesto(tarea.idSql,tarea.cantidadFabricadaPuesto.sum('cantidad')+tarea.cantidadDefectuosaPuesto.sum('cantidad')-tarea.cantidadSaldosPuesto.sum('cantidad'),maquina.ID)
                                 console.log(resultadoConsumo)
                             }
                         }
