@@ -13,6 +13,8 @@ const multipleMongooseToObj = (arrayOfMongooseDocuments) => {
 module.exports = {
     async middle(app, req, res, next) {
         const data = configParams.read();
+        if(data != null)
+            next()
         app.locals.Puesto = data
         if (app.locals.Puesto.Id) {
             app.locals.Operarios = multipleMongooseToObj(await MovimientoOperario.find({ idPuestoSql: data.Id, fechaSalida: null }))
