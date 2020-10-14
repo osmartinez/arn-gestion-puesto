@@ -7,6 +7,12 @@ const seccionWebService = require('../../lib/repository/seccion.ws')()
 const GpioConfiguracion = require('../../lib/pins/gpio.config')
 
 module.exports = function (router) {
+    router.get('/settings/recargar',async(req,res)=>{
+        const puesto = configParams.read()
+
+        
+    })
+
     router.get('/settings', async (req, res) => {
         const puestos = await puestoWebservice.obtenerTodos()
         const puesto = configParams.read()
@@ -81,7 +87,7 @@ module.exports = function (router) {
                 // para cada máquina en el puesto a configurar
                 for (const maquina of puesto.Maquinas) {
                     // actualizo los pines de la configuración de la máquina y machaco la lista de las maquinas del nuevo puesto con una recuperación renovada de las mismas
-                    await maquinaWebService.actualizarConfiguracionPines(maquina.ID, maquina.EsPulsoManual, maquina.ProductoPorPulso, maquina.PinPulso, maquina.DescontarAutomaticamente)
+                    await maquinaWebService.actualizarConfiguracionPines(maquina.ID, maquina.EsPulsoManual, maquina.ProductoPorPulso, maquina.PinPulso, maquina.DescontarAutomaticamente,maquina.PinPulso2)
                     puestoNuevo.Maquinas = await maquinaWebService.asociarAPuesto(maquina.ID, puestoNuevo.Id)
                 }
 
@@ -108,7 +114,7 @@ module.exports = function (router) {
 
                 for (const maquina of puesto.Maquinas) {
                     // actualizo los pines de la configuración de la máquina y machaco la lista de las maquinas del nuevo puesto con una recuperación renovada de las mismas
-                    await maquinaWebService.actualizarConfiguracionPines(maquina.ID, maquina.EsPulsoManual, maquina.ProductoPorPulso, maquina.PinPulso)
+                    await maquinaWebService.actualizarConfiguracionPines(maquina.ID, maquina.EsPulsoManual, maquina.ProductoPorPulso, maquina.PinPulso, maquina.DescontarAutomaticamente,maquina.PinPulso2)
                     puesto.Maquinas = await maquinaWebService.asociarAPuesto(maquina.ID, puesto.Id)
                 }
                 for (const incidencia of puesto.PuestosConfiguracionesIncidencias) {

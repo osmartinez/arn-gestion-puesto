@@ -96,7 +96,7 @@ const allPins = `
 function getAllPins(selected) {
     let ini = 1
     const fin = 24
-    let pinsHTML = ''
+    let pinsHTML = '<option value="null">null</option>\n'
     for (; ini <= fin; ini++) {
         pinsHTML += `<option value="GPIO${ini}" ${selected == 'GPIO' + ini ? 'selected' : ''}>GPIO${ini}</option>\n`
     }

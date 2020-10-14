@@ -10,6 +10,8 @@ function armarTablaIO() {
     $(`#fila-pulso-manual`).html('<th class ="black text-white">Pulso Manual</th>')
     $(`#fila-pares-pulso`).html('<th class ="black text-white">Pares Pulso</th>')
     $(`#fila-pin-pulso`).html('<th class ="black text-white">PIN pulso</th>')
+    $(`#fila-pin-pulso-dependiente`).html('<th class ="black text-white">PIN dependiente</th>')
+
     //$(`#fila-pin-buzzer`).html('<th class ="black text-white">PIN buzzer</th>')
 
     for (const maquina of Puesto.Maquinas) {
@@ -38,6 +40,10 @@ function armarTablaIO() {
                                        ${getAllPins(maquina.PinPulso)}
                                     </select></td>`)
 
+        $(`#fila-pin-pulso-dependiente`).append(`<td><select id="select-pin-pulso-dependiente-${maquina.NumeroFila}">
+                                    ${getAllPins(maquina.PinPulso2)}
+                                 </select></td>`)
+
         $(`#fila-descontar-auto`).append(`<td>
                                         <div class="switch">
                                         <label class="font-weight-bold">
@@ -63,6 +69,11 @@ function armarTablaIO() {
 
         $(`#select-pin-pulso-${maquina.NumeroFila}`).change(() => {
             maquina.PinPulso = $(`#select-pin-pulso-${maquina.NumeroFila}`).find(":selected").val()
+        })
+
+        
+        $(`#select-pin-pulso-dependiente-${maquina.NumeroFila}`).change(() => {
+            maquina.PinPulso2 = $(`#select-pin-pulso-dependiente-${maquina.NumeroFila}`).find(":selected").val()
         })
 
         /*$(`#select-pin-buzzer-${maquina.NumeroFila}`).change(()=>{

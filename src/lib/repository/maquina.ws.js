@@ -49,14 +49,15 @@ function MaquinaWebservice() {
 
     }
 
-    async function actualizarConfiguracionPines(idMaquina,esPulsoManual,productoPorPulso, pinPulso,descontarAuto){
+    async function actualizarConfiguracionPines(idMaquina,esPulsoManual,productoPorPulso, pinPulso,descontarAuto,pinPulso2){
         try {
             const resp1 = await genericWebservice.post({
                 idMaquina:idMaquina,
                 esPulsoManual:esPulsoManual == esPulsoManual == null?false:esPulsoManual,
                 productoPorPulso:productoPorPulso,
-                pinPulso:pinPulso,
-                descontarAuto:descontarAuto == null?false:descontarAuto
+                pinPulso:pinPulso == null?'null':pinPulso,
+                descontarAuto:descontarAuto == null?false:descontarAuto,
+                pinPulso2:pinPulso2 == null?'null':pinPulso2,
             },wsName, 'actualizarConfiguracionPines')
             const configuracion = await resp1.json()
             if(configuracion.IdMaquina){

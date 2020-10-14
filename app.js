@@ -8,6 +8,8 @@ const validator = require('express-validator');
 const middlewares = require('./src/lib/middleware')
 const config = require('./config')
 const mongoose = require('mongoose')
+const os = require("os"); // Comes with node.js
+console.log(os.type());
 const GpioConfiguracion = require('./src/lib/pins/gpio.config')
 const configParams = require('./src/lib/config.params')
 
