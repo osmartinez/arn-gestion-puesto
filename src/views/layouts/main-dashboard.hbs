@@ -22,7 +22,6 @@
 
 
     <style>
-
         .navbar {
             z-index: 1040;
         }
@@ -38,6 +37,7 @@
         .btn {
             margin: -3px;
         }
+
     </style>
 
 </head>
@@ -52,7 +52,7 @@
                 <!-- Logo -->
                 <li>
                     <div class="logo-wrapper sn-ad-avatar-wrapper">
-                        <a href="#"><img src="/img/ICONO.png" ><span>ARNEPLANT S.L.</span></a>
+                        <a href="#"><img src="/img/ICONO.png"><span>ARNEPLANT S.L.</span></a>
                     </div>
                 </li>
                 <!--/. Logo -->
@@ -64,9 +64,9 @@
                                     class="sv-slim-icon fas fa-home"></i>Inicio</a>
                         </li>
                     </ul>
-                    <ul  class="collapsible collapsible-accordion">
+                    <ul class="collapsible collapsible-accordion">
                         <li id="btn-operarios">
-                            <a   style="font-size: large;" href="/dashboard/operarios" class="waves-effect"><i
+                            <a style="font-size: large;" href="/dashboard/operarios" class="waves-effect"><i
                                     class="sv-slim-icon fas fa-users"></i>Operarios ({{Operarios.length}})</a>
                         </li>
                     </ul>
@@ -91,13 +91,15 @@
             <!-- Breadcrumb-->
             <div class="nav navbar-nav nav-flex-icons ml-auto">
                 <li class="nav-item">
-                    <a href="/dashboard" style="color: black; font-weight:bold;" class="btn btn-warning nav-link"> <i class="fas fa-home"></i><span
+                    <a href="/dashboard" style="color: black; font-weight:bold;" class="btn btn-warning nav-link"> <i
+                            class="fas fa-home"></i><span
                             style="font-size: 18px; font-weight: bold;">{{nombreMaquina}}</span></a>
                 </li>
             </div>
             <ul class="nav navbar-nav nav-flex-icons ml-auto">
                 <li class="nav-item">
-                    <a href="/dashboard/operarios" style="color: black; font-weight:bold;" class="btn btn-success nav-link"><i class="fas fa-users"></i> <span
+                    <a href="/dashboard/operarios" style="color: black; font-weight:bold;"
+                        class="btn btn-success nav-link"><i class="fas fa-users"></i> <span
                             class="clearfix d-none d-sm-inline-block">Operarios ({{Operarios.length}})</span></a>
                 </li>
                 <li class="nav-item">
