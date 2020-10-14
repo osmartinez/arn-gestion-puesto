@@ -1,23 +1,26 @@
 const express = require('express')
 const configParams = require('../../lib/config.params')
-
-const PuestoTareasActuales = require('../../lib/model/puestoTareasActuales.model')
-
+const Tarea = require('../../lib/model/tarea.model')
 const router = express.Router()
 
 router.get('/',async (req,res)=>{
 
     try {
+        // leo el puesto del fichero de configuracion
         puesto = configParams.read()
+        // si no hay puesto redirijo al dashboard
         if (puesto == null || !puesto.Id) {
             return  res.render('dashboard/index', {layout: 'main-dashboard'})
         }
         else {
-            let puestoTareaActual = await PuestoTareasActuales.findOne({ "puesto.idSql": puesto.Id, terminado: false })
-            if(puestoTareaActual==null){
+            // si hay puesto busco si tiene tarea actualmente en proceso
+            let tareaActual = await Tarea.findOne({ "idPuestoSql": puesto.Id, terminado: false })
+            if(tareaActual==null){
+                // si no tiene tarea redirijo al dashboard
                return  res.render('dashboard/index', {layout: 'main-dashboard'})
             }
             else{
+                // si no redirijo a la página de tarea
                return res.redirect('/dashboard/tarea')
             }
         }
@@ -31,9 +34,12 @@ router.get('/',async (req,res)=>{
 // subrutas
 require('./settings')(router)
 require('./fichajes')(router)
-require('./tarea')(router)
 require('./averia')(router)
 require('./incidencia-fichaje')(router)
 require('./gpio')(router)
+require('./tarea/incidencia')(router)
+require('./tarea/tarea')(router)
+
+
 
 module.exports = router

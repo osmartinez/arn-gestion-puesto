@@ -228,10 +228,10 @@ setInterval(() => {
 
 // intervalor que busca todos los pares fabricados de la tarea actual por otros puestos
 setInterval(()=>{
-    if(Puesto!=null && Puesto.TareasPuesto !=null && Puesto.TareasPuesto.tareas.length > 0){
+    if(Puesto!=null && Puesto.TareasPuesto !=null && Puesto.TareasPuesto.detallesTarea.length > 0){
         const idsTareas = []
-        for(const tarea of Puesto.TareasPuesto.tareas){
-            idsTareas.push(tarea.idSql)
+        for(const detalle of Puesto.TareasPuesto.detallesTarea){
+            idsTareas.push(detalle.idSql)
         }
         $.ajax({
             method: 'POST',

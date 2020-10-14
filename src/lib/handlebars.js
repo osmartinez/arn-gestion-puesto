@@ -32,19 +32,21 @@ module.exports = {
 
         if (incidencias != null && incidencias.length > 0) {
             for (const incidencia of incidencias) {
-                if (contadorIncidenciasPorFila == numIncidenciasPorFila) {
-                    contadorIncidenciasPorFila = 0
-                    filas += `<tr>${fila}</tr>`
-                    fila = ''
-                }
-                else {
-                    fila += `
-                    <td>
-                        <div class="btn btn-warning btn-lg">
-                            <span>${incidencia.Nombre}</span>
-                        </div>
-                    </td>`
-                    contadorIncidenciasPorFila++
+                if (incidencia.Habilitada) {
+                    if (contadorIncidenciasPorFila == numIncidenciasPorFila) {
+                        contadorIncidenciasPorFila = 0
+                        filas += `<tr>${fila}</tr>`
+                        fila = ''
+                    }
+                    else {
+                        fila += `
+                        <td>
+                            <div class="btn btn-warning btn-lg" onclick="registrarIncidencia('${incidencia.Id}')">
+                                <span>${incidencia.Nombre}</span>
+                            </div>
+                        </td>`
+                        contadorIncidenciasPorFila++
+                    }
                 }
             }
 

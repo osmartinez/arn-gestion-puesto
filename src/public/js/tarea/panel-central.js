@@ -1,23 +1,22 @@
 function cargarInformacionTarea(cantidadFabricadaOtrosPuestos) {
-    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.tareas != null && Puesto.TareasPuesto.tareas.length > 0) {
+    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.detallesTarea != null && Puesto.TareasPuesto.detallesTarea.length > 0) {
         let cantidadFabricadaPuesto = 0
         let cantidadDefectuosaPuesto = 0
         let cantidadSaldosPuesto = 0
 
-        for (const tarea of Puesto.TareasPuesto.tareas) {
-            cantidadFabricadaPuesto += tarea.cantidadFabricadaPuesto.sum('cantidad')
-            cantidadDefectuosaPuesto += tarea.cantidadDefectuosaPuesto.sum('cantidad')
-            cantidadSaldosPuesto += tarea.cantidadSaldosPuesto.sum('cantidad')
-        }
+        cantidadFabricadaPuesto += Puesto.TareasPuesto.cantidadFabricadaPuesto.sum('cantidad')
+        cantidadDefectuosaPuesto += Puesto.TareasPuesto.cantidadDefectuosaPuesto.sum('cantidad')
+        cantidadSaldosPuesto += Puesto.TareasPuesto.cantidadSaldosPuesto.sum('cantidad')
 
-        const cantidadFabricada = Puesto.TareasPuesto.tareas.sum('cantidadFabricada') + cantidadFabricadaPuesto + cantidadDefectuosaPuesto - cantidadSaldosPuesto
+
+        const cantidadFabricada = Puesto.TareasPuesto.detallesTarea.sum('cantidadFabricada') + cantidadFabricadaPuesto + cantidadDefectuosaPuesto - cantidadSaldosPuesto
 
         $('#info-tarea').html(`
-        <p><row>${Puesto.TareasPuesto.tareas[0].utillaje}</row>
+        <p><row>${Puesto.TareasPuesto.utillaje}</row>
         </br>
-        <${Puesto.TareasPuesto.tareas[0].tallaUtillaje}> 
+        <${Puesto.TareasPuesto.tallaUtillaje}> 
         </br>
-        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos == null || cantidadFabricadaOtrosPuestos == 0 ? '' : `+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.tareas.sum('cantidadFabricar')} </p>`)
+        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos == null || cantidadFabricadaOtrosPuestos == 0 ? '' : `+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.detallesTarea.sum('cantidadFabricar')} </p>`)
     }
     else {
         $('#info-tarea').html('')
@@ -25,24 +24,23 @@ function cargarInformacionTarea(cantidadFabricadaOtrosPuestos) {
 }
 
 function cargarContadores() {
-    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.tareas != null && Puesto.TareasPuesto.tareas.length > 0) {
+    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.detallesTarea != null && Puesto.TareasPuesto.detallesTarea.length > 0) {
         let cantidadFabricadaPuesto = 0
         let cantidadDefectuosaPuesto = 0
         let cantidadSaldosPuesto = 0
         let cuantosPaquetes = 0
         let cantidadUltimoPaquete = 0
 
-        for (const tarea of Puesto.TareasPuesto.tareas) {
-            cantidadFabricadaPuesto += tarea.cantidadFabricadaPuesto.sum('cantidad')
-            cantidadDefectuosaPuesto += tarea.cantidadDefectuosaPuesto.sum('cantidad')
-            cantidadSaldosPuesto += tarea.cantidadSaldosPuesto.sum('cantidad')
-            cuantosPaquetes += tarea.paquetes.length
-            for (const paquete of tarea.paquetes) {
+            cantidadFabricadaPuesto += Puesto.TareasPuesto.cantidadFabricadaPuesto.sum('cantidad')
+            cantidadDefectuosaPuesto += Puesto.TareasPuesto.cantidadDefectuosaPuesto.sum('cantidad')
+            cantidadSaldosPuesto += Puesto.TareasPuesto.cantidadSaldosPuesto.sum('cantidad')
+            cuantosPaquetes += Puesto.TareasPuesto.paquetes.length
+            for (const paquete of Puesto.TareasPuesto.paquetes) {
                 if (!paquete.cerrado) {
                     cantidadUltimoPaquete = paquete.cantidad
                 }
             }
-        }
+        
 
         if (cantidadUltimoPaquete >= Puesto.PuestosConfiguracionesPins.ContadorPaquetes) {
             parpadearElemento('card-contador-paquetes', milisegundos = 8000)
@@ -185,7 +183,7 @@ $('#btn-restar-saldos').click(function () {
 
 $('#btn-terminar-tarea').click(function () {
     if (Puesto.EsManual) {
-        $('#input-pares-producidos').val(Puesto.TareasPuesto.tareas[0].cantidadFabricar)
+        $('#input-pares-producidos').val(Puesto.TareasPuesto.detallesTarea.sum('cantidadFabricar'))
         $('#input-pares-defectuosos').val(0)
         $('#input-pares-saldos').val(0)
 

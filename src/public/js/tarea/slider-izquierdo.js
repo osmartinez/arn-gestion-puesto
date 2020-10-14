@@ -69,30 +69,30 @@ function asignarEventosListaSliderIzquierda() {
 
 function refrescarTablaTareas() {
     $('#lista-tareas').html('')
-    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.tareas.length > 0) {
-        for (const tarea of Puesto.TareasPuesto.tareas) {
+    if (Puesto.TareasPuesto != null && Puesto.TareasPuesto.detallesTarea.length > 0) {
+        for (const detalle of Puesto.TareasPuesto.detallesTarea) {
             //<button class=" btn-primary btn-lg btn-floating" style="font-size: 20px;" data-dir="up">&#8593;</button>
             //<button class=" btn-danger btn-lg btn-floating" style="font-size: 20px;" data-dir="down">&#8595;</button>
             $('#lista-tareas').append(`
             <li data-z="one" class="tarea treeview-animated-items">
             <a class="treeview-animated-items-header">
                 <i class="fas fa-plus-circle"></i>
-                <span><i class="far fa-bell ic-w mx-1"></i>1. ${tarea.modelo}</span>
+                <span><i class="far fa-bell ic-w mx-1"></i>1. ${detalle.modelo}</span>
                 
             </a>
     
             <ul class="nested">
                 <li>
                     <div class="treeview-animated-element"><i
-                            class="far fa-address-book ic-w mr-1"></i>${tarea.cliente}</div>
+                            class="far fa-address-book ic-w mr-1"></i>${detalle.cliente}</div>
                 </li>
                 <li>
                     <div class="treeview-animated-element"><i
-                            class="fas fa-tools ic-w mr-1"></i>${tarea.utillaje} &lt;${tarea.tallaUtillaje}&gt;</div>
+                            class="fas fa-tools ic-w mr-1"></i>${Puesto.TareasPuesto.utillaje} &lt;${Puesto.TareasPuesto.tallaUtillaje}&gt;</div>
                 </li>
                 <li>
                     <div class="treeview-animated-element"><i
-                            class="fas fa-shoe-prints ic-w mr-1"></i>${tarea.cantidadFabricar}  &lt;${tarea.tallasArticulo.join(',')}&gt;</div>
+                            class="fas fa-shoe-prints ic-w mr-1"></i>${detalle.cantidadFabricar}  &lt;${detalle.tallasArticulo.join(',')}&gt;</div>
                 </li>
         </li>
             `)
