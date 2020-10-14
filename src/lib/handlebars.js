@@ -20,7 +20,11 @@ module.exports = {
     },
 
     nombreMaquina() {
-        var nombre = configParams.read().Descripcion
+        var puesto = configParams.read()
+        var nombre = ''
+        if(puesto!= null){
+            nombre = puesto.Descripcion
+        }
         return nombre
     },
     buildTablaIncidencias(incidencias) {
