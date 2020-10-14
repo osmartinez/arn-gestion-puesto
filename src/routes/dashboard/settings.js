@@ -4,7 +4,7 @@ const config = require('../../../config')
 const puestoWebservice = require('../../lib/repository/puesto.ws')()
 const maquinaWebService = require('../../lib/repository/maquina.ws')()
 const seccionWebService = require('../../lib/repository/seccion.ws')()
-const GpioConfiguracion = require('../../lib/pins/gpio.config')
+const device = process.env.DEVICE_ENV ||'raspi'
 
 module.exports = function (router) {
     router.get('/settings/recargar',async(req,res)=>{
@@ -70,6 +70,10 @@ module.exports = function (router) {
 
     router.post('/settings', async (req, res) => {
         const puesto = req.body
+        var  GpioConfiguracion =  null;
+        if(device == 'raspi'){
+            GpioConfiguracion=require('../../lib/pins/gpio.config')
+        }
 
         // si tengo que crear un puesto
         if (puesto.CrearNuevo) {
@@ -80,7 +84,11 @@ module.exports = function (router) {
                 puesto.PuestosConfiguracionesPins.EsContadorPaquetesAutomatico,puesto.EsManual)
 
             // reseteo todos los gpios
-            GpioConfiguracion.iniciar()
+
+            if(device == 'raspi'){
+                GpioConfiguracion.iniciar()
+            }
+    
 
             // si se ha creado correctamente
             if (puestoNuevo != null && puestoNuevo.Id > 0) {
@@ -100,7 +108,9 @@ module.exports = function (router) {
                 }
             }
             configParams.write(puestoNuevo)
-            GpioConfiguracion.configurarPuesto(puestoNuevo)
+            if(device == 'raspi'){
+                GpioConfiguracion.configurarPuesto(puestoNuevo)
+            }
         }
         // el puesto ya existe, solo actualizar
         else {
@@ -125,7 +135,9 @@ module.exports = function (router) {
                 }
 
                 configParams.write(puesto)
-                GpioConfiguracion.configurarPuesto(puesto)
+                if(device == 'raspi'){
+                    GpioConfiguracion.configurarPuesto(puesto)
+                }
 
             }
         }

@@ -1,4 +1,3 @@
-const configParams = require('../../lib/config.params')
 const device = process.env.DEVICE_ENV ||'raspi'
 
 module.exports = function (router) {
