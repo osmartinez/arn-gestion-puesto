@@ -4,7 +4,9 @@
   "description": "aplicacion para gestionar puestos y maquinas de produccion",
   "main": "app.js",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development DEVICE_ENV=win32 nodemon --ignore '*.json' --ignore 'src/public' ./src/app.js",
+    "dev": "cross-env NODE_ENV=development DEVICE_ENV=raspi nodemon --ignore '*.json' --ignore 'src/public' ./src/app.js",
+    "dev:win32": "cross-env NODE_ENV=development DEVICE_ENV=win32 nodemon --ignore '*.json' --ignore 'src/public' ./src/app.js",
+    "dev:android": "cross-env NODE_ENV=development DEVICE_ENV=android nodemon --ignore '*.json' --ignore 'src/public' ./src/app.js",
     "prod": "cross-env NODE_ENV=production DEVICE_ENV=raspi node ./app.js",
     "prod:win32": "cross-env NODE_ENV=production DEVICE_ENV=win32 node ./app.js",
     "prod:android": "cross-env NODE_ENV=production DEVICE_ENV=android node ./app.js",
