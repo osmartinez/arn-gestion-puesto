@@ -15,7 +15,7 @@ const mongoose = require('mongoose')
 const puestoWebService = require('../../lib/repository/puesto.ws')()
 const prepaqueteWebService = require('../../lib/repository/prepaquete.ws')()
 const tareaProgramadaWebService = require('../../lib/repository/tareaProgramada.ws')()
-const GpioConfiguracion = require('../../lib/pins/gpio.config')
+const device = process.env.DEVICE_ENV ||'raspi'
 
 module.exports = function (router) {
     router.get('/tarea', (req, res) => {
@@ -203,9 +203,15 @@ module.exports = function (router) {
     router.post('/tarea/pulsoMaquina', async (req, res) => {
         const { IdMaquina, PinPulso, ProductoPorPulso, EsPulsoManual } = req.body
         try {
-            if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
-                GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
+
+            if(device == "raspi"){
+                var GpioConfiguracion = require('../../lib/pins/gpio.config')
+
+                if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
+                    GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
+                }
             }
+
 
             const puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
