@@ -1,2 +1,3 @@
 node_modules
 src/config.js
+config.params.json
