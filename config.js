@@ -9,7 +9,7 @@ var config = {
             port: 3000,
         },
         database:{
-            host:'localhost',
+            host:'192.168.0.104',
             port:27017,
             name: 'test',
         }
