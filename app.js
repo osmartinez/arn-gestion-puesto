@@ -1,5 +1,6 @@
 const express = require ('express')
 const env = process.env.NODE_ENV || 'production'
+const device = process.env.DEVICE_ENV ||'raspi'
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const path = require('path')
@@ -8,18 +9,24 @@ const validator = require('express-validator');
 const middlewares = require('./src/lib/middleware')
 const config = require('./config')
 const mongoose = require('mongoose')
-const os = require("os"); // Comes with node.js
-console.log(os.type());
-const GpioConfiguracion = require('./src/lib/pins/gpio.config')
 const configParams = require('./src/lib/config.params')
+
+
 
 // inicializar express
 const app = express()
-GpioConfiguracion.iniciar()
 const puestoActual = configParams.read()
-if(puestoActual!=null && puestoActual.Id){
-    GpioConfiguracion.configurarPuesto(puestoActual)
+
+console.log(device)
+if(device == 'raspi'){
+    console.log(`[${env} ${device}] arn-gestion-puesto connecting with gpios`)
+    const GpioConfiguracion = require('./src/lib/pins/gpio.config')
+    GpioConfiguracion.iniciar()
+    if(puestoActual!=null && puestoActual.Id){
+        GpioConfiguracion.configurarPuesto(puestoActual)
+    }
 }
+
 
 // conexion db nosql
 mongoose.connect('mongodb://' + config[env].database.host + '/' + config[env].database.name, {
@@ -71,7 +78,7 @@ Array.prototype.sum = function (prop) {
 // start server
 const serverPort = config[env].server.port
 const server = app.listen(serverPort,()=>{
-    console.log(`[${env}] arn-gestion-puesto up and running on port ${serverPort}`)
+    console.log(`[${env} ${device}] arn-gestion-puesto up and running on port ${serverPort}`)
 })
 
 module.exports = server

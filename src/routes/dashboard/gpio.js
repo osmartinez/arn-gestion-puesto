@@ -1,8 +1,16 @@
 const configParams = require('../../lib/config.params')
-const GpioConfiguracion = require('../../lib/pins/gpio.config')
+const device = process.env.DEVICE_ENV ||'raspi'
+
 module.exports = function (router) {
     router.post('/gpio/obtenerEstadoPins', async (req, res) => {
-        GpioConfiguracion.refrescarValoresLectura()
-        res.json(GpioConfiguracion.PINS)
+        if(device == 'raspi'){
+            const GpioConfiguracion = require('../../lib/pins/gpio.config')
+            GpioConfiguracion.refrescarValoresLectura()
+            res.json(GpioConfiguracion.PINS)
+        }
+        else{
+            res.json({})
+        }
+
     })
 }
