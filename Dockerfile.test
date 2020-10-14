@@ -16,4 +16,4 @@ RUN npm install
 COPY . .
 
 EXPOSE 3000
-CMD [ "npm", "run","prod:win32" ]
+CMD [ "npm", "run","dev:win32" ]
