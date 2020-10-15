@@ -83,7 +83,7 @@ module.exports = function (router) {
 
 
         // si tengo que crear un puesto
-        if (puesto.CrearNuevo) {
+        if ((puesto.Id == null || puesto.Id == 0) &&puesto.CrearNuevo) {
 
             // lo creo
             const puestoNuevo = await puestoWebservice.crear(puesto.Descripcion, puesto.Observaciones,

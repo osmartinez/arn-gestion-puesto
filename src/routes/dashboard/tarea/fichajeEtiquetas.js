@@ -121,7 +121,6 @@ function FichajeEtiquetas() {
                         })
                     }
 
-                    console.log(operaciones)
                     return res.json(operaciones)
                 }
                 else {
