@@ -1,20 +1,17 @@
 const configParams = require('../../../lib/config.params')
+var GpioConfiguracion = null
 
-var GpioConfiguracion =null
 const Tarea = require('../../../lib/model/tarea.model')
 const MovimientoPulso = require('../../../lib/model/movimientoPulso.model')
 const MovimientoOperario = require('../../../lib/model/movimientoOperario.model')
 const Paquete = require('../../../lib/model/paquete.model')
-const DetalleTarea = require('../../../lib/model/detalleTarea.model')
 
-const Helpers = require('../../../lib/helpers')
-const mongoose = require('mongoose')
-
-const puestoWebService = require('../../../lib/repository/puesto.ws')()
-const prepaqueteWebService = require('../../../lib/repository/prepaquete.ws')()
 const tareaProgramadaWebService = require('../../../lib/repository/tareaProgramada.ws')()
+
+const FichajeEtiquetas = require('./fichajeEtiquetas')
+
 const device = process.env.DEVICE_ENV || 'raspi'
-if(device == "raspi"){
+if (device == "raspi") {
     GpioConfiguracion = require('../../../lib/pins/gpio.config')
 }
 
@@ -24,7 +21,6 @@ module.exports = function (router) {
     })
 
 
-    // actualizado
     async function consumirTareaEnSQL(tareaActual) {
         let cantidadFabricadaPuesto = tareaActual.cantidadFabricadaPuesto.sum('cantidad') + tareaActual.cantidadDefectuosaPuesto.sum('cantidad') - tareaActual.cantidadSaldosPuesto.sum('cantidad')
         let cantidadFabricadaPuestoAux = cantidadFabricadaPuesto
@@ -62,7 +58,6 @@ module.exports = function (router) {
         await tareaActual.save()
     }
 
-    // actualizado
     router.post('/tarea/terminarManual', async (req, res) => {
         try {
             const { fabricada, defectuosa, saldos } = req.body
@@ -105,7 +100,6 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
     router.post('/tarea/terminar', async (req, res) => {
         try {
             puesto = configParams.read()
@@ -136,7 +130,6 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
     router.post('/tarea/actualizarDefectuosas', async (req, res) => {
         try {
             const { defectuosas } = req.body
@@ -167,7 +160,6 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
     router.post('/tarea/actualizarSaldos', async (req, res) => {
         try {
             const { saldos } = req.body
@@ -198,7 +190,6 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
     router.post('/tarea/obtenerPuesto', async (req, res) => {
         try {
             puesto = configParams.read()
@@ -218,7 +209,6 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
     router.post('/tarea/pulsoMaquina', async (req, res) => {
         const { IdMaquina, PinPulso, ProductoPorPulso, EsPulsoManual } = req.body
         try {
@@ -262,7 +252,6 @@ module.exports = function (router) {
 
     })
 
-    // actualizado
     async function consumirPulso(cuantosPares, tareaActual, puesto) {
         // vamos a suponer por ahora que solo hay una tarea en el puesto
         tareaActual.cantidadFabricadaPuesto.push(new MovimientoPulso({
@@ -287,7 +276,6 @@ module.exports = function (router) {
 
         await tareaActual.save()
     }
-    // actualizado
     router.post('/tarea/pulsoSimulado', async (req, res) => {
         try {
             puesto = configParams.read()
@@ -322,92 +310,10 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
-    router.post('/tarea/ficharCaja', async (req, res) => {
-        const { codigoEtiqueta } = req.body
-        try {
-            puesto = configParams.read()
-            if (puesto == null || !puesto.Id) {
-                throw new Error('No hay un puesto configurado en la pantalla')
-            }
-            else {
-                const operariosActuales = await MovimientoOperario.find({ idPuestoSql: puesto.Id, fechaSalida: null })
-                if (operariosActuales == null || operariosActuales.length == 0) {
-                    return res.status(405).json({
-                        message: 'No hay ningún operario registrado'
-                    })
-                }
+    router.post('/tarea/ficharOF', FichajeEtiquetas.ficharOF)
 
-                let tareaActual = await Tarea.findOne({ "idPuestoSql": puesto.Id, terminado: false })
-                if (tareaActual == null) {
-                    const detalles = []
-                    let utillaje = ''
-                    let tallaUtillaje = ''
+    router.post('/tarea/ficharCaja', FichajeEtiquetas.ficharPrepaquete)
 
-                    if (puesto.Maquinas == null || puesto.Maquinas.length == 0) {
-                        return res.status(500).json({
-                            message: 'No hay máquinas en el puesto'
-                        })
-                    }
-
-                    const prepaquetesResponse = await prepaqueteWebService.buscarPrepaquete(codigoEtiqueta, puesto.Maquinas[0].CodSeccion)
-
-                    if (prepaquetesResponse == null || prepaquetesResponse.length == 0) {
-                        return res.status(404).json({
-                            message: 'No existe la etiqueta'
-                        })
-                    }
-
-                    for (const pre of prepaquetesResponse) {
-                        //  globales
-                        utillaje = pre.CodUtillaje
-                        tallaUtillaje = pre.IdUtillajeTalla
-
-                        detalles.push(new DetalleTarea({
-                            idSql: pre.IdTarea,
-                            codigoOrden: pre.Codigo,
-                            cliente: pre.NOMBRECLI.trim(),
-                            modelo: pre.DESCRIPCIONARTICULO.trim(),
-                            referencia: pre.CodigoArticulo,
-                            tallasArticulo: pre.Tallas.split(','),
-                            cantidadFabricar: pre.CantidadFabricar,
-                            cantidadFabricada: pre.CantidadFabricada,
-                            descripcionOperacion: pre.Descripcion,
-                            pedidoLinea: pre.PedidoLinea,
-                        }))
-                    }
-
-
-                    tareaActual = new Tarea({
-                        idPuestoSql: puesto.Id,
-                        detallesTarea: detalles,
-                        etiquetaFichada: codigoEtiqueta,
-                        utillaje: utillaje,
-                        tallaUtillaje: tallaUtillaje,
-                    })
-
-                    await tareaActual.save()
-
-                    return res.json(tareaActual)
-                }
-                else {
-                    return res.status(505).json({
-                        message: 'Hay una tarea en curso!'
-                    })
-                }
-            }
-
-
-        } catch (err) {
-            console.error(err)
-            res.status(500).json({
-                'message': err
-            })
-        }
-
-    })
-
-    // actualizado
     router.post('/tarea/normalizarPaquetes', async (req, res) => {
         try {
             puesto = configParams.read()
@@ -461,7 +367,6 @@ module.exports = function (router) {
         }
     })
 
-    // actualizado
     router.post('/tarea/recopilarParesOtrosPuestos', async (req, res) => {
         const { idsTareas, idPuesto } = req.body
 

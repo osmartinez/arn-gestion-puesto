@@ -1,36 +1,8 @@
 document.addEventListener("keyup", keyUp, false);
-//cargarIncidencias()
 
 let saldos = 0
 let cadenaLectura = ''
 let leyendoCodigo = false
-
-function cargarIncidencias() {
-    let cuantasColumnas = 2
-    let fila = 0
-    let contadorColumnas = 0
-    let celdas = ''
-    for (const incidencia of puesto.incidencias) {
-        celdas += `
-        <td>
-            <div class="btn btn-lg btn-warning"><span class="label-btn">${incidencia.Nombre}</span></div>
-        </td>`
-
-        contadorColumnas++
-
-        if (contadorColumnas == cuantasColumnas) {
-            let codigoFila = `<tr>${celdas}</tr>`
-            $('#tabla-acciones').append(codigoFila)
-            celdas = ''
-            contadorColumnas = ''
-        }
-    }
-
-    if (celdas != '') {
-        let codigoFila = `<tr>${celdas}</tr>`
-        $('#tabla-acciones').append(codigoFila)
-    }
-}
 
 function buscarPrepaquete(codigoPrepaquete) {
     $.ajax({
@@ -62,16 +34,48 @@ function buscarPrepaquete(codigoPrepaquete) {
                 case 405:
                     parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
                     break
-
             }
 
         }
     })
 }
 
-function buscarOF(codigoOF) {
+function buscarOF(codigoEtiqueta) {
+    $.ajax({
+        method: 'POST',
+        timeout: 3000,
+        url: `/dashboard/tarea/ficharOF`,
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(
+            {
+                codigoEtiqueta: '0' + codigoEtiqueta
+            }),
+        success: (respuesta) => {
+            if (respuesta != null) {
+                
+            }
+            else {
+                error('No se ha podido recuperar la información')
+            }
+        },
+        error: (err) => {
+            switch (err.status) {
+                case 404:
+                    error('No existe la etiqueta!')
+                    break
+                case 403:
+                    parpadearElemento('btn-terminar-tarea', error = true, 'La etiqueta no coincide con el utillaje que hay actualmente.\nTermine antes la tarea actual.')
+                    break
+                case 405:
+                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                    break
+            }
 
+        }
+    })
 }
+
 function keyUp(e) {
     var code = String(e.code)
     if (code.includes('Numpad') || code.includes('Digit')) {

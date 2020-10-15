@@ -19,4 +19,4 @@ function PrepaqueteWebservice() {
     }
 }
 
-module.exports = PrepaqueteWebservice
+module.exports = PrepaqueteWebservice()
