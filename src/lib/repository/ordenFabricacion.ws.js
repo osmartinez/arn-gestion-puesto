@@ -5,11 +5,11 @@ function OrdenFabricacionWebservice() {
     
     async function buscarOperacionesEnSeccion(id,codSeccion){
         try{
-            const resp = await genericWebservice.get(wsName,id,codSeccion)
+            const resp = await genericWebservice.get(wsName,'buscarOperacionesEnSeccion',id,codSeccion)
             const operaciones = await resp.json()
             return operaciones
         }catch(err){
-            console.err(err)
+            console.error(err)
         }
         return null
     }
@@ -20,4 +20,4 @@ function OrdenFabricacionWebservice() {
     }
 }
 
-module.exports = OrdenFabricacionWebservice
+module.exports = OrdenFabricacionWebservice()

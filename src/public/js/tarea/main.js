@@ -53,7 +53,7 @@ function buscarOF(codigoEtiqueta) {
             }),
         success: (respuesta) => {
             if (respuesta != null) {
-                
+
             }
             else {
                 error('No se ha podido recuperar la información')
@@ -168,73 +168,76 @@ $.ajax({
 })
 
 setInterval(() => {
-    $.ajax({
-        method: 'POST',
-        url: `/dashboard/gpio/obtenerEstadoPins`,
-        dataType: 'json',
-        success: (PINS) => {
-            for (const pin in PINS) {
+    if (Puesto != null && !Puesto.EsManual) {
+        $.ajax({
+            method: 'POST',
+            url: `/dashboard/gpio/obtenerEstadoPins`,
+            dataType: 'json',
+            success: (PINS) => {
+                for (const pin in PINS) {
 
-                // detectar pulso principal pares
-                if (PINS[pin].type == 'main-pulse' && PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
-                    if (PINS[pin].flanco == 'up') {
-                        const pulso = PINS[pin].pulsesUp.pop()
-                        if (pulso === 1) {
-                            const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
-                            if (maquina != null) {
-                                $.ajax({
-                                    method: 'POST',
-                                    url: `/dashboard/tarea/pulsoMaquina`,
-                                    contentType: "application/json",
-                                    dataType: 'json',
-                                    data: JSON.stringify(
-                                        {
-                                            IdMaquina: maquina.ID,
-                                            EsPulsoManual: maquina.EsPulsoManual,
-                                            ProductoPorPulso: maquina.ProductoPorPulso,
-                                            PinPulso: maquina.PinPulso,
-                                            DescontarAutomaticamente: maquina.DescontarAutomaticamente
-                                        }),
-                                    success: (tareasPuesto) => {
-                                        Puesto.refrescarTareasPuesto(tareasPuesto)
-                                    },
-                                    error: (err) => {
-                                        switch (err.status) {
-                                            case 405:
-                                                parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
-                                                break
-                                            default:
-                                                error(err.responseJSON.message)
-                                                break
+                    // detectar pulso principal pares
+                    if (PINS[pin].type == 'main-pulse' && PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
+                        if (PINS[pin].flanco == 'up') {
+                            const pulso = PINS[pin].pulsesUp.pop()
+                            if (pulso === 1) {
+                                const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
+                                if (maquina != null) {
+                                    $.ajax({
+                                        method: 'POST',
+                                        url: `/dashboard/tarea/pulsoMaquina`,
+                                        contentType: "application/json",
+                                        dataType: 'json',
+                                        data: JSON.stringify(
+                                            {
+                                                IdMaquina: maquina.ID,
+                                                EsPulsoManual: maquina.EsPulsoManual,
+                                                ProductoPorPulso: maquina.ProductoPorPulso,
+                                                PinPulso: maquina.PinPulso,
+                                                DescontarAutomaticamente: maquina.DescontarAutomaticamente
+                                            }),
+                                        success: (tareasPuesto) => {
+                                            Puesto.refrescarTareasPuesto(tareasPuesto)
+                                        },
+                                        error: (err) => {
+                                            switch (err.status) {
+                                                case 405:
+                                                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                                                    break
+                                                default:
+                                                    error(err.responseJSON.message)
+                                                    break
+                                            }
                                         }
-                                    }
-                                })
-                                break
+                                    })
+                                    break
+                                }
                             }
                         }
-                    }
 
+                    }
+                }
+            },
+            error: (err) => {
+                switch (err.status) {
+                    case 405:
+                        parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                        break
+                    default:
+                        error(err.responseJSON.message)
+                        break
                 }
             }
-        },
-        error: (err) => {
-            switch (err.status) {
-                case 405:
-                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
-                    break
-                default:
-                    error(err.responseJSON.message)
-                    break
-            }
-        }
-    })
+        })
+    }
+
 }, 100)
 
 // intervalor que busca todos los pares fabricados de la tarea actual por otros puestos
-setInterval(()=>{
-    if(Puesto!=null && Puesto.TareasPuesto !=null && Puesto.TareasPuesto.detallesTarea.length > 0){
+setInterval(() => {
+    if (Puesto != null && Puesto.TareasPuesto != null && Puesto.TareasPuesto.detallesTarea.length > 0) {
         const idsTareas = []
-        for(const detalle of Puesto.TareasPuesto.detallesTarea){
+        for (const detalle of Puesto.TareasPuesto.detallesTarea) {
             idsTareas.push(detalle.idSql)
         }
         $.ajax({
@@ -260,4 +263,4 @@ setInterval(()=>{
         })
     }
 
-},5000)
+}, 5000)

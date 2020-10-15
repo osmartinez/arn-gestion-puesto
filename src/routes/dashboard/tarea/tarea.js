@@ -20,7 +20,6 @@ module.exports = function (router) {
         res.render('dashboard/tarea/index', { layout: 'main-dashboard' })
     })
 
-
     async function consumirTareaEnSQL(tareaActual) {
         let cantidadFabricadaPuesto = tareaActual.cantidadFabricadaPuesto.sum('cantidad') + tareaActual.cantidadDefectuosaPuesto.sum('cantidad') - tareaActual.cantidadSaldosPuesto.sum('cantidad')
         let cantidadFabricadaPuestoAux = cantidadFabricadaPuesto
@@ -57,7 +56,7 @@ module.exports = function (router) {
 
         await tareaActual.save()
     }
-
+    
     router.post('/tarea/terminarManual', async (req, res) => {
         try {
             const { fabricada, defectuosa, saldos } = req.body
@@ -276,6 +275,7 @@ module.exports = function (router) {
 
         await tareaActual.save()
     }
+
     router.post('/tarea/pulsoSimulado', async (req, res) => {
         try {
             puesto = configParams.read()

@@ -3,6 +3,8 @@ const Tarea = require('../../../lib/model/tarea.model')
 const MovimientoOperario = require('../../../lib/model/movimientoOperario.model')
 const DetalleTarea = require('../../../lib/model/detalleTarea.model')
 const prepaqueteWebService = require('../../../lib/repository/prepaquete.ws')
+const ordenFabricacionWebService = require('../../../lib/repository/ordenFabricacion.ws')
+const configParams = require('../../../lib/config.params')
 
 function FichajeEtiquetas() {
 
@@ -89,7 +91,7 @@ function FichajeEtiquetas() {
         }
     }
 
-    async function ficharOF() {
+    async function ficharOF(req,res) {
         const { codigoEtiqueta } = req.body
         try {
             puesto = configParams.read()
@@ -112,17 +114,15 @@ function FichajeEtiquetas() {
                         })
                     }
 
-                    /*const prepaquetesResponse = await prepaqueteWebService.buscarPrepaquete(codigoEtiqueta, puesto.Maquinas[0].CodSeccion)
-
-                    if (prepaquetesResponse == null || prepaquetesResponse.length == 0) {
+                    const operaciones = await ordenFabricacionWebService.buscarOperacionesEnSeccion(Number(codigoEtiqueta.slice(0, -1)), puesto.Maquinas[0].CodSeccion)
+                    if(operaciones == null || operaciones.length == 0){
                         return res.status(404).json({
-                            message: 'No existe la etiqueta'
+                            message: 'No hay operaciones en esta seccion para esta OF'
                         })
-                    }*/
+                    }
 
-
-
-                    return res.json(tareaActual)
+                    console.log(operaciones)
+                    return res.json(operaciones)
                 }
                 else {
                     return res.status(505).json({
