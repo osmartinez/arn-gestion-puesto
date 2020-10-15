@@ -1,6 +1,6 @@
-const express = require ('express')
+const express = require('express')
 const env = process.env.NODE_ENV || 'production'
-const device = process.env.DEVICE_ENV ||'raspi'
+const device = process.env.DEVICE_ENV || 'raspi'
 const morgan = require('morgan')
 const exphbs = require('express-handlebars')
 const path = require('path')
@@ -15,14 +15,19 @@ const configParams = require('./src/lib/config.params')
 
 // inicializar express
 const app = express()
-const puestoActual = configParams.read()
+var puestoActual = null
 
-console.log(device)
-if(device == 'raspi'){
+try {
+    puestoActual = configParams.read()
+} catch (err) {
+    console.error('[ERROR] No se pudo leer el fichero de configuracion')
+}
+
+if (device == 'raspi') {
     console.log(`[${env} ${device}] arn-gestion-puesto connecting with gpios`)
     const GpioConfiguracion = require('./src/lib/pins/gpio.config')
     GpioConfiguracion.iniciar()
-    if(puestoActual!=null && puestoActual.Id){
+    if (puestoActual != null && puestoActual.Id) {
         GpioConfiguracion.configurarPuesto(puestoActual)
     }
 }
@@ -37,11 +42,11 @@ mongoose.connect('mongodb://' + config[env].database.host + '/' + config[env].da
 });
 
 // configuracion
-app.set('views',path.join(__dirname,'src/views'))
-app.engine('.hbs',exphbs({
+app.set('views', path.join(__dirname, 'src/views'))
+app.engine('.hbs', exphbs({
     defaultLayout: 'main',
-    layoutsDir: path.join(app.get('views'),'layouts'),
-    partialsDir: path.join(app.get('views'),'partials'),
+    layoutsDir: path.join(app.get('views'), 'layouts'),
+    partialsDir: path.join(app.get('views'), 'partials'),
     extname: '.hbs',
     helpers: require('./src/lib/handlebars') // ruta helpers para handlebar
 }))
@@ -49,26 +54,26 @@ app.set('view engine', '.hbs')
 
 // middleware
 app.use(morgan('dev'))
-app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 app.use(validator());
 
 // global var
 app.use(async (req, res, next) => {
-    await middlewares.middle(app,req,res,next)
-  });
+    await middlewares.middle(app, req, res, next)
+});
 
 
 // routes
 app.use(require('./src/routes/index'))
-app.use('/dashboard',require('./src/routes/dashboard/index'))
+app.use('/dashboard', require('./src/routes/dashboard/index'))
 
 // public
-app.use(express.static(path.join(__dirname,'src/public')))
+app.use(express.static(path.join(__dirname, 'src/public')))
 
 Array.prototype.sum = function (prop) {
     var total = 0
-    for ( var i = 0, _len = this.length; i < _len; i++ ) {
+    for (var i = 0, _len = this.length; i < _len; i++) {
         total += this[i][prop]
     }
     return total
@@ -77,7 +82,7 @@ Array.prototype.sum = function (prop) {
 
 // start server
 const serverPort = config[env].server.port
-const server = app.listen(serverPort,()=>{
+const server = app.listen(serverPort, () => {
     console.log(`[${env} ${device}] arn-gestion-puesto up and running on port ${serverPort}`)
 })
 

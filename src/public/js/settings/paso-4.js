@@ -31,7 +31,7 @@ function armarTablaIncidencias() {
 
                    <div class="row switch">
                         <div class="col-md-6">
-                            <span>Se puede corregir</span>
+                            <span>Se puede corregir?</span>
                         </div>
                         <div class="col-md-6">
                             <label class="font-weight-bold">
@@ -41,6 +41,19 @@ function armarTablaIncidencias() {
                             </label>
                         </div>
                    </div>
+
+                   <div class="row switch">
+                   <div class="col-md-6">
+                       <span>Bloquea interfaz?</span>
+                   </div>
+                   <div class="col-md-6">
+                       <label class="font-weight-bold">
+                       <span></span>
+                       <input id="check-bloqueante-${incidencia.Numero}" type="checkbox"  ${incidencia.Bloqueante ? 'checked' : ''}>
+                       <span class="lever"></span>
+                       </label>
+                   </div>
+                    </div>
 
 
                    <div class="row switch">
@@ -137,6 +150,17 @@ function armarTablaIncidencias() {
             else {
                 $(`#check-corregible-${incidencia.Numero}`).prop('checked', false)
                 incidencia.Corregible = false
+            }
+        })
+
+        $(`#check-bloqueante-${incidencia.Numero}`).change(function () {
+            if ($(`#check-bloqueante-${incidencia.Numero}`).prop('checked')) {
+                $(`#check-bloqueante-${incidencia.Numero}`).prop('checked', true)
+                incidencia.Bloqueante = true
+            }
+            else {
+                $(`#check-bloqueante-${incidencia.Numero}`).prop('checked', false)
+                incidencia.Bloqueante = false
             }
         })
     }

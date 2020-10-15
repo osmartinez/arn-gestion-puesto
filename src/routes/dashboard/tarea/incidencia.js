@@ -4,7 +4,7 @@ const Incidencia = require('../../../lib/model/incidencia.model')
 const router = express.Router()
 
 module.exports = function (router) {
-    router.post('/tarea/incidencia/nueva', (req, res) => {
+    router.post('/tarea/incidencia/nueva', async (req, res) => {
         const  incidencia  = req.body
 
         try {
@@ -16,7 +16,7 @@ module.exports = function (router) {
             }
 
             let fechaFin = Date.now()
-            fechaFin = new Date(fechaFin.getTime() + 1000 * incidencia.SegundosEjecucion);
+            fechaFin = fechaFin+  1000 * incidencia.SegundosEjecucion
 
             const nuevaIncidencia = new Incidencia({
                 idPuestoSql: puesto.Id,
@@ -27,19 +27,21 @@ module.exports = function (router) {
                 pinNotificacion1: incidencia.PinNotificacion1,
                 pinNotificacion2: incidencia.PinNotificacion2,
                 segundosEjecucion: incidencia.SegundosEjecucion,
+                bloqueante: incidencia.Bloqueante
             })
 
             await nuevaIncidencia.save()
             res.status(200).json(nuevaIncidencia)
 
         } catch (err) {
+            console.error(err)
             res.status(500).json({
                 message: err
             })
         }
     })
 
-    router.post('/tarea/incidencia/resolver', (req, res) => {
+    router.post('/tarea/incidencia/resolver', async (req, res) => {
         const  incidencia  = req.body
 
         try {

@@ -11,7 +11,8 @@ const incidenciaSchema = new mongoose.Schema({
     pinNotificacion1: {type:String},
     pinNotificacion2: {type:String},
     segundosEjecucion: {type:Number},
-    mostrar:{type: Boolean,default:true}
+    mostrar:{type: Boolean,default:true},
+    bloqueante:{type: Boolean,default:false}
 })
 
 module.exports = mongoose.model('Incidencia', incidenciaSchema)

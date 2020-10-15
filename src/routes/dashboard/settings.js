@@ -15,7 +15,13 @@ module.exports = function (router) {
 
     router.get('/settings', async (req, res) => {
         const puestos = await puestoWebservice.obtenerTodos()
-        const puesto = configParams.read()
+        var  puesto = null
+        try{
+            puesto = configParams.read()
+        }catch(err){
+            console.error('[ERROR] No se pudo leer el fichero de configuracion')
+        }
+        console.log(puestos)
         res.render('dashboard/settings/index', { layout: 'main-dashboard', puesto: puesto, puestos: puestos })
     })
 

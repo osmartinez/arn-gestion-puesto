@@ -20,9 +20,15 @@ module.exports = {
     },
 
     nombreMaquina() {
-        var puesto = configParams.read()
+        var puesto = null
+        try {
+            puesto = configParams.read()
+        } catch (err) {
+            console.error('[ERROR] No se pudo leer el fichero de configuracion')
+        }
+
         var nombre = ''
-        if(puesto!= null){
+        if (puesto != null) {
             nombre = puesto.Descripcion
         }
         return nombre

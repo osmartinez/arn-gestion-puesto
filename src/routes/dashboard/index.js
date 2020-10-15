@@ -34,8 +34,6 @@ router.get('/',async (req,res)=>{
 // subrutas
 require('./settings')(router)
 require('./fichajes')(router)
-require('./averia')(router)
-require('./incidencia-fichaje')(router)
 require('./gpio')(router)
 require('./tarea/incidencia')(router)
 require('./tarea/tarea')(router)
