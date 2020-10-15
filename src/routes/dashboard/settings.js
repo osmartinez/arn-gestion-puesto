@@ -5,6 +5,10 @@ const puestoWebservice = require('../../lib/repository/puesto.ws')()
 const maquinaWebService = require('../../lib/repository/maquina.ws')()
 const seccionWebService = require('../../lib/repository/seccion.ws')()
 const device = process.env.DEVICE_ENV ||'raspi'
+var  GpioConfiguracion =  null;
+if(device == 'raspi'){
+    GpioConfiguracion=require('../../lib/pins/gpio.config')
+}
 
 module.exports = function (router) {
     router.get('/settings/recargar',async(req,res)=>{
@@ -76,10 +80,7 @@ module.exports = function (router) {
 
     router.post('/settings', async (req, res) => {
         const puesto = req.body
-        var  GpioConfiguracion =  null;
-        if(device == 'raspi'){
-            GpioConfiguracion=require('../../lib/pins/gpio.config')
-        }
+
 
         // si tengo que crear un puesto
         if (puesto.CrearNuevo) {
