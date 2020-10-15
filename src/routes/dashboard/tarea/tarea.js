@@ -1,5 +1,6 @@
 const configParams = require('../../../lib/config.params')
 
+var GpioConfiguracion =null
 const Tarea = require('../../../lib/model/tarea.model')
 const MovimientoPulso = require('../../../lib/model/movimientoPulso.model')
 const MovimientoOperario = require('../../../lib/model/movimientoOperario.model')
@@ -13,6 +14,9 @@ const puestoWebService = require('../../../lib/repository/puesto.ws')()
 const prepaqueteWebService = require('../../../lib/repository/prepaquete.ws')()
 const tareaProgramadaWebService = require('../../../lib/repository/tareaProgramada.ws')()
 const device = process.env.DEVICE_ENV || 'raspi'
+if(device == "raspi"){
+    GpioConfiguracion = require('../../../lib/pins/gpio.config')
+}
 
 module.exports = function (router) {
     router.get('/tarea', (req, res) => {
@@ -220,13 +224,10 @@ module.exports = function (router) {
         try {
 
             if (device == "raspi") {
-                var GpioConfiguracion = require('../../../lib/pins/gpio.config')
-
                 if (GpioConfiguracion.PINS[PinPulso].flanco == 'up') {
                     GpioConfiguracion.PINS[PinPulso].pulsesUp.pop()
                 }
             }
-
 
             const puesto = configParams.read()
             if (puesto == null || !puesto.Id) {
