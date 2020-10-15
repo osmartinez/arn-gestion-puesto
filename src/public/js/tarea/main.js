@@ -51,27 +51,25 @@ function buscarOF(codigoEtiqueta) {
             {
                 codigoEtiqueta: '0' + codigoEtiqueta
             }),
-        success: (respuesta) => {
-            if (respuesta != null) {
-
+        success: (body) => {
+            if (body != null) {
+                if(body.operaciones.length == 1){
+                    
+                }
+                else if(body.operaciones.length > 1){
+                    $('#modal-multi-operacion').modal('show')
+                    cargarOperacionesModalMultiOperacion(operaciones)
+                }
+                else{
+                    error('No hay operaciones')
+                }
             }
             else {
                 error('No se ha podido recuperar la información')
             }
         },
         error: (err) => {
-            switch (err.status) {
-                case 404:
-                    error('No existe la etiqueta!')
-                    break
-                case 403:
-                    parpadearElemento('btn-terminar-tarea', error = true, 'La etiqueta no coincide con el utillaje que hay actualmente.\nTermine antes la tarea actual.')
-                    break
-                case 405:
-                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
-                    break
-            }
-
+            error(err.responseJSON.message)
         }
     })
 }

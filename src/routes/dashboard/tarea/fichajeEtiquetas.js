@@ -114,14 +114,26 @@ function FichajeEtiquetas() {
                         })
                     }
 
-                    const operaciones = await ordenFabricacionWebService.buscarOperacionesEnSeccion(Number(codigoEtiqueta.slice(0, -1)), puesto.Maquinas[0].CodSeccion)
+                    const idOrden = Number(codigoEtiqueta.slice(0, -1))
+                    const operaciones = await ordenFabricacionWebService.buscarOperacionesEnSeccion(idOrden, puesto.Maquinas[0].CodSeccion)
                     if(operaciones == null || operaciones.length == 0){
                         return res.status(404).json({
                             message: 'No hay operaciones en esta seccion para esta OF'
                         })
                     }
 
-                    return res.json(operaciones)
+                    const tallas = await ordenFabricacionWebService.buscarTallasArticulo(idOrden)
+                    if(tallas == null || tallas.length== 0){
+                        return res.status(404).json({
+                            message: 'No hay tallas de articulo para esta OF'
+                        })
+                    }
+
+                    return res.json({
+                        idOrden: idOrden,
+                        operaciones:operaciones,
+                        tallas: tallas,
+                    })
                 }
                 else {
                     return res.status(505).json({
@@ -138,6 +150,7 @@ function FichajeEtiquetas() {
             })
         }
     }
+
 
     return {
         ficharPrepaquete,
