@@ -53,12 +53,16 @@ function buscarOF(codigoEtiqueta) {
             }),
         success: (body) => {
             if (body != null) {
+                Puesto.IdOrdenFichada = body.idOrden
+                cargarTallasModalTallas(body.tallas)
+
                 if(body.operaciones.length == 1){
-                    
+                    Puesto.IdOperacionFichada = body.operaciones[0].IdOperacion
+                    $('#modal-tallas').modal('show')
                 }
                 else if(body.operaciones.length > 1){
+                    cargarOperacionesModalMultiOperacion(body.operaciones)
                     $('#modal-multi-operacion').modal('show')
-                    cargarOperacionesModalMultiOperacion(operaciones)
                 }
                 else{
                     error('No hay operaciones')

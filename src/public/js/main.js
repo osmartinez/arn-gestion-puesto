@@ -123,6 +123,10 @@ function armarTodo() {
 }
 
 let Puesto = {
+    IdOrdenFichada:0,
+    IdOperacionFichada: 0,
+    TallaFichada: '',
+
     Id: 0,
     CrearNuevo: true,
     Descripcion: '',

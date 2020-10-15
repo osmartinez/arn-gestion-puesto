@@ -151,6 +151,9 @@ function FichajeEtiquetas() {
         }
     }
 
+    async function comenzarTareaAPartirDeOperacionYTalla(req,res){
+        
+    }
 
     return {
         ficharPrepaquete,

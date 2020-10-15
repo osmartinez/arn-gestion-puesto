@@ -25,10 +25,21 @@ function OrdenFabricacionWebservice() {
         return null
     }
 
+    async function obtenerInformacionTareaPorOperacionYTalla(idOperacion,talla){
+        try{
+            const resp = await genericWebservice.get(wsName,'obtenerInformacionTareaPorOperacionYTalla',idOperacion,talla)
+            const prepaquetes = await resp.json()
+            return prepaquetes
+        }catch(err){
+            console.error(err)
+        }
+        return null
+    }
+
     return {
         buscarOperacionesEnSeccion,
         buscarTallasArticulo,
-        
+        obtenerInformacionTareaPorOperacionYTalla,
     }
 }
 
