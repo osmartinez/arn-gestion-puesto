@@ -104,7 +104,7 @@ module.exports = function (router) {
                     // actualizo la incidencia y aprovecho para machacar todas las incidencias del nuevo puesto con información renovada
                     puestoNuevo.PuestosConfiguracionesIncidencias = await puestoWebservice.actualizarIncidencia(incidencia.Id, incidencia.Nombre, incidencia.Habilitada,
                         incidencia.PinNotificacion1, incidencia.PinNotificacion2, incidencia.AvisarA, incidencia.Corregible,
-                        incidencia.SegundosEjecucion, puestoNuevo.Id)
+                        incidencia.SegundosEjecucion, puestoNuevo.Id, incidencia.Bloqueante)
                 }
             }
             configParams.write(puestoNuevo)
@@ -131,7 +131,7 @@ module.exports = function (router) {
                     // actualizo la incidencia y aprovecho para machacar todas las incidencias del nuevo puesto con información renovada
                     puesto.PuestosConfiguracionesIncidencias = await puestoWebservice.actualizarIncidencia(incidencia.Id, incidencia.Nombre, incidencia.Habilitada,
                         incidencia.PinNotificacion1, incidencia.PinNotificacion2, incidencia.AvisarA, incidencia.Corregible,
-                        incidencia.SegundosEjecucion, puesto.Id)
+                        incidencia.SegundosEjecucion, puesto.Id, incidencia.Bloqueante)
                 }
 
                 configParams.write(puesto)

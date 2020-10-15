@@ -45,18 +45,19 @@ function PuestoWebservice() {
         }
     }
 
-    async function actualizarIncidencia(id, nombre, habilitada,pinNotificacion1, pinNotificacion2,avisarA,corregible,segundosEjecucion,idPuesto){
+    async function actualizarIncidencia(id, nombre, habilitada,pinNotificacion1, pinNotificacion2,avisarA,corregible,segundosEjecucion,idPuesto,bloqueante){
         try {
             const resp1 = await genericWebservice.post({
                 id:id,
                 nombre:nombre,
-                habilitada:habilitada,
-                pinNotificacion1:pinNotificacion1,
-                pinNotificacion2:pinNotificacion2,
-                avisarA:avisarA,
-                corregible:corregible,
-                segundosEjecucion:segundosEjecucion,
+                habilitada:habilitada == null ? false: habilitada,
+                pinNotificacion1:pinNotificacion1 == null? 'null':pinNotificacion1,
+                pinNotificacion2:pinNotificacion2 == null? 'null': pinNotificacion2,
+                avisarA:avisarA==null?'NADIE':avisarA,
+                corregible:corregible==null?false:corregible,
+                segundosEjecucion:segundosEjecucion==null?0:segundosEjecucion,
                 idPuesto:idPuesto,
+                bloqueante: bloqueante == null?false:bloqueante
             },wsName, 'actualizarIncidencia')
             const incidencias = await resp1.json()
             if(incidencias.length > 0){
