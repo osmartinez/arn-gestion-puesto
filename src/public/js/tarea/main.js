@@ -169,8 +169,11 @@ $.ajax({
     }
 })
 
+let peticionPinsEnviada = false
+
 setInterval(() => {
-    if (Puesto != null && !Puesto.EsManual) {
+    if (Puesto != null && !Puesto.EsManual && !peticionPinsEnviada) {
+        peticionPinsEnviada = true
         $.ajax({
             method: 'POST',
             url: `/dashboard/gpio/obtenerEstadoPins`,
@@ -200,8 +203,10 @@ setInterval(() => {
                                             }),
                                         success: (tareasPuesto) => {
                                             Puesto.refrescarTareasPuesto(tareasPuesto)
+                                            peticionPinsEnviada = false
                                         },
                                         error: (err) => {
+                                            peticionPinsEnviada = false
                                             switch (err.status) {
                                                 case 405:
                                                     parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
@@ -221,6 +226,7 @@ setInterval(() => {
                 }
             },
             error: (err) => {
+                peticionPinsEnviada = false
                 switch (err.status) {
                     case 405:
                         parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
