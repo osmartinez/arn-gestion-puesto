@@ -127,7 +127,6 @@ function desconectar() {
     }
 }
 
-
 module.exports = {
     iniciar: iniciar,
     //refrescarValoresLectura: refrescarValoresLectura,

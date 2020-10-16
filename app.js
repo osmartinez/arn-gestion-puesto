@@ -23,6 +23,7 @@ try {
     console.error('[ERROR] No se pudo leer el fichero de configuracion')
 }
 
+// si estoy ejecutando desde la placa, configuro los pins
 if (device == 'raspi') {
     console.log(`[${env} ${device}] arn-gestion-puesto connecting with gpios`)
     const GpioConfiguracion = require('./src/lib/pins/gpio.config')
@@ -45,7 +46,7 @@ mongoose.connect('mongodb://' + config[env].database.host + '/' + config[env].da
     useFindAndModify: false
 });
 
-// configuracion
+// configuracion motor de plantillas
 app.set('views', path.join(__dirname, 'src/views'))
 app.engine('.hbs', exphbs({
     defaultLayout: 'main',
@@ -75,6 +76,7 @@ app.use('/dashboard', require('./src/routes/dashboard/index'))
 // public
 app.use(express.static(path.join(__dirname, 'src/public')))
 
+// prototyping
 Array.prototype.sum = function (prop) {
     var total = 0
     for (var i = 0, _len = this.length; i < _len; i++) {

@@ -7,7 +7,6 @@ const MovimientoOperario = require('../../../lib/model/movimientoOperario.model'
 const Paquete = require('../../../lib/model/paquete.model')
 
 const tareaProgramadaWebService = require('../../../lib/repository/tareaProgramada.ws')()
-
 const FichajeEtiquetas = require('./fichajeEtiquetas')
 
 const device = process.env.DEVICE_ENV || 'raspi'
@@ -406,4 +405,5 @@ module.exports = function (router) {
 
     })
 
+    router.post('/tarea/comenzarTareaConOperacionYTalla',FichajeEtiquetas.comenzarTareaAPartirDeOperacionYTalla)
 }
