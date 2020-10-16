@@ -16,7 +16,7 @@ function cargarInformacionTarea(cantidadFabricadaOtrosPuestos) {
         </br>
         <${Puesto.TareasPuesto.tallaUtillaje}> 
         </br>
-        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos == null || cantidadFabricadaOtrosPuestos == 0 ? '' : `+${cantidadFabricadaOtrosPuestos}`)} / ${Puesto.TareasPuesto.detallesTarea.sum('cantidadFabricar')} </p>`)
+        ${cantidadFabricada} ${(cantidadFabricadaOtrosPuestos == null || cantidadFabricadaOtrosPuestos == 0 ? '' : `+${cantidadFabricadaOtrosPuestos}`)}/${Puesto.TareasPuesto.detallesTarea.sum('cantidadFabricar')}</p>`)
     }
     else {
         $('#info-tarea').html('')
