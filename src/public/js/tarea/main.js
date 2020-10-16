@@ -224,6 +224,7 @@ setInterval(() => {
                         }
                     }
                     else {
+                        peticionPinsEnviada = false
                         // no hago nada
                     }
                 }
