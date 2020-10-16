@@ -220,7 +220,7 @@ setInterval(() => {
                                     }
                                 }
                             })
-                            break
+                            
                         }
                     }
                     else {
