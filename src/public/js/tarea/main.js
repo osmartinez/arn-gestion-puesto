@@ -56,15 +56,15 @@ function buscarOF(codigoEtiqueta) {
                 Puesto.IdOrdenFichada = body.idOrden
                 cargarTallasModalTallas(body.tallas)
 
-                if(body.operaciones.length == 1){
+                if (body.operaciones.length == 1) {
                     Puesto.IdOperacionFichada = body.operaciones[0].IdOperacion
                     $('#modal-tallas').modal('show')
                 }
-                else if(body.operaciones.length > 1){
+                else if (body.operaciones.length > 1) {
                     cargarOperacionesModalMultiOperacion(body.operaciones)
                     $('#modal-multi-operacion').modal('show')
                 }
-                else{
+                else {
                     error('No hay operaciones')
                 }
             }
@@ -170,66 +170,65 @@ $.ajax({
 })
 
 let peticionPinsEnviada = false
-
 setInterval(() => {
-    if (Puesto != null && !Puesto.EsManual && !peticionPinsEnviada) {
-        peticionPinsEnviada = true
+    if (Puesto != null && !Puesto.EsManual) {
         $.ajax({
             method: 'POST',
             url: `/dashboard/gpio/obtenerEstadoPins`,
             dataType: 'json',
             success: (PINS) => {
+                let pinEntrada = ''
                 for (const pin in PINS) {
-
-                    // detectar pulso principal pares
                     if (PINS[pin].type == 'main-pulse' && PINS[pin].status == 'on' && PINS[pin].mode == 'in') {
-                        if (PINS[pin].flanco == 'up') {
-                            const pulso = PINS[pin].pulsesUp.pop()
-                            if (pulso === 1) {
-                                const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
-                                if (maquina != null) {
-                                    $.ajax({
-                                        method: 'POST',
-                                        url: `/dashboard/tarea/pulsoMaquina`,
-                                        contentType: "application/json",
-                                        dataType: 'json',
-                                        data: JSON.stringify(
-                                            {
-                                                IdMaquina: maquina.ID,
-                                                EsPulsoManual: maquina.EsPulsoManual,
-                                                ProductoPorPulso: maquina.ProductoPorPulso,
-                                                PinPulso: maquina.PinPulso,
-                                                DescontarAutomaticamente: maquina.DescontarAutomaticamente
-                                            }),
-                                        success: (tareasPuesto) => {
-                                            Puesto.refrescarTareasPuesto(tareasPuesto)
-                                            peticionPinsEnviada = false
-                                        },
-                                        error: (err) => {
-                                            peticionPinsEnviada = false
-                                            switch (err.status) {
-                                                case 405:
-                                                    parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
-                                                    break
-                                                default:
-                                                    error(err.responseJSON.message)
-                                                    break
-                                            }
-                                        }
-                                    })
-                                    break
-                                }
-                            }
-                        }
-                        else{
-                            peticionPinsEnviada = false
-                        }
+                        pinEntrada = pin
+                        break
+                    }
+                }
 
+                if (pinEntrada != '' && PINS[pinEntrada].flanco == 'up') {
+                    const pulso = PINS[pinEntrada].pulsesUp.pop()
+                    if (pulso === 1) {
+                        const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
+                        if (maquina != null && !peticionPinsEnviada) {
+                            peticionPinsEnviada = true
+                            $.ajax({
+                                method: 'POST',
+                                url: `/dashboard/tarea/pulsoMaquina`,
+                                contentType: "application/json",
+                                dataType: 'json',
+                                data: JSON.stringify(
+                                    {
+                                        IdMaquina: maquina.ID,
+                                        EsPulsoManual: maquina.EsPulsoManual,
+                                        ProductoPorPulso: maquina.ProductoPorPulso,
+                                        PinPulso: maquina.PinPulso,
+                                        DescontarAutomaticamente: maquina.DescontarAutomaticamente
+                                    }),
+                                success: (tareasPuesto) => {
+                                    Puesto.refrescarTareasPuesto(tareasPuesto)
+                                    peticionPinsEnviada = false
+                                },
+                                error: (err) => {
+                                    peticionPinsEnviada = false
+                                    switch (err.status) {
+                                        case 405:
+                                            parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
+                                            break
+                                        default:
+                                            error(err.responseJSON.message)
+                                            break
+                                    }
+                                }
+                            })
+                            break
+                        }
+                    }
+                    else {
+                        // no hago nada
                     }
                 }
             },
             error: (err) => {
-                peticionPinsEnviada = false
                 switch (err.status) {
                     case 405:
                         parpadearElemento('btn-operarios', error = true, `<h4>${err.responseJSON.message}</h4></br><a href="/dashboard/operarios" class="btn btn-lg btn-success"><h4 style="font-weight:bold;">Fichar ahora</h4></a>`)
