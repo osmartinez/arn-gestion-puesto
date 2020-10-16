@@ -188,7 +188,7 @@ setInterval(() => {
                 if (pinEntrada != '' && PINS[pinEntrada].flanco == 'up') {
                     const pulso = PINS[pinEntrada].pulsesUp.pop()
                     if (pulso === 1) {
-                        const maquina = Puesto.Maquinas.find(x => x.PinPulso == pin)
+                        const maquina = Puesto.Maquinas.find(x => x.PinPulso == pinEntrada)
                         if (maquina != null && !peticionPinsEnviada) {
                             peticionPinsEnviada = true
                             $.ajax({
