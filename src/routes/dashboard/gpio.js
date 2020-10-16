@@ -6,7 +6,6 @@ if(device == 'raspi'){
 module.exports = function (router) {
     router.post('/gpio/obtenerEstadoPins', async (req, res) => {
         if(device == 'raspi'){
-            //GpioConfiguracion.refrescarValoresLectura()
             res.json(GpioConfiguracion.PINS)
         }
         else{

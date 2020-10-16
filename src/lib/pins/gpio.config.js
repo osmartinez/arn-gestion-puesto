@@ -37,7 +37,15 @@ function configurarPuesto(puesto) {
                             console.error(err)
                         }
                         else {
-                            PINS[maquina.PinPulso].pulsesUp.push(1)
+                            if (PINS[maquina.PinPulso].depends_on > 0) {
+                                const pulsoDependiente = PINS[maquina.PinPulso2].gpio_object.readSync()
+                                if (pulsoDependiente === 1) {
+                                    PINS[maquina.PinPulso].pulsesUp.push(1)
+                                }
+                            }
+                            else {
+                                PINS[maquina.PinPulso].pulsesUp.push(1)
+                            }
                         }
                     })
                 } catch (err) {
@@ -46,6 +54,16 @@ function configurarPuesto(puesto) {
 
                 if (maquina.PinPulso2 != null && maquina.PinPulso2 != 'null') {
                     PINS[maquina.PinPulso].depends_on = Number(maquina.PinPulso2.replace('GPIO', ''))
+
+                    PINS[maquina.PinPulso2].mode = 'in'
+                    PINS[maquina.PinPulso2].status = 'on'
+                    PINS[maquina.PinPulso2].flanco = 'up'
+
+                    try {
+                        PINS[maquina.PinPulso2].gpio_object = new Gpio(PINS[maquina.PinPulso2].number, PINS[maquina.PinPulso2].mode)
+                    } catch (err) {
+                        console.error(`Error al abrir el ${maquina.PinPulso2}`)
+                    }
                 }
             }
         }
