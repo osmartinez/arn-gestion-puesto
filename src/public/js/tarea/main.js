@@ -242,7 +242,7 @@ setInterval(() => {
         })
     }
 
-}, 200)
+}, 300)
 
 // intervalor que busca todos los pares fabricados de la tarea actual por otros puestos
 setInterval(() => {
@@ -274,4 +274,4 @@ setInterval(() => {
         })
     }
 
-}, 5000)
+}, 10000)
