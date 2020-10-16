@@ -221,6 +221,9 @@ setInterval(() => {
                                 }
                             }
                         }
+                        else{
+                            peticionPinsEnviada = false
+                        }
 
                     }
                 }
