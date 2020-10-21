@@ -170,6 +170,7 @@ function FichajeEtiquetas() {
 
                 let tareaActual = await Tarea.findOne({ "idPuestoSql": puesto.Id, terminado: false })
                 if (tareaActual == null) {
+                    const detalles = []
                     const prepaquetesResponse = await ordenFabricacionWebService.obtenerInformacionTareaPorOperacionYTalla(idOperacion,talla)
                     if (prepaquetesResponse == null || prepaquetesResponse.length == 0) {
                         return res.status(404).json({
@@ -196,11 +197,10 @@ function FichajeEtiquetas() {
                         }))
                     }
 
-
                     tareaActual = new Tarea({
                         idPuestoSql: puesto.Id,
                         detallesTarea: detalles,
-                        etiquetaFichada: codigoEtiqueta,
+                        etiquetaFichada: '',
                         utillaje: utillaje,
                         tallaUtillaje: tallaUtillaje,
                     })
