@@ -39,7 +39,7 @@ function configurarPuesto(puesto) {
                         else {
                             if (PINS[maquina.PinPulso].depends_on > 0) {
                                 const pulsoDependiente = PINS[maquina.PinPulso2].gpio_object.readSync()
-                                if (pulsoDependiente === 1) {
+                                if (pulsoDependiente === 0) {
                                     PINS[maquina.PinPulso].pulsesUp.push(1)
                                 }
                             }
