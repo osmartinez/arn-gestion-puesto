@@ -31,7 +31,7 @@ function configurarPuesto(puesto) {
                 PINS[maquina.PinPulso].type = 'main-pulse'
 
                 try {
-                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode, 'falling', { debounceTimeout: 10 })
+                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode, 'rising', { debounceTimeout: 10 })
                     PINS[maquina.PinPulso].gpio_object.watch((err, value) => {
                         if (err) {
                             console.error(err)
@@ -39,7 +39,7 @@ function configurarPuesto(puesto) {
                         else {
                             if (PINS[maquina.PinPulso].depends_on > 0) {
                                 const pulsoDependiente = PINS[maquina.PinPulso2].gpio_object.readSync()
-                                if (pulsoDependiente === 1) {
+                                if (pulsoDependiente === 0) {
                                     PINS[maquina.PinPulso].pulsesUp.push(1)
                                 }
                             }
