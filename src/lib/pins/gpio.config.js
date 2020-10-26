@@ -31,7 +31,7 @@ function configurarPuesto(puesto) {
                 PINS[maquina.PinPulso].type = 'main-pulse'
 
                 try {
-                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode, 'rising')
+                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode, 'rising', { debounceTimeout: 5 })
                     PINS[maquina.PinPulso].gpio_object.watch((err, value) => {
                         if (err) {
                             console.error(err)
