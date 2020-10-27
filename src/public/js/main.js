@@ -83,16 +83,6 @@ function parpadearElemento(idElemento, error = false, mensaje, milisegundos = 40
     }
 }
 
-const allPins = `
-<option value="GPIO4">GPIO4</option>
-<option value="GPIO5">GPIO5</option>
-<option value="GPIO6">GPIO6</option>
-<option value="GPIO8">GPIO8</option>
-<option value="GPIO9">GPIO9</option>
-<option value="GPIO10">GPIO10</option>
-<option value="GPIO11">GPIO11</option>
-`
-
 function getAllPins(selected) {
     let ini = 1
     const fin = 24
@@ -101,6 +91,14 @@ function getAllPins(selected) {
         pinsHTML += `<option value="GPIO${ini}" ${selected == 'GPIO' + ini ? 'selected' : ''}>GPIO${ini}</option>\n`
     }
     return pinsHTML
+}
+
+function getAllPulseFlanks(selected){
+    let html = ''
+    html +=`<option value="rising" ${selected == 'rising' ? 'selected' : ''}>rising</option>\n`
+    html +=`<option value="falling" ${selected == 'falling' ? 'selected' : ''}>falling</option>\n`
+    html +=`<option value="both" ${selected == 'both' ? 'selected' : ''}>both</option>\n`
+    return html
 }
 
 function getAllAvisos(selected) {

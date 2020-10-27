@@ -10,7 +10,6 @@ function iniciar() {
             status: 'off',
             value: 0,
             gpio_object: null,
-            flanco: '',
             previous_value: 0,
             pulsesUp: [],
             pulsesDown: [],
@@ -31,7 +30,7 @@ function configurarPuesto(puesto) {
                 PINS[maquina.PinPulso].type = 'main-pulse'
 
                 try {
-                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode, 'rising', { debounceTimeout: 5 })
+                    PINS[maquina.PinPulso].gpio_object = new Gpio(PINS[maquina.PinPulso].number, PINS[maquina.PinPulso].mode, maquina.DisparoPulso, { debounceTimeout: maquina.ValorBouncingPulso })
                     PINS[maquina.PinPulso].gpio_object.watch((err, value) => {
                         if (err) {
                             console.error(err)
@@ -39,7 +38,7 @@ function configurarPuesto(puesto) {
                         else {
                             if (PINS[maquina.PinPulso].depends_on > 0) {
                                 const pulsoDependiente = PINS[maquina.PinPulso2].gpio_object.readSync()
-                                if (pulsoDependiente === 0) {
+                                if (pulsoDependiente == maquina.ValorPulsoDependiente) {
                                     PINS[maquina.PinPulso].pulsesUp.push(1)
                                 }
                             }
@@ -57,7 +56,6 @@ function configurarPuesto(puesto) {
 
                     PINS[maquina.PinPulso2].mode = 'in'
                     PINS[maquina.PinPulso2].status = 'on'
-                    PINS[maquina.PinPulso2].flanco = 'up'
 
                     try {
                         PINS[maquina.PinPulso2].gpio_object = new Gpio(PINS[maquina.PinPulso2].number, PINS[maquina.PinPulso2].mode)

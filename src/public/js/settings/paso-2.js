@@ -68,9 +68,7 @@ function armarTablaIO() {
 
         $(`#fila-disparo-pulso`).append(`<td>
                                             <select id="select-disparo-pulso-${maquina.NumeroFila}">
-                                                <option value="rising">rising</option>
-                                                <option value="falling">falling</option>
-                                                <option value="both">both</option>
+                                            ${getAllPulseFlanks(maquina.DisparoPulso)}
                                             </select>
                                         </td>`)
 
