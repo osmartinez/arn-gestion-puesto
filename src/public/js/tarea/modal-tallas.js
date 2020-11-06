@@ -43,7 +43,7 @@ function cargarTallasModalTallas(tallas) {
 
     var table = document.getElementById("modal-body-tallas");
     let indiceTallas = 0
-
+    table.innerHTML = ''
     for (var i = 0; i < buttonNum; i++) {
         var tr = document.createElement("tr");
         table.appendChild(tr);

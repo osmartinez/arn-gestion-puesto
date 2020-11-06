@@ -80,7 +80,6 @@ function armarTablaIO() {
                                                 </div>
                                             </td>`)
 
-
         // eventos
 
         $(`#check-pulso-manual-${maquina.NumeroFila}`).click(() => {
@@ -99,11 +98,9 @@ function armarTablaIO() {
             maquina.PinPulso = $(`#select-pin-pulso-${maquina.NumeroFila}`).find(":selected").val()
         })
 
-
         $(`#select-pin-pulso-dependiente-${maquina.NumeroFila}`).change(() => {
             maquina.PinPulso2 = $(`#select-pin-pulso-dependiente-${maquina.NumeroFila}`).find(":selected").val()
         })
-
 
         $(`#valor-pulso-dependiente-${maquina.NumeroFila}`).change(function () {
             maquina.ValorPulsoDependiente = Number($(`#valor-pulso-dependiente-${maquina.NumeroFila}`).val())
